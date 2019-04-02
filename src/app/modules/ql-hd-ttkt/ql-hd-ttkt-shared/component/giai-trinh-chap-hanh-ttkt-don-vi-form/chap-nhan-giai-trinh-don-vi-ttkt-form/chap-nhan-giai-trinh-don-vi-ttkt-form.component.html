@@ -1,0 +1,131 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-12">
+            <span class="page-title-breadcrumb">GIẢI TRÌNH CHẤP HÀNH TTKT</span>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="page-title">DS đơn vị</span>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="page-title text-primary">chấp nhận giải trinh</span>
+            <div class="pull-right">
+                <button (click)="setViewUpdate()" class="btn btn-primary" [disabled]="viewStatus===3" *ngIf="viewStatus!==1">
+                    <i aria-hidden="true"></i>Cập nhật</button>&nbsp;
+                <button (click)="goBack()" class="btn">
+                    <i aria-hidden="true"></i>Quay lại</button>
+            </div>
+        </div>
+    </div>
+</h4>
+<div [formGroup]="giaiTrinhFormGroup" [class]="viewStatus===2?'form-readonly': ''">
+    <div>
+        <div class="row">
+            <div class="col-md-2">
+                <label class="label-col-form float-right">Lý do:
+                    <span class="required">*</span>
+                </label>
+            </div>
+            <div class="col-md-6">
+                <div class="row float-left">
+                    <ttkt-input xl="4-6" formControlName="lyDoChapNhanGiaiTrinh" class="float-left"></ttkt-input>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 text-lg-right">
+                <label class="label-col-form">Quyết định:
+                    <span class="required">*</span>
+                </label>
+            </div>
+            <div class="col-md-6">
+                <div  *ngIf="viewStatus!==2 ">
+                    <ttkt-input type="file" formControlName="quyetDinhGiaiTrinh" class="float-left"></ttkt-input>
+                </div>
+                <div *ngIf="viewStatus===2" class="row">
+                    <div class="col-md-1">
+                        <button (click)="downloadFile()" class="btn btn-primary none-disable">
+                            <i aria-hidden="true"></i>Tải file</button>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" [readOnly]="true" [value]="getFileName()"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="table-resize">Nội dung vi phạm</th>
+                    <th colspan="3" class="th-size">Số liệu theo Biên bản</th>
+                    <th colspan="3">Số liệu giải trình</th>
+                    <th colspan="3">Kết quả sau giải trình</th>
+                    <th colspan="3">Số chấp hành bổ sung</th>
+                    <th colspan="3">Số còn lại phải thực hiện</th>
+                </tr>
+                <tr>
+                    <th>Số người(lượt)</th>
+                    <th>Số tiền</th>
+                    <th>Số sổ(thẻ)</th>
+
+                    <th>Số người(lượt)</th>
+                    <th>Số tiền</th>
+                    <th>Số sổ(thẻ)</th>
+
+                    <th>Số người(lượt)</th>
+                    <th>Số tiền</th>
+                    <th>Số sổ(thẻ)</th>
+
+                    <th>Số người(lượt)</th>
+                    <th>Số tiền</th>
+                    <th>Số sổ(thẻ)</th>
+
+                    <th>Số người(lượt)</th>
+                    <th>Số tiền</th>
+                    <th>Số sổ(thẻ)</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="giaiTrinhFormArray" formArrayName="giaiTrinhFormArray">
+                <tr *ngFor="let item of giaiTrinhFormArray.controls, let i = index" [formGroup]="item">
+                    <td>{{dataTable[i].dmChiTietNDDTO.tenChiTietNoiDung}}</td>
+
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" ttktchecknumberonly formControlName="soLuotNguoiViPham" ></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" ttktchecknumberonly formControlName="soTienViPham" ></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" ttktchecknumberonly formControlName="soSoViPham" ></ttkt-input>
+                    </td>
+
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="sLGiaiTrinhSoNguoi"></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="sLGiaiTrinhSoTien" ></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="sLGiaiTrinhSoThe" ></ttkt-input>
+                    </td>
+
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="kQSauGiaiTrinhSoNguoi" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="kQSauGiaiTrinhSoTien" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="kQSauGiaiTrinhSoThe" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="soChapHanhBSSoNguoi" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="soChapHanhBSSoTien" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" formControlName="soChapHanhBSSoThe" (change)='tinhToan(item)'></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" formControlName="soConLaiPTHSoNguoi" ></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" formControlName="soConLaiPTHSoTien" ></ttkt-input>
+                    </td>
+                    <td><ttkt-input type="number" xl="4-12" min="0" [disabled]="true" formControlName="soConLaiPTHSoThe" ></ttkt-input>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="modal-footer">
+            <button (click)="saveGiaiTrinh()" class="btn btn-primary">
+                <i aria-hidden="true"></i>Lưu</button>
+        </div>
+    </div>
+</div>

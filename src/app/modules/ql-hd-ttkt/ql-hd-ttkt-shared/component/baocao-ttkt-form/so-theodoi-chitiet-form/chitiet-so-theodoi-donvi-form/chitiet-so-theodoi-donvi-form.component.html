@@ -1,0 +1,336 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title-breadcrumb">Sổ theo dõi chi tiết công tác TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title-breadcrumb">DS sổ theo dõi chi tiết tại đơn vị</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Sổ theo dõi chi tiết tại đơn vị</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="thongTinChiTietDvForm">
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="thongtin-chitiet">
+          <p>1. Quyết định thanh tra/kiểm tra: số
+            <b>{{ data.soQuyetDinh }}</b> ngày
+            <b>{{ data.ngayQuyetDinh | date: 'dd/MM/yyyy' }}</b> về
+            <b>{{ data.tenQuyetDinh }}</b>
+          </p>
+          <p>2. Tên đơn vị thanh tra/kiểm tra:
+            <b>{{ data.tenDmbhxh }}</b>
+          </p>
+          <p>3. Hình thức thanh tra/kiểm tra:
+            <b *ngIf="data.trongKeHoach == true">Trong kế hoạch</b>
+            <b *ngIf="data.trongKeHoach == false">Đột xuất</b>
+          </p>
+          <p>4. Đơn vị thực hiện thanh tra/kiểm tra:
+            <b>{{ data.tenDoiTuongTTKT }}</b>
+          </p>
+          <p>5. Loại hình thực hiện:
+            <b>{{ getTenLoaiHinhTTKT(data.loaiHinhTTKT) }}</b>
+          </p>
+          <p>6. Thời kỳ thanh tra/kiểm tra: Từ ngày
+            <b>{{ data.ngayBatDau | date: 'dd/MM/yyyy' }}</b> đến ngày
+            <b>{{ data.ngayKetThuc | date: 'dd/MM/yyyy' }}</b>
+          </p>
+          <p>7. T.gian thực hiện thanh tra/kiểm tra: Từ ngày
+            <b>{{ data.ngayBatDauTTKT | date: 'dd/MM/yyyy' }}</b> đến ngày
+            <b>{{ data.ngayKetThucTTKT | date: 'dd/MM/yyyy' }}</b>
+          </p>
+          <p>8. Nội dung thanh tra/kiểm tra:
+            <b>{{ data.tenNoiDungTTKT }}</b>
+          </p>
+          <p>9. Văn bản kết luận: Số
+            <b>{{ data.soBaoCaoKetLuan }}</b> ngày
+            <b>{{ data.baoCaoKetLuanTuNgay | date: 'dd/MM/yyyy' }}</b> về
+            <b>{{ data.tenBaoCaoKetLuan }}</b>
+          </p>
+          <!-- <p>9. Quyết định xử phạt VPHC (nếu có): Số
+            <b>{{ data.soQDXuPhat }}</b> ngày
+            <b>{{ data.ngayLapBbQuyetDinh }}</b> về
+            <b>{{ data.tenBbQuyetDinh }}</b>
+          </p>
+          <p>10. Văn bản chuyển cơ quan điều tra (nếu có): Số
+            <b>{{ data.soVanBanChuyenCQ }}</b> ngày
+            <b>{{ data.ngayChuyenCQ }}</b> về
+            <b>{{ data.ndVanBanChuyenCQ }}</b>
+          </p> -->
+          <p>10. Nhập văn bản chuyển cơ quan điều tra (nếu có): </p>
+          <div class="row visibled">
+            <div class="col-xl-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label for="" class="col-form-label">id:</label>
+                </div>
+                <div class="col-xl-8">
+                  <input class="form-control" type="text" formControlName="id" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label for="" class="col-form-label">Số văn bản:</label>
+                </div>
+                <div class="col-xl-8">
+                  <input class="form-control" type="text" formControlName="soVanBanChuyenCQ">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label for="" class="col-form-label">Ngày chuyển:</label>
+                </div>
+                <div class="col-xl-8">
+                  <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayChuyenCQ"></my-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="form-group row">
+                <div class="col-xl-2 text-xl-right">
+                  <label for="" class="col-form-label">Nội dung:</label>
+                </div>
+                <div class="col-xl-6">
+                  <textarea class="form-control custom" type="text" formControlName="ndVanBanChuyenCQ"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4">
+              <ttkt-input type="thang" label="Tháng" sm="4-8" formControlName="fromMonth"></ttkt-input>
+            </div>
+            <div class="col-xl-4">
+              <ttkt-input type="nam" label="Năm" sm="4-8" formControlName="fromYear"></ttkt-input>
+            </div>
+            <div class="col-xl-4">
+              <button class="btn btn-primary" type="button" (click)="xemLichSu()">Xem lịch sử</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Kết quả thực hiện</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2">STT</th>
+                <th rowspan="2" class="th-resize" width="25%">Nội dung</th>
+                <th rowspan="2" width="10%">Kết luận TTKT</th>
+                <th colspan="2" rowspan="1">Số đã thực hiện</th>
+                <th rowspan="2" width="10%">Số còn phải tiếp tục thực hiện</th>
+                <th rowspan="2" width="20%">Ghi chú</th>
+                <th rowspan="2" width="10%">Thao tác</th>
+              </tr>
+              <tr>
+                <th width="10%">Số phát sinh</th>
+                <th width="10%">Lũy kế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="text-center">1</th>
+                <th class="text-center">2</th>
+                <th class="text-center">3</th>
+                <th class="text-center">4</th>
+                <th class="text-center">5</th>
+                <th class="text-center">6</th>
+                <th class="text-center">7</th>
+                <th class="text-center">8</th>
+              </tr>
+              <tr *ngIf="!listDmTieuThucMapping.length">
+                <td colspan="12" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+              <ng-container *ngFor="let item of listDmTieuThucMapping; let i = index">
+                <tr>
+                  <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}</th>
+                  <th>{{item.tenPhanLoai}}</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let el of (item || {}).children, let j = index">
+                  <td class="text-center">{{j + 1}}</td>
+                  <td>{{el.tenTieuThuc}}</td>
+                  <td class="text-right">{{el.soKetLuan}}</td>
+                  <td class="text-right">{{el.soLieuDieuChinh}}</td>
+                  <td class="text-right"> {{el.soLuyKe}}</td>
+                  <td class="text-right">{{el.soThucHien}}</td>
+                  <td class="text-right">{{el.ghiChu}}</td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editKQThucHien(el)" [disabled]="searchHistory">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  </td>
+                </tr>
+
+                <ng-container *ngFor="let item2 of item.child; let i2 = index">
+                  <tr>
+                    <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}.{{ i2 + 1 }}</th>
+                    <th>{{item2.tenPhanLoai}}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr *ngFor="let el of (item2 || {}).children, let j = index">
+                    <td class="text-center">{{j + 1}}</td>
+                    <td>{{el.tenTieuThuc}}</td>
+                    <td class="text-right">{{el.soKetLuan}}</td>
+                    <td class="text-right">{{el.soLieuDieuChinh}}</td>
+                    <td class="text-right">{{el.soLuyKe}}</td>
+                    <td class="text-right">{{el.soThucHien}}</td>
+                    <td class="text-right">{{el.ghiChu}}</td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-primary btn-sm edit" [disabled]="searchHistory" (click)="editKQThucHien(el)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+              <!-- <tr>
+                <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}</th>
+                <th>{{item.tenPhanLoai}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let el of (item || {}).children, let j = index">
+                <td class="text-center">{{j + 1}}</td>
+                <td>{{el.tenTieuThuc}}</td>
+                <td>{{el.soKetLuan}}</td>
+                <td>{{el.soLieuDieuChinh}}</td>
+                <td>{{el.soThucHien}}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-primary btn-sm edit" (click)="editKQThucHien(i, j)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                </td>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="pull-right">
+    <!-- <button type="button" class="btn btn-default" *ngIf="luu==true">
+      <i class="fa fa-print" aria-hidden="true"></i> In</button> -->
+    <!-- <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="luu==true && duyet==false">
+      <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button> -->
+      <button type="button" class="btn btn-primary" (click)="onSubmit()" *ngIf="!searchHistory">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+    <button type="button" class="btn btn-success" (click)="printSo02(2)" [disabled]="!listDmTieuThucMapping.length">
+      <i class="fa fa-file-excel-o" aria-hidden="true"></i>Xuất EXCEL</button>
+    <button type="button" class="btn btn-link" (click)="onBack()">
+      <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+  </div>
+</div>
+
+<!-- popup thongtinNguoiUQ -->
+<div bsModal #updateMau02Modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="icon_ModalHeader"></i> Cập nhật thông tin</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="updateMau02Modal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateMau02Form" class="mt-3">
+          <div class="form-group row">
+            <label for="id" class="col-form-label col-md-4 text-lg-right">Nội dung cập nhật: </label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" formControlName="tenNoiDung" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="soPhatSinh" class="col-form-label col-md-4 text-lg-right">Số phát sinh: </label>
+            <div class="col-md-8">
+              <input type="number" min="0" formControlName="soPhatSinh" #soPhatSinh class="form-control"
+                ttktCheckNumberOnly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ghiChu" class="col-form-label col-md-4 text-lg-right">Ghi chú: </label>
+            <div class="col-md-8">
+              <input type="text" formControlName="ghiChu" #ghiChu class="form-control">
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label for="ketKuanTTKT" class="col-form-label col-md-4 text-lg-right">Số kết luận TTKT: </label>
+            <div class="col-md-8">
+              <input type="number" formControlName="ketKuanTTKT" #ketKuanTTKT class="form-control" (change)="changeSumValue(ketKuanTTKT.value, soLieuDieuChinh.value)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="soLieuDieuChinh" class="col-form-label col-md-4 text-lg-right">Số liệu điều chỉnh
+              <br> (nếu có): </label>
+            <div class="col-md-8">
+              <input type="number" formControlName="soLieuDieuChinh" #soLieuDieuChinh class="form-control" (change)="changeSumValue(ketKuanTTKT.value, soLieuDieuChinh.value)">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="soThucHien" class="col-form-label col-md-4 text-lg-right">Số thực hiện: </label>
+            <div class="col-md-8">
+              <input type="number" formControlName="soThucHien" #soThucHien class="form-control" readonly />
+            </div>
+          </div> -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="saveEditKQThucHien()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button class="btn btn-default" (click)="updateMau02Modal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt sổ theo dõi chi tiết</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt sổ theo dõi chi tiết?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

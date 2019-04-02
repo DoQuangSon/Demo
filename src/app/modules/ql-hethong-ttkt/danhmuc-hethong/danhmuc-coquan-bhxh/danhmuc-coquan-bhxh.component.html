@@ -1,0 +1,87 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Danh mục cơ quan BHXH</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="danhmucCqBhxhForm">
+      <fieldset>
+        <legend>Danh sách cơ quan BHXH VN</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh sách cơ quan BHXH VN</span>
+        </div>
+        <!-- <div class="row">
+          <div class="col-xl-4">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label" for="maCoQuan">Mã cơ quan: </label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control form-control-25" type="text" formControlName="maCoQuan" #maCoQuan (keyup.enter)="search(maCoQuan.value, tenCoQuan.value)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label" for="tenCoQuan">Tên cơ quan: </label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control form-control-25" type="text" formControlName="tenCoQuan" #tenCoQuan (keyup.enter)="search(maCoQuan.value, tenCoQuan.value)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2">
+            <div class="form-group row">
+              <div class="pull-right">
+                <button type="button" class="btn btn-default text-lg-right" (click)="search(danhmucCqBhxhForm.value.maCoQuan, danhmucCqBhxhForm.value.tenCoQuan)">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="text-center">Mã cơ quan</th>
+                <th class="table-resize">Tên cơ quan</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Địa chỉ liên hệ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tl of listDanhMucCoQuan; let i = index">
+                <td class="text-center">{{ pagging.currentPage*pagging.itemsPerPage + i + 1 }}</td>
+                <td class="text-center">{{ tl.maDonVi }}</td>
+                <td>{{ tl.tenDonVi }}</td>
+                <td>{{ tl.soDt }}</td>
+                <td>{{ tl.email }}</td>
+                <td>{{ tl.diaChi }}</td>
+              </tr>
+              <tr *ngIf="!listDanhMucCoQuan.length">
+                <td colspan="6" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- pagination -->
+        <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+          <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+          </pagination>
+        </nav>
+      </fieldset>
+    </form>
+  </div>
+</div>

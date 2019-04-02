@@ -1,0 +1,39 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-6">
+            <span class="page-title">Giải trình chấp hành TTKT</span>
+        </div>
+    </div>
+</h4>
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+        <form novalidate>
+        <fieldset>
+            <legend>Danh sách quyết định</legend>
+            <div class="table-responsive table-scroll-x">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="th-size">STT</th>
+                        <th class="table-resize">Tên quyết định</th>
+                        <th>Ngày quyết định</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="listThanhLapDoan?.length == 0">
+                            <td class="text-center" colspan="4">Không có dữ liệu</td>
+                        </tr>
+                        <tr *ngFor="let item of listThanhLapDoan; let i = index">
+                            <td class="text-center">{{ i + 1 }}</td>
+                            <td class="text-primary">
+                                <a (click)="detailThanhLapDoan(item.thanhLapDoanId)">{{item.tenQuyetDinh}}</a>
+                            </td>
+                            <td class="text-center">{{ item.ngayQuyetDinh | date: "dd/MM/yyyy" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+</div>

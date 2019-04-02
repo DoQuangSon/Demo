@@ -1,0 +1,278 @@
+<div class="cnt-page ttkt-page" [ngClass]="{ 'form-readonly': !editAble}">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="solvingLetter">
+      <div class="form-group" *ngIf="!preview">
+        <p class="help-block text-left" style="font-style: italic;">Các trường có
+          <span class="text-danger">*</span> là bắt buộc</p>
+      </div>
+      <fieldset>
+        <legend>Giải quyết đơn thư KN, TC, KNPA:</legend>
+        <div class="row container">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8">
+                <label class="custom-control custom-checkbox">
+                  <input formControlName="quaTc" (click)="onClickQuaTC($event)" type="checkbox" class="custom-control-input"/>
+                  <span class="custom-control-indicator"></span>
+                  <span>Qua tiếp công dân</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <!-- <div class="form-group row" [ngClass]="(solvingLetter.controls.soCongVanDen?.errors && (solvingLetter.controls.soCongVanDen?.touched || solvingLetter.controls.soCongVanDen?.dirty)) ? 'has-danger' : ''">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số công văn đến:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input [readOnly]="!editAble" class="form-control" type="text" formControlName="soCongVanDen">
+                <p class="help-block text-danger" *ngIf="solvingLetter.controls.soCongVanDen?.errors?.required &&  (solvingLetter.controls.soCongVanDen?.touched || solvingLetter.controls.soCongVanDen?.dirty || submitted)">
+                  Bạn phải nhập vào số công văn đến</p>
+                <p class="help-block text-danger" *ngIf="solvingLetter.controls.soCongVanDen?.errors?.pattern &&  (solvingLetter.controls.soCongVanDen?.touched || solvingLetter.controls.soCongVanDen?.dirty)">
+                  Bạn không được để khoảng trắng</p>
+              </div>
+            </div> -->
+            <ttkt-input
+              label="Số công văn đến"
+              [formControl]= "solvingLetter.controls.soCongVanDen"
+              type="text"
+              xl="4-8"
+              [errorMessages]= "{
+                required: 'Bạn phải nhập vào số công văn đến',
+                pattern: 'Bạn không được để khoảng trắng'
+              }"
+              (change)="changeSo($event)"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <!-- <div class="form-group row" [ngClass]="(solvingLetter.controls.ngayThang?.errors && (solvingLetter.controls.ngayThang?.touched || solvingLetter.controls.ngayThang?.dirty)) ? 'has-danger' : ''">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Ngày tháng:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [disabled]="!editAble" [options]="myDatePickerOptions" locale="vi" formControlName="ngayThang"></my-date-picker>
+                <p class="help-block text-danger" *ngIf="solvingLetter.controls.ngayThang?.errors?.required &&  (solvingLetter.controls.ngayThang?.touched || solvingLetter.controls.ngayThang?.dirty || submitted)">
+                  Bạn phải nhập vào ngày tháng</p>
+              </div>
+            </div> -->
+
+            <ttkt-input
+              label="Ngày tháng"
+              [formControl]= "solvingLetter.controls.ngayThang"
+              type="date"
+              xl="4-8"
+              [errorMessages]= "{
+                required: 'Bạn phải nhập vào ngày tháng'
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row container">
+          <div class="col-md-6">
+            <ttkt-input
+              label="Họ tên công dân"
+              [readOnly]="coCMT"
+              [formControl]= "solvingLetter.controls.hoTenCd"
+              type="text"
+              xl="4-8"
+              [data]= "{
+                placeholder: 'Họ tên'
+              }"
+              [errorMessages]= "{
+                required: 'Bạn phải nhập vào họ tên',
+                pattern: 'Bạn không được để khoảng trắng'
+              }"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <!-- <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số CMND: </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="number" min="0" ttktCheckNumberOnly [readOnly]="!editAble" type="text" class="form-control" placeholder="Số CMND"
+                  formControlName="soCMND">
+              </div>
+            </div> -->
+            <ttkt-input
+              (focusout)="changeCmt(solvingLetter.controls.soCMND.value)"
+              label="Số CMND"
+              [formControl]= "solvingLetter.controls.soCMND"
+              type="number"
+              xl="4-8"
+              [data]= "{
+                placeholder: 'Số CMND'
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row container">
+          <div class="col-xl-12">
+            <ttkt-input
+              label="Địa chỉ"
+              [readOnly]="coCMT"
+              [formControl]= "solvingLetter.controls.diaChi"
+              type="textarea"
+              xl="2-10"
+              [data]= "{
+                placeholder: 'Địa chỉ',
+                rows:'1'
+              }"
+              [errorMessages]= "{
+                pattern: 'Bạn không được để khoảng trắng'
+              }"
+            ></ttkt-input>
+         </div>
+        </div>
+        <div class="row container">
+          <div class="col-xl-12">
+            <ttkt-input
+              label="Nội dung"
+              [formControl]= "solvingLetter.controls.noiDung"
+              type="textarea"
+              xl="2-10"
+              [errorMessages]= "{
+                required: 'Bạn phải nhập vào nội dung',
+                pattern: 'Bạn không được để khoảng trắng'
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row container">
+          <div class="col-md-6">
+            <ttkt-input
+              label="Phân loại đơn"
+              [formControl]= "solvingLetter.controls.selectType"
+              type="select-basic"
+              xl="4-8"
+              [data]="{
+                options: classificationOption,
+                valueType: 'tenNoiDung',
+                firstOption: 'Chọn đơn thư'
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+      </fieldset>
+      <div class="pull-right" *ngIf="solvingLetter.value.condition == no_enough_condition ">
+        <button type="button" class="btn btn-primary" (click)="onSave()">Xong</button>
+      </div>
+    </form>
+    <div *ngIf="classificationOption.length > 0">
+      <ttkt-thamquyen-gq-kn *ngIf="selectType == classificationOption[0]?.id" [formQiaiquyetDt]="this.solvingLetter" [isExisted] = "isExisted" [preview]="preview"
+        [source]="sourceDonThu" [editAble]="editAble" (onSubmitted)="onSubmitted()"></ttkt-thamquyen-gq-kn>
+      <ttkt-thamquyen-gq-tc *ngIf="selectType == classificationOption[1]?.id || selectType == classificationOption[2]?.id" [formQiaiquyetDt]="this.solvingLetter" [isExisted] = "isExisted" [preview]="preview"
+        [source]="sourceDonThu" [editAble]="editAble" (onSubmitted)="onSubmitted()"></ttkt-thamquyen-gq-tc>
+      <ttkt-thamquyen-gq-knpa *ngIf="selectType == classificationOption[3]?.id" [formQiaiquyetDt]="this.solvingLetter" [preview]="preview" [isExisted] = "isExisted"
+        [source]="sourceDonThu" [editAble]="editAble" (onSubmitted)="onSubmitted()"></ttkt-thamquyen-gq-knpa>
+    </div>
+  </div>
+</div>
+<div *ngIf="solvingLetter.value.condition == 2">
+
+  <div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog printDocDia">
+      <div class="modal-content printDoc">
+        <!--<div class="modal-header">
+      </div>-->
+        <div class="modal-body">
+          <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <!--<form [formGroup]="formModal">-->
+          <!--<div class="form-check col-md-12">-->
+          <iframe id="iframePrint" src="" frameborder="0"></iframe>
+          <!--</div>-->
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+            <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+          <!--</form>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup kiemtralichsu -->
+<div bsModal #kiemTraLichSuModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left heading-page-popup">Lịch sử Công dân đến Khiếu nại, Tố cáo</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="kiemTraLichSuModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <form class="px-3"> -->
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-6 col-form-label text-lg-right">Tên công dân: </label>
+              <div class="col-sm-6">
+                <p class="form-control-static">{{solvingLetter.value.hoTenCd}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-6 col-form-label text-lg-right">Số CMT: </label>
+              <div class="col-sm-6">
+                <p class="form-control-static">{{solvingLetter.value.soCMND}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-sm-6 col-form-label text-lg-right">Địa chỉ: </label>
+              <div class="col-sm-6">
+                <p class="form-control-static">{{solvingLetter.value.diaChi}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </form> -->
+        <hr>
+        <div class="group">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Ngày đến</th>
+                  <th>Nơi đến</th>
+                  <th class="table-resize">Nội dung</th>
+                  <th class="th-size">Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lichSuCmt, let i = index">
+                  <td>{{item.ngayDen | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{item.noiDen}}</td>
+                  <td>{{item.noiDung}}</td>
+                  <td>{{item.status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="kiemTraLichSuModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Xong</button>
+      </div>
+    </div>
+  </div>
+</div>

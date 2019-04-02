@@ -1,0 +1,57 @@
+@import './../../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .table-responsive {
+            thead {
+                background-color: $colorLightGray;
+                font-size: 13px;
+                tr {
+                    th,
+                    td {
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+                }
+            }
+            tbody {
+                tr {
+                    a {
+                        cursor: pointer;
+                        &:hover {
+                            color: $colorBlue;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+        .table-donthu {
+            min-width: 1300px;
+        }
+    }
+}
+
+.tong-hop-mau29 {
+    // margin-top: 15px;
+    @media (max-width: 767px) {
+        .tong-hop-mau29 {
+            margin-bottom: 15px !important;
+            margin-left: -15px !important;
+        }
+    }
+}
+
+.form-check-inline+.form-check-inline {
+    margin-left: 1.2rem;
+    @media (max-width: 767px) {
+        margin-left: 0rem !important;
+    }
+}
+
+.visibled {
+    display: none;
+}
+
+.no-margin-bt {
+    margin-bottom: 0
+}

@@ -1,0 +1,381 @@
+<form [ngClass]="{'disable-click': !editAble}" [formGroup]="authorityForm">
+  <!-- <fieldset>
+    <legend>Đơn có phức tạp kéo dài hay không:
+    </legend>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': !editAble}">
+          <input type="radio" class="custom-control-input" checked formControlName="complex" value="{{complex_yes}}">
+          <span class="custom-control-indicator"></span>
+
+          <span class="custom-control-description">Có</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-4">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': !editAble}">
+          <input type="radio" class="custom-control-input" formControlName="complex" value="{{complex_no}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Không</span>
+        </label>
+      </div>
+      <p class="help-block text-danger" *ngIf="authorityForm.controls.complex?.errors?.required && authorityForm.controls.complex?.touched">
+        Bạn phải chọn 1 trường ở bên trái</p>
+    </div>
+  </fieldset> -->
+  <fieldset>
+    <legend>Đơn có họ tên, chữ ký của:</legend>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="signature" value="{{signature_one}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Một người</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-4">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="signature" value="{{signature_many}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Nhiều người</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': !editAble}">
+          <input type="radio" class="custom-control-input" formControlName="signature" value="{{signature_none}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Nặc danh</span>
+        </label>
+      </div>
+      <p class="help-block text-danger" *ngIf="authorityForm.controls.signature?.errors?.required">
+        Bạn phải chọn 1 trường ở bên trái</p>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Trình tự giải quyết:
+      <span class="text-danger">*</span>
+    </legend>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+          <input type="radio" class="custom-control-input" formControlName="lanGiaiQuyet" value="{{chua_giaiQuyet}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Chưa được giải quyết</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-4">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+          <input type="radio" class="custom-control-input" formControlName="lanGiaiQuyet" value="{{lanDau_giaiQuyet}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Đã được giải quyết lần đầu</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+          <input type="radio" class="custom-control-input" formControlName="lanGiaiQuyet" value="{{NhieuLan_giaiQuyet}}">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Đã được giải quyết nhiều lần</span>
+        </label>
+      </div>
+      <p class="help-block text-danger" *ngIf="authorityForm.controls.lanGiaiQuyet?.errors?.required && authorityForm.controls.lanGiaiQuyet?.touched">
+        Bạn phải chọn 1 trường ở bên trái</p>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Đơn có đủ điều kiện xử lý không?</legend>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="condition" value="{{enough_condition}}"
+            (click)="onChangeCondition()">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Đủ điều kiện</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-4">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="condition" value="{{no_enough_condition}}"
+            (click)="onChangeCondition()">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Không đủ điều kiện</span>
+        </label>
+        <div lass="form-check" *ngIf="authorityForm.value.condition == no_enough_condition">
+          <label class="custom-control custom-checkbox ml-3">
+            <input type="checkbox" class="custom-control-input" (change)="saveLetter=!saveLetter" formControlName="saveLetter">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Lưu đơn</span>
+          </label>
+          <p class="help-block text-danger" *ngIf="authorityForm.controls.saveLetter?.errors?.required">
+            Bạn phải chọn lưu thư</p>
+        </div>
+      </div>
+      <p class="help-block text-danger" *ngIf="authorityForm.controls.condition?.errors?.required">
+        Bạn phải chọn 1 trường ở bên trái</p>
+    </div>
+  </fieldset>
+  <fieldset *ngIf="authorityForm.value.condition == enough_condition">
+    <legend>Đơn có thuộc thẩm quyền không?</legend>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="form-check form-check-inline col-md-3">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="authority" value="{{depend_authority}}"
+            (change)="changeAuthority()">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Thuộc thẩm quyền</span>
+        </label>
+      </div>
+      <div class="form-check form-check-inline col-md-4">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" formControlName="authority" value="{{no_depend_authority}}"
+            (change)="changeAuthority()">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Không thuộc thẩm quyền</span>
+        </label>
+      </div>
+      <p class="help-block text-danger" *ngIf="authorityForm.controls.authority?.errors?.required">
+        Bạn phải chọn một trường bên trái</p>
+    </div>
+
+    <div class="row" *ngIf="authority == depend_authority">
+      <div class="col-md-1"></div>
+      <div class="col-md-8">
+        <div class="form-group ml-3">
+          <div class="form-check">
+            <label class="custom-control custom-radio col-md-12">
+              <input type="radio" class="custom-control-input" formControlName="authorityOption" [value]="auOption_congvan">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Công văn trả lời</span>
+            </label>
+            <label class="custom-control custom-radio col-md-12">
+              <input type="radio" class="custom-control-input" formControlName="authorityOption" [value]="auOption_nghiepvu">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển các đơn vị nghiệp vụ</span>
+            </label>
+            <div class="col-md-6" *ngIf="authorityForm.value.authorityOption == auOption_nghiepvu">
+              <ng-select [allowClear]="true" [items]="dvnvOptions" (data)="refreshDonViNghiepVu($event)"
+                formControlName="chuyenDenDVNV" (removed)="removedDVNV($event)" placeholder="Chọn Ban Nghiệp Vụ">
+              </ng-select>
+            </div>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="authorityOption" [value]="auOption_tructiep">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Vụ TTKT hoặc phòng TTKT trực tiếp trả lời</span>
+            </label>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="authorityOption" [value]="auOption_phongban">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Ban nghiệp vụ và phòng ban nghiệp vụ trực tiếp trả lời</span>
+            </label>
+            <p class="help-block text-danger" *ngIf="authorityForm.controls.authorityOption?.errors?.required">
+              Bạn phải chọn một trường phía trên</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="authority == no_depend_authority">
+      <div class="col-md-4"></div>
+      <div class="col-md-8">
+        <div class="form-group ml-3" [ngSwitch]="accountType">
+          <div class="form-check col-md-12" *ngSwitchCase="accountType_tw">
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="twOption" value="{{twOption_thamquyen}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển đến cơ quan có thẩm quyền</span>
+            </label>
+            <div class="col-md-12" *ngIf="authorityForm.value.twOption == twOption_thamquyen">
+              <div class="form-group row inputcoquan">
+                <label for="" class="col-form-label col-md-4">Tên cơ quan: </label>
+                <span class="text-danger">*</span>
+                <div class="col-md-8 col-xl-6 pull-xl-2">
+                  <input type="text" [readOnly]="!editAble" formControlName="chuyenDenCqctqName">
+                  <p class="help-block text-danger" *ngIf="authorityForm.controls.chuyenDenCqctqName?.errors?.required &&  (authorityForm.controls.chuyenDenCqctqName?.touched || authorityForm.controls.chuyenDenCqctqName?.dirty)">
+                    Bạn chưa nhập tên cơ quan</p>
+                </div>
+              </div>
+            </div>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="twOption" value="{{twOption_tinh}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển về BHXH Tỉnh</span>
+            </label>
+            <div class="col-md-6" *ngIf="authorityForm.value.twOption == twOption_tinh">
+              <ng-select [allowClear]="true" [items]="provinces" (data)="refreshTinh($event)" formControlName="chuyenDenDMBHXH"
+                (removed)="removed($event)" placeholder="Chọn Tỉnh">
+              </ng-select>
+            </div>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="twOption" value="{{twOption_Hd}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Hướng dẫn đến cơ quan có thẩm quyền giải quyết (Mẫu 08)</span>
+              <button type="button" (click)="openModalMauDon()" class="btn btn-default thamqXuatmau" *ngIf="authorityForm.value.twOption == twOption_Hd">
+                <i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>
+
+
+              <!--(click)="printMauDon(loaiMauDon.id, 1)"-->
+              <!--<button type="button" class="btn btn-success"> <i class="fa fa-print" aria-hidden="true"></i>-->
+              <!--In PDF</button>&nbsp;-->
+              <!--<button type="button" class="btn btn-primary"> <i class="fa fa-print" aria-hidden="true"></i>-->
+              <!--In WORD</button>-->
+
+            </label>
+          </div>
+          <div *ngSwitchCase="accountType_tinh" class="form-check col-md-12">
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="tinhOption" value="{{tinhOption_thamquyen}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển đến cơ quan có thẩm quyền</span>
+            </label>
+            <div class="col-md-12" *ngIf="authorityForm.value.tinhOption == tinhOption_thamquyen">
+              <div class="form-group row inputcoquan">
+                <label for="" class="col-form-label col-md-4">Tên cơ quan: </label>
+                <span class="text-danger">*</span>
+                <div class="col-md-8 col-xl-6 pull-xl-2">
+                  <input type="text" [readOnly]="!editAble" formControlName="chuyenDenCqctqName">
+                </div>
+              </div>
+            </div>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="tinhOption" value="{{tinhOption_huyen}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển về BHXH Huyện</span>
+            </label>
+            <div class="col-md-6" *ngIf="authorityForm.value.tinhOption == tinhOption_huyen">
+              <ng-select [allowClear]="true" [items]="districts" (data)="refreshHuyen($event)" formControlName="chuyenDenDMBHXH"
+                (removed)="removed($event)" placeholder="Chọn Huyện">
+              </ng-select>
+            </div>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="tinhOption" value="{{tinhOption_Hd}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Hướng dẫn đến cơ quan có thẩm quyền giải quyết (Mẫu 08)</span>
+              <button type="button" (click)="openModalMauDon()" class="btn btn-default thamqXuatmau" *ngIf="authorityForm.value.tinhOption == tinhOption_Hd">
+                <i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>
+            </label>
+          </div>
+          <div *ngSwitchCase="accountType_huyen" class="form-check col-md-12">
+            <label class="custom-control custom-checkbox col-md-12">
+              <input type="checkbox" class="custom-control-input" formControlName="huyenOption" value="{{huyenOption_nghiepvu}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Chuyển đơn cho các tổ nghiệp vụ</span>
+            </label>
+            <label class="custom-control custom-checkbox col-md-12">
+              <input type="checkbox" class="custom-control-input" formControlName="huyenOption" value="{{huyenOption_thamquyen}}">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Hướng dẫn chuyển đến cơ quan có thẩm quyền</span>
+            </label>
+            <label class="custom-control custom-radio col-md-12">
+              <input class="custom-control-input" type="radio" formControlName="huyenOption" value="huyenOption_Hd">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Hướng dẫn đến cơ quan có thẩm quyền giải quyết (Mẫu 08)</span>
+              <button type="button" (click)="openModalMauDon()" class="btn btn-default thamqXuatmau" *ngIf="authorityForm.value.huyenOption == huyenOption_Hd">
+                <i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>
+            </label>
+          </div>
+          <p class="help-block text-danger" *ngIf="authorityForm.controls.twOption?.errors?.required">
+            Bạn phải chọn 1 trường ở phía trên</p>
+        </div>
+      </div>
+    </div>
+
+  </fieldset>
+  <div *ngIf="authorityForm.value.authorityOption == auOption_congvan">
+    <fieldset>
+      <legend>Công văn trả lời</legend>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <!-- <div class="form-group row" [ngClass]="(authorityForm.controls.soCongvanTraloi?.errors && (authorityForm.controls.soCongvanTraloi?.touched || authorityForm.controls.soCongvanTraloi?.dirty)) ? 'has-danger' : ''">
+            <label for="" class="col-form-label col-md-4 text-lg-right">Số:
+              <span class="text-danger"> *</span>
+            </label>
+            <div class="col-md-6">
+              <input [readOnly]="!editAble" class="form-control" type="text" formControlName="soCongvanTraloi">
+              <p class="help-block text-danger" *ngIf="authorityForm.controls.soCongvanTraloi?.errors?.required &&  (authorityForm.controls.soCongvanTraloi?.touched || authorityForm.controls.soCongvanTraloi?.dirty)">
+                Bạn phải nhập vào số</p>
+            </div>
+          </div> -->
+          <ttkt-input type="text" md="4-7" label="Số" formControlName="soCongvanTraloi" [readOnly]="!editAble"></ttkt-input>
+        </div>
+        <div class="col-md-5">
+          <!-- <div class="form-group row" [ngClass]="(authorityForm.controls.dateCongvanTraloi?.errors && (authorityForm.controls.dateCongvanTraloi?.touched || authorityForm.controls.dateCongvanTraloi?.dirty)) ? 'has-danger' : ''">
+          <label for="" class="col-form-label col-md-4 text-lg-right">Ngày:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-8">
+            <my-date-picker [disabled]="!editAble" [options]="myDatePickerOptions" locale="vi" formControlName="dateCongvanTraloi"></my-date-picker>
+            <input class="form-control" type="date" formControlName="dateNoidungTc">
+            <p class="help-block text-danger" *ngIf="authorityForm.controls.dateCongvanTraloi?.errors?.required &&  (authorityForm.controls.dateCongvanTraloi?.touched || authorityForm.controls.dateCongvanTraloi?.dirty)">
+              Bạn phải nhập vào ngày</p>
+          </div>
+        </div> -->
+          <ttkt-input type="date" md="4-7" label="Ngày" formControlName="dateCongvanTraloi" [readOnly]="!editAble"></ttkt-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+          <!-- <div class="form-group row" [ngClass]="(authorityForm.controls.ndCongvanTraloi?.errors && (authorityForm.controls.ndCongvanTraloi?.touched || authorityForm.controls.ndCongvanTraloi?.dirty)) ? 'has-danger' : ''">
+            <label for="" class="col-form-label col-md-2 text-lg-right">Nội dung:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-10">
+              <textarea [readOnly]="!editAble" class="form-control form-rounded" formControlName="ndCongvanTraloi" rows="3"></textarea>
+              <p class="help-block text-danger" *ngIf="authorityForm.controls.ndCongvanTraloi?.errors?.required &&  (authorityForm.controls.ndCongvanTraloi?.touched || authorityForm.controls.ndCongvanTraloi?.dirty)">
+                Bạn phải nhập vào nội dung</p>
+            </div>
+          </div> -->
+          <ttkt-input type="textarea" md="1-10" rows="3" label="Nội dung" formControlName="ndCongvanTraloi" [readOnly]="!editAble"></ttkt-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+          <!-- <div class="form-group row" [ngClass]="(authorityForm.controls.noidenCongvanTraloi?.errors && (authorityForm.controls.noidenCongvanTraloi?.touched || authorityForm.controls.noidenCongvanTraloi?.dirty)) ? 'has-danger' : ''">
+            <label for="" class="col-form-label col-md-2 text-lg-right">Nơi đến:
+              <span class="text-danger"> *</span>
+            </label>
+            <div class="col-md-10">
+              <textarea [readOnly]="!editAble" class="form-control form-rounded" formControlName="noidenCongvanTraloi"
+                rows="1"></textarea>
+              <p class="help-block text-danger" *ngIf="authorityForm.controls.noidenCongvanTraloi?.errors?.required &&  (authorityForm.controls.noidenCongvanTraloi?.touched || authorityForm.controls.noidenCongvanTraloi?.dirty)">
+                Bạn phải nhập vào nơi đến</p>
+            </div>
+          </div> -->
+          <ttkt-input type="text" md="1-10" label="Nơi đến" formControlName="noidenCongvanTraloi"
+            [readOnly]="!editAble"></ttkt-input>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div *ngIf="editAble" class="pull-right">
+    <button type="button" class="btn btn-primary" (click)="onLuuTam()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu tạm</button>
+    <button type="button" class="btn btn-success" (click)="onKetThuc()">
+      <i class="fa fa-check-square-o" aria-hidden="true"></i> Kết thúc làm việc</button>
+  </div>
+</form>
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ttkt-pop-up-print *ngIf="show_Pop_Up_Print" [typeMauDon]="typeMauDon"></ttkt-pop-up-print>

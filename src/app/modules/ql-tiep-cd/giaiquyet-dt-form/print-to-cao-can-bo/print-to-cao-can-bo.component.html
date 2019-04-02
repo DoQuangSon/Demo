@@ -1,0 +1,175 @@
+<div bsModal #modalMauDon="bs-modal" id="modalMauDon" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ loaiMauDon.title }}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalMauDon()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="loaiMauDonForm">
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Cơ quan cấp trên của đơn vị ban hành văn bản: </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="coQuanCapTren">
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Tên đơn vị ban hành văn bản:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <textarea rows="1" type="text" class="form-control form-control-sm" formControlName="dvBanHanh"></textarea>
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.dvBanHanh?.errors?.required &&  (loaiMauDonForm.controls.dvBanHanh?.touched || loaiMauDonForm.controls.dvBanHanh?.dirty || onSubmitCheckMauDonValid)">
+              Tên đơn vị không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Số:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="so">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.so?.errors?.required &&  (loaiMauDonForm.controls.so?.touched || loaiMauDonForm.controls.so?.dirty || onSubmitCheckMauDonValid)">
+              Số không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Gửi đơn khiếu nại đến:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="guiDonKhieuNaiDen">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.guiDonKhieuNaiDen?.errors?.required &&  (loaiMauDonForm.controls.guiDonKhieuNaiDen?.touched || loaiMauDonForm.controls.guiDonKhieuNaiDen?.dirty || onSubmitCheckMauDonValid)">
+              Gửi đơn khiếu nại không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <ttkt-input
+          type="date"
+          label="Ngày ban hành văn bản"
+          xl="5-7"
+          formControlName="ngayBanHanh"
+          ></ttkt-input>
+        </div>
+        <div class="form-group">
+          <ttkt-input
+          type="date"
+          label="Ngày nhận đơn"
+          xl="5-7"
+          formControlName="ngayNhanDon"
+          ></ttkt-input>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Tên của người, cơ quan, tổ chức tố cáo
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="tenNguoiTC">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.tenNguoiTC?.errors?.required &&  (loaiMauDonForm.controls.tenNguoiTC?.touched || loaiMauDonForm.controls.tenNguoiTC?.dirty || onSubmitCheckMauDonValid)">
+              Tên không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Địa chỉ người khiếu nại:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <textarea type="text" rows="1" class="form-control form-control-sm" formControlName="diaChiNguoiKhieuNai"></textarea>
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.diaChiNguoiKhieuNai?.errors?.required &&  (loaiMauDonForm.controls.diaChiNguoiKhieuNai?.touched || loaiMauDonForm.controls.diaChiNguoiKhieuNai?.dirty || onSubmitCheckMauDonValid)">
+              Địa chỉ không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Tên cơ quan, tổ chức, cá nhân chuyển đơn đến
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="tenNguoiChuyenDon">
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Lý do không được thụ lý:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="lyDoKhongThuLy">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.lyDoKhongThuLy?.errors?.required &&  (loaiMauDonForm.controls.lyDoKhongThuLy?.touched || loaiMauDonForm.controls.lyDoKhongThuLy?.dirty || onSubmitCheckMauDonValid)">
+              Lý do không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Căn cứ pháp lý đã áp dụng để không thụ lý:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="canCuPhapLy">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.canCuPhapLy?.errors?.required &&  (loaiMauDonForm.controls.canCuPhapLy?.touched || loaiMauDonForm.controls.canCuPhapLy?.dirty || onSubmitCheckMauDonValid)">
+              Căn cứ pháp lý không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Chữ viết tắt tên đơn vị soạn thảo văn bản:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="dvVietTat">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.dvVietTat?.errors?.required &&  (loaiMauDonForm.controls.dvVietTat?.touched || loaiMauDonForm.controls.dvVietTat?.dirty || onSubmitCheckMauDonValid)">
+              Chữ viết tắt không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Quyền hạn, chức vụ của người ký văn bản
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <input type="text" class="form-control form-control-sm" formControlName="chucVuNguoiKy">
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.chucVuNguoiKy?.errors?.required &&  (loaiMauDonForm.controls.chucVuNguoiKy?.touched || loaiMauDonForm.controls.chucVuNguoiKy?.dirty || onSubmitCheckMauDonValid)">
+              Quyền hạn, chức vụ của người ký không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-5 text-xl-right">
+            <label class="label-col-form">Khiếu nại về việc:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-7">
+            <textarea type="text" class="form-control form-control-sm" formControlName="khieuNaiVeViec"></textarea>
+            <p class="help-block text-danger" *ngIf="loaiMauDonForm.controls.khieuNaiVeViec?.errors?.required &&  (loaiMauDonForm.controls.khieuNaiVeViec?.touched || loaiMauDonForm.controls.khieuNaiVeViec?.dirty || onSubmitCheckMauDonValid)">
+              Việc khiếu nại không được để trống</p>
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button type="button" class="btn btn-primary" (click)="printMauDon(1)">
+          <i class="fa fa-print" aria-hidden="true"></i> In PDF</button>
+        <button type="button" class="btn btn-primary" (click)="printMauDon(2)">
+            <i class="fa fa-print" aria-hidden="true"></i> In Word</button>
+        <button type="button" class="btn btn-default" (click)="closeModalMauDon()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<h4 class="heading-page">
+  <span class="page-title">Báo cáo kết quả giải quyết đơn và tiếp công dân toàn ngành</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="bcKQToanNganhForm">
+      <div class="row">
+        <div class="col-sm-4">
+          <ttkt-input type="nam" label="Năm" xl="4-8" [formControl]="bcKQToanNganhForm.controls.nam"></ttkt-input>
+        </div>
+        <div class="col-sm-8">
+          <ttkt-input type="select" label="Địa bàn" formControlName="phamViId" xl="3-5" 
+              [data]="{
+                  options: dsTinh,
+                  valueType: 'tenDonVi',
+                  firstOption: 'Chọn địa bàn'
+                }"
+          ></ttkt-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <button class="btn btn-default" (click)="search()">
+                <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Danh sách đơn vị</legend>
+        <div class="row"></div>
+        <div class="table-responsive table-scroll-x">
+          <table *ngIf="!searchAction" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="th-size">STT</th>
+                    <th class="table-resize">Tên đơn vị</th>
+                    <th>Địa chỉ</th>
+                <!-- <th>Ngày gửi</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bc of dsBaoCao; let i = index">
+                    <td class="text-center">{{i + 1}}</td>
+                    <td class="text-primary">
+                      <span class="router" (click)="chiTietBaoCao(bc.id)">{{ bc.tenDonVi }}</span>
+                    </td>
+                    <td>{{ bc.diaChi }}</td>
+                <!-- <td>{{ bc.ngayGui }}</td> -->
+                </tr>
+            </tbody>
+          </table>
+
+          <table *ngIf="searchAction" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Danh sách báo cáo</th>
+                <th>Tên đơn vị</th>
+                <!-- <th>Ngày gửi</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataSearch; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-primary">
+                  <span class="router" (click)="chiTietBaoCao(item.id)">Báo cáo kết quả giải quyết đơn và tiếp công dân {{ item.tenLoaiHinh }}</span>
+                </td>
+                <td>{{ item.tendDvDmbhxh }}</td>
+                <!-- <td>{{ bc.ngayGui }}</td> -->
+              </tr>
+            </tbody>
+          </table>
+         <!-- pagination -->
+         <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+          <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+          </pagination>
+        </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

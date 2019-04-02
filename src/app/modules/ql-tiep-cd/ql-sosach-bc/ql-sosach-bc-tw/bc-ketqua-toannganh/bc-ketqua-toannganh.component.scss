@@ -1,0 +1,30 @@
+@import './../../../../../../styles/_variables.scss';
+.table-responsive {
+    thead {
+        background-color: $colorLightGray;
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+    tbody {
+        .router {
+            cursor: pointer;
+        }
+        .router:hover {
+            color: $colorBlue;
+            text-decoration: underline;
+        }
+    }
+}
+
+.page-item {
+    cursor: pointer;
+    &:hover {
+        background-color: #dddddd
+    }
+}
+
+.page-item.active .page-link {
+    color: #fff
+}

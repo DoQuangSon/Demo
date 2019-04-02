@@ -1,0 +1,81 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title-breadcrumb">Thành lập đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Chi tiết quyết định thành lập đoàn TTKT</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <button type="button" class="btn btn-default">
+          <i class="fa fa-print" aria-hidden="true"></i> In công văn</button>
+      </div>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="dcTldForm">
+      <fieldset *ngIf="checkShowDieuChinh()">
+        <legend>Thông tin điều chỉnh</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              xl="4-8"
+              type="date"
+              label="Ngày điều chỉnh"
+              [formControl]="dcTldForm.controls.ngayDieuChinh"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              xl="4-8"
+              type="text"
+              label="Số quyết định"
+              [formControl]="dcTldForm.controls.soQDdieuChinh"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              xl="4-8"
+              type="textarea"
+              label="Lý do điều chỉnh"
+              [formControl]="dcTldForm.controls.lyDoDieuChinh"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Quyết định điều chỉnh:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-6">
+                <input class="form-control" formControlName="fileQdDieuChinh" [ngClass]="{'disable-click': true}">
+              </div>
+              <div class="col-xl-2 custom-xl-2" *ngIf="dcTldForm.value.fileQdDieuChinh">
+                <button type="submit" class="btn btn-primary btn-sm mt-sm-1" (click)="downLoadFile('dieuChinh', 0)">
+                  <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right"></div>
+              <div class="col-xl-8">
+                <label for="uploadFileDieuChinh" class="btn btn-default btn-sm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFileDieuChinh" hidden type="file" name="file" #fileQdDieuChinh (change)="upFileQDDieuChinh()">
+                <b class="ten-fileUpload">{{ tenFileQdDieuChinh }}</b>
+                <p class="help-block text-danger">{{ formService.getErrorMsg(dcTldForm.get('fileQdDieuChinh')) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <ttkt-tao-moi-doan-ttkt-form #tldForm type="edit" [data]="currentDieuChinhObj"></ttkt-tao-moi-doan-ttkt-form>
+  </div>
+</div>

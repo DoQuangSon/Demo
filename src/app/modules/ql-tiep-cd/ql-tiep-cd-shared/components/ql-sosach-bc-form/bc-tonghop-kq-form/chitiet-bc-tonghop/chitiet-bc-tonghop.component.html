@@ -1,0 +1,740 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title">Chi tiết báo cáo kết quả giải quyết đơn và tiếp công dân</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <button type="button" class="btn btn-link" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+      <fieldset>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="4" class="table-resize">STT</th>
+                <th rowspan="4" class="table-resize">Nội dung</th>
+                <th colspan="13">Phân loại đơn</th>
+                <th rowspan="4" class="table-resize">Ghi chú</th>
+              </tr>
+              <tr>
+                <th colspan="4">Theo nội dung</th>
+                <th colspan="2">Theo điều kiện xử lý</th>
+                <th colspan="4">Theo thẩm quyền</th>
+                <th colspan="3">Theo trình tự giải quyết</th>
+              </tr>
+
+              <tr>
+                <th rowspan="2">Khiếu nại</th>
+                <th rowspan="2">Tố cáo</th>
+                <th rowspan="2">KNPA</th>
+                <th rowspan="2">Tổng</th>
+                <th rowspan="2">Đơn đủ điều kiện xử lỹ</th>
+                <th rowspan="2">Đơn không đủ điều kiện xử lỹ</th>
+                <th colspan="3">Thuộc thẩm quyền </th>
+                <th rowspan="2">Không thuộc thẩm quyền</th>
+                <th rowspan="2">Chưa được giải quyết</th>
+                <th rowspan="2">Đã được giải quyết lần đầu</th>
+                <th rowspan="2">Đã được giải quyết nhiều lần</th>
+              </tr>
+
+              <tr>
+                <th>Khiếu nại</th>
+                <th>Tố cáo</th>
+                <th>KNPA</th>
+              </tr>
+
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">2</td>
+                <td class="text-center">3</td>
+                <td class="text-center">4</td>
+                <td class="text-center">5</td>
+                <td class="text-center">6</td>
+                <td class="text-center">7</td>
+                <td class="text-center">8</td>
+                <td class="text-center">9</td>
+                <td class="text-center">10</td>
+                <td class="text-center">11</td>
+                <td class="text-center">12</td>
+                <td class="text-center">13</td>
+                <td class="text-center">14</td>
+                <td class="text-center">15</td>
+                <td class="text-center">16</td>
+              </tr>
+
+              <tr>
+                <th class="text-center">I</th>
+                <th>ĐƠN TIẾP NHẬN</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th class="text-center">1</th>
+                <th>Đơn kỳ trước chuyển sang = (a+b)
+                </th>
+                <td class="text-right">
+                    {{getTotalBC('Đơn kỳ trước chuyển sang', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Đơn kỳ trước chuyển sang', 'ndTCCB')) + (getTotalBC('Đơn kỳ trước chuyển sang', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn kỳ trước chuyển sang', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-right"> {{getTotalBC('Đơn kỳ trước chuyển sang', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">a</td>
+                <td>Đơn có nhiều người đứng tên </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'ndTCCB')) +  (getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Đơn kỳ trước có nhiều người đứng tên', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">b</td>
+                <td>Đơn có một người đứng tên </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Đơn kỳ trước có một người đứng tên', 'ndTCCB')) + ((getTotalBC('Đơn kỳ trước có một người đứng tên', 'ndTCDT')))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Đơn kỳ trước có một người đứng tên', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <th class="text-center">2</th>
+                <th>Đơn phát sinh trong kỳ = (c+d) </th>
+                <td class="text-right">
+                    {{getTotalBC('Đơn phát sinh trong kỳ', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      getTotalBC('Đơn phát sinh trong kỳ', 'ndTCCB')
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn phát sinh trong kỳ', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn phát sinh trong kỳ', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Đơn phát sinh trong kỳ', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">c</td>
+                <td>Đơn có nhiều người đứng tên </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'ndTCCB')) + (getTotalBC('Đơn trong kỳ có một người đứng tên', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Đơn trong kỳ có nhiều người đứng tên', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">d</td>
+                <td>Đơn có một người đứng tên </td>
+                <td class="text-right">
+                  {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'ndKhieuNai')}}
+                </td>
+                <td class="text-right">
+                  {{
+                    (getTotalBC('Đơn trong kỳ có một người đứng tên', 'ndTCCB')) + (getTotalBC('Đơn trong kỳ có một người đứng tên', 'ndTCDT'))
+                  }}
+                </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'ndKNPA')}}
+                </td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'tongSo')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'duDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'koDuDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'thuocTQKN')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'thuocTQTC')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'thuocTQKNPA')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'koThuocTQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'chuaDcGQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'daDcGQLanDau')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'daDcGQNhieuLan')}}</td>
+                <!-- <td class="text-left"> {{getTotalBC('Đơn trong kỳ có một người đứng tên', 'ghiChu')}}</td> -->
+                <td></td>
+              </tr>
+
+              <tr>
+                <th class="text-center">3</th>
+                <th>Tổng số đơn tiếp nhận phải giải quyết dến kỳ b/c (= 1+ 2) </th>
+                <td class="text-right">
+                    {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'ndTCCB')) + (getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Tổng số đơn tiếp nhận phải giải quyết đến kỳ báo cáo', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <th class="text-center">II</th>
+                <th>KẾT QUẢ GIẢI QUYẾT</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">4</td>
+                <td>Vụ TTKT(hoặc Phòng KT)trực tiếp giải quyết </td>
+                <td class="text-right">
+                    {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'ndTCCB')) + (getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Vụ TTKT (hoặc Phòng KT) trực tiếp giải quyết', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">5</td>
+                <td>Đơn vị chuyên môn, đơn vị sự nghiệp trực tiếp giải quyết </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'ndTCCB')) + (getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Đơn vị chuyên môn giúp việc,đơn vị sự nghiệp (hoặc Phòng nghiệp vụ,BHXH huyện) trực tiếp giải quyết', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">6</td>
+                <td>Chuyển đơn vị khác trong ngành </td>
+                <td class="text-right">
+                    {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Chuyển đơn vị khác trong Ngành', 'ndTCCB')) + (getTotalBC('Chuyển đơn vị khác trong Ngành', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Chuyển đơn vị khác trong Ngành', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">7</td>
+                <td>Chuyển trả lại đơn </td>
+                <td class="text-right">
+                    {{getTotalBC('Chuyển trả lại đơn', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Chuyển trả lại đơn', 'ndTCCB')) + (getTotalBC('Chuyển trả lại đơn', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Chuyển trả lại đơn', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển trả lại đơn', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Chuyển trả lại đơn', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">8</td>
+                <td>Hướng dẫn đến cơ quan có thẩm quyền </td>
+                <td class="text-right">
+                    {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'ndTCCB')) + (getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Hướng dẫn đến cơ quan có thẩm quyền', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">9</td>
+                <td>Chuyển đến cơ quan có thẩm quyền </td>
+                <td class="text-right">
+                    {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'ndTCCB')) + (getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Chuyển đến cơ quan có thẩm quyền', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">10</td>
+                <td>Lưu đơn </td>
+                <td class="text-right">
+                    {{getTotalBC('Lưu đơn', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Lưu đơn', 'ndTCCB')) + (getTotalBC('Lưu đơn', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Lưu đơn', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Lưu đơn', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Lưu đơn', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <th class="text-center">11</th>
+                <th>Tổng số đơn đã giải quyết = (4+5+6+7+8+9+10)
+                </th>
+                <td class="text-right">
+                    {{getTotalBC('Tổng số đơn đã giải quyết', 'ndKhieuNai')}}
+                  </td>
+                  <td class="text-right">
+                    {{
+                      (getTotalBC('Tổng số đơn đã giải quyết', 'ndTCCB')) + (getTotalBC('Tổng số đơn đã giải quyết', 'ndTCDT'))
+                    }}
+                  </td>
+                  <td class="text-right">
+                      {{getTotalBC('Tổng số đơn đã giải quyết', 'ndKNPA')}}
+                  </td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'tongSo')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'duDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'koDuDKXL')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'thuocTQKN')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'thuocTQTC')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'thuocTQKNPA')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'koThuocTQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'chuaDcGQ')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'daDcGQLanDau')}}</td>
+                  <td class="text-right"> {{getTotalBC('Tổng số đơn đã giải quyết', 'daDcGQNhieuLan')}}</td>
+                  <!-- <td class="text-left"> {{getTotalBC('Tổng số đơn đã giải quyết', 'ghiChu')}}</td> -->
+                  <td></td>
+              </tr>
+
+              <tr>
+                <th class="text-center">III</th>
+                <th>SỐ ĐƠN CHƯA GIẢI QUYẾT
+                </th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th class="text-center">12</th>
+                <th>Tổng số đơn chưa giải quyết = (3-11)=(13+14)
+                </th>
+                <td class="text-right">
+                  {{getTotalBC('Tổng số đơn chưa giải quyết', 'ndKhieuNai')}}
+                </td>
+                <td class="text-right">
+                  {{
+                    (getTotalBC('Tổng số đơn chưa giải quyết', 'ndTCCB')) + (getTotalBC('Tổng số đơn chưa giải quyết', 'ndTCDT'))
+                  }}
+                </td>
+                <td class="text-right">
+                    {{getTotalBC('Tổng số đơn chưa giải quyết', 'ndKNPA')}}
+                </td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'tongSo')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'duDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'koDuDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'thuocTQKN')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'thuocTQTC')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'thuocTQKNPA')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'koThuocTQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'chuaDcGQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'daDcGQLanDau')}}</td>
+                <td class="text-right"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'daDcGQNhieuLan')}}</td>
+                <!-- <td class="text-left"> {{getTotalBC('Tổng số đơn chưa giải quyết', 'ghiChu')}}</td> -->
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">13</td>
+                <td>Đơn đang trong thời hạn giải quyết
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td class="text-center">14</td>
+                <td>Đơn KNTC phức tạp, kéo dài
+                </td>
+                <td class="text-right">
+                  {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'ndKhieuNai')}}
+                </td>
+                <td class="text-right">
+                  {{
+                    (getTotalBC('Đơn KNTC phức tạp,kéo dài', 'ndTCCB')) + (getTotalBC('Đơn KNTC phức tạp,kéo dài', 'ndTCDT'))
+                  }}
+                </td>
+                <td class="text-right">
+                    {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'ndKNPA')}}
+                </td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'tongSo')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'duDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'koDuDKXL')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'thuocTQKN')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'thuocTQTC')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'thuocTQKNPA')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'koThuocTQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'chuaDcGQ')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'daDcGQLanDau')}}</td>
+                <td class="text-right"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'daDcGQNhieuLan')}}</td>
+                <!-- <td class="text-left"> {{getTotalBC('Đơn KNTC phức tạp,kéo dài', 'ghiChu')}}</td> -->
+                <td></td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>TIẾP CÔNG DÂN</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="4" class="table-resize">STT</th>
+                <th rowspan="4" class="table-resize">Nội dung</th>
+                <th colspan="8">Tiếp thường xuyên</th>
+                <th colspan="8">Tiếp định kỳ và đột xuất của lãnh đạo</th>
+                <th colspan="4">Kết quả tiếp công dân</th>
+                <th rowspan="4" class="table-resize">Ghi chú</th>
+              </tr>
+              <tr>
+                <th rowspan="3">Lượt</th>
+                <th rowspan="3">Người</th>
+                <th colspan="2">Vụ việc</th>
+                <th colspan="4">Đoàn đông người</th>
+                <th rowspan="3">Lượt</th>
+                <th rowspan="3">Người</th>
+                <th colspan="2">Vụ việc</th>
+                <th colspan="4">Đoàn đông người</th>
+                <th rowspan="3">Chưa được giải quyết</th>
+                <th colspan="3">Đã được giải quyết</th>
+              </tr>
+              <tr>
+                <th rowspan="2">Cũ</th>
+                <th rowspan="2">Mới Phát Sinh</th>
+                <th rowspan="2">Số đoàn</th>
+                <th rowspan="2">Người</th>
+                <th colspan="2">Vụ việc</th>
+                <th rowspan="2">Cũ</th>
+                <th rowspan="2">Mới Phát Sinh</th>
+                <th rowspan="2">Số đoàn</th>
+                <th rowspan="2">Người</th>
+                <th colspan="2">Vụ việc</th>
+                <th rowspan="2">Đã được thụ lý</th>
+                <th rowspan="2">Đã có QĐ GQKN lần 1</th>
+                <th rowspan="2">Đã có bản án của tòa án</th>
+              </tr>
+              <tr>
+                <th rowspan="2">Cũ</th>
+                <th rowspan="2">Mới Phát Sinh</th>
+                <th rowspan="2">Cũ</th>
+                <th rowspan="2">Mới Phát Sinh</th>
+              </tr>
+              <!-- <tr>
+                <th>Cũ</th>
+                <th>Mới Phát Sinh</th>
+              </tr> -->
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of so29bList; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-left">{{item.noiDung}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.luot}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.soNguoi}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.vuViecCu}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.vuViecMoi}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.soDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.soNguoiDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.soVuViecCuDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepThuongXuyenDTO?.soVuViecMoiDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.luot}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.soNguoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.vuViecCu}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.vuViecMoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.soDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.soNguoiDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.soVuViecCuDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.tiepDinhKyDTO?.soVuViecMoiDoanDongNguoi}}</td>
+                <td class="text-right">{{item?.kqTiepCDDTO?.chuaGiaiQuyet}}</td>
+                <td class="text-right">{{item?.kqTiepCDDTO?.daDcThuLy}}</td>
+                <td class="text-right">{{item?.kqTiepCDDTO?.daCoQDGQKN}}</td>
+                <td class="text-right">{{item?.kqTiepCDDTO?.daCoBanAn}}</td>
+                <!-- <td class="text-left">{{item.ghiChu}}</td> -->
+                <td></td>
+              </tr>
+            </tbody>
+            <tbody>
+              <th></th>
+              <th>Tổng</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'luot')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'soNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'vuViecCu')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'vuViecMoi')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'soDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'soNguoiDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'soVuViecCuDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepThuongXuyenDTO', 'soVuViecMoiDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'luot')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'soNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'vuViecCu')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'vuViecMoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'soDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'soNguoiDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'soVuViecCuDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('tiepDinhKyDTO', 'soVuViecMoiDoanDongNguoi')}}</th>
+              <th class="text-right">{{getSum('kqTiepCDDTO', 'chuaGiaiQuyet')}}</th>
+              <th class="text-right">{{getSum('kqTiepCDDTO', 'daDcThuLy')}}</th>
+              <th class="text-right">{{getSum('kqTiepCDDTO', 'daCoQDGQKN')}}</th>
+              <th class="text-right">{{getSum('kqTiepCDDTO', 'daCoBanAn')}}</th>
+              <!-- <th class="text-left">{{getSum('ghiChu')}}</th> -->
+              <th></th>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+  </div>
+</div>
+<div class="col-sm-12 controls">
+    <button class="btn btn-change" (click)="guiTinh()">Gửi</button>
+  </div>

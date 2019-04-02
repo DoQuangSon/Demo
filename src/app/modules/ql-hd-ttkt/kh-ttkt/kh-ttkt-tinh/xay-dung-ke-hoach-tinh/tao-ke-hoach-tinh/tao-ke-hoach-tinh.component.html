@@ -1,0 +1,356 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title-breadcrumb">Kế hoạch dự kiến</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary" *ngIf="!disableDieuChinh">Tạo kế hoạch dự kiến</span>
+      <span class="page-title text-primary" *ngIf="disableDieuChinh">Điều chỉnh kế hoạch dự kiến</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="onSend()" *ngIf="gui==true" [disabled]="disableAllButtons">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+      <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="duyet==true" [disabled]="disableAllButtons">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('tao')" [disabled]="taoKehoachForm.invalid"
+        *ngIf="luuTao==true" [disabled]="disableAllButtons">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('sua')" [disabled]="taoKehoachForm.invalid"
+        *ngIf="luuSua==true" [disabled]="disableAllButtons">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuDieuChinh()" [disabled]="taoKehoachForm.invalid"
+        *ngIf="luuDieuChinh==true" [disabled]="disableAllButtons">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-primary" (click)="onSua()" *ngIf="sua==true" [disabled]="disableAllButtons">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+      <!-- <button type="button" class="btn btn-success" (click)="onImport()" *ngIf="nhapExcel==true" [disabled]="disableAllButtons">
+        <i class="fa fa-table" aria-hidden="true"></i> Nhập Excel</button> -->
+      <button type="button" class="btn btn-link" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="taoKehoachForm">
+      <fieldset [disabled]="saved">
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="nam" class="col-form-label">Năm:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <select class="custom-select" id="nam" formControlName="nam" [ngClass]="{'disable-click': disableDieuChinh}">
+                  <option value="" selected>Chọn</option>
+                  <option *ngFor="let choice of optionNam" [value]="choice">{{ choice }}</option>
+                </select>
+                <p class="help-block text-danger mb-1" *ngIf="taoKehoachForm.controls.nam?.errors?.required &&  (taoKehoachForm.controls.nam?.touched || taoKehoachForm.controls.nam?.dirty)">
+                  Năm không được để trống</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input type="text" label="Tên kế hoạch" formControlName="tenKH" md="4-8"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input type="date" [ngClass]="{'disable-click': true}" label="Ngày tạo" formControlName="ngayTaoKH" md="4-8"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input type="text" label="Số công văn" formControlName="soQD" md="4-8"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input type="date" label="Ngày ký công văn" formControlName="ngayKyQD" md="4-8"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input type="text" label="Người ký công văn" formControlName="nguoiKyQD" md="4-8"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">File công văn:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <label for="uploadFile" class="btn btn-default btn-sm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFile" hidden type="file" name="file" formControlName="fileQuyetDinh"
+                  #fileQuyetDinhTaoKH (change)="upFileQuyetDinhTaoKH()">
+                <b class="ten-fileUpload">{{ tenFileQuyetDinh }}</b>
+                <p class="help-block text-danger mb-1" *ngIf="taoKehoachForm.controls.fileQuyetDinh?.errors?.required &&  (taoKehoachForm.controls.fileQuyetDinh?.touched || taoKehoachForm.controls.fileQuyetDinh?.dirty)">
+                  File không được để trống</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row" [ngClass]="(taoKehoachForm.controls.nguoiTao?.errors && (taoKehoachForm.controls.nguoiTao?.touched || taoKehoachForm.controls.nguoiTao?.dirty)) ? 'has-danger' : ''">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Người gửi:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" type="text" [ngClass]="{'disable-click': true}" formControlName="nguoiTao"
+                  ng-trim="true">
+                <p class="help-block text-danger mb-1" *ngIf="taoKehoachForm.controls.nguoiTao?.errors?.required &&  (taoKehoachForm.controls.nguoiTao?.touched || taoKehoachForm.controls.nguoiTao?.dirty)">
+                  Người gửi không được để trống</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Thông tin chi tiết</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2">Thanh tra chuyên
+                  <br>ngành đóng
+                  <span class="text-danger">*</span>
+                </th>
+                <th colspan="2">Liên ngành</th>
+                <th colspan="4">Kiểm tra</th>
+                <th rowspan="2">Tổng
+                  <br>số</th>
+              </tr>
+              <tr>
+                <th>Thanh tra
+                  <span class="text-danger">*</span>
+                </th>
+                <th>Kiểm tra
+                  <span class="text-danger">*</span>
+                </th>
+                <th>Nội bộ cơ
+                  <br> quan BHXH
+                  <span class="text-danger">*</span>
+                </th>
+                <th>Đơn vị
+                  <br> SDLĐ
+                  <span class="text-danger">*</span>
+                </th>
+                <th>Cơ sở khám
+                  <br> chữa bệnh
+                  <span class="text-danger">*</span>
+                </th>
+                <th>Đại lý thu,
+                  <br> đại diện chi trả
+                  <span class="text-danger">*</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.thanhTraChuyenNganhDVSDLD }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="thanhTraChuyenNganhDVSDLD" class="form-control col-sm-10 offset-sm-1"
+                      (input)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('thanhTraChuyenNganhDVSDLD').errors?.duong && taoKehoachForm.get('thanhTraChuyenNganhDVSDLD').dirty">Số
+                      phải >= 0 !</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.lienNganhThanhTra }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="lienNganhTT" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('lienNganhTT').errors?.duong && taoKehoachForm.get('lienNganhTT').dirty">Số
+                      phải >= 0 !</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.lienNganhKiemTra }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="lienNganhKT" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('lienNganhKT').errors?.duong && taoKehoachForm.get('lienNganhKT').dirty">Số
+                      phải >= 0 !</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.noiBoCoQuanBHXH }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="noiBoCoQuanBHXH" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('noiBoCoQuanBHXH').errors?.duong && taoKehoachForm.get('noiBoCoQuanBHXH').dirty">Số
+                      phải >= 0 !</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.donViSuDungLD }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="donViSuDungLD" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('donViSuDungLD').errors?.duong && taoKehoachForm.get('donViSuDungLD').dirty">Số
+                      phải >= 0 !</p>
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.coSoKhamChuaBenh }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="coSoKhamChuaBenh" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('coSoKhamChuaBenh').errors?.duong && taoKehoachForm.get('coSoKhamChuaBenh').dirty">Số
+                      phải >= 0 !</p>
+
+                  </div>
+                </td>
+                <td>
+                  <p *ngIf="luuTao">{{ dataService.daiLyThuDaiDienChiTra }}</p>
+                  <div class="row">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="daiLyThuDaiDienChiTra" class="form-control col-sm-10 offset-sm-1"
+                      (change)="changeSumRow()" [readOnly]="saved">
+                    <p class="m_left text-danger" *ngIf="taoKehoachForm.get('daiLyThuDaiDienChiTra').errors?.duong && taoKehoachForm.get('daiLyThuDaiDienChiTra').dirty">Số
+                      phải >= 0 !</p>
+
+                  </div>
+                </td>
+                <td class="text-center">{{ sumRow }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-10">
+            <div class="pull-right mb-2">
+              <span class="router" (click)="danhsachdonvi()">Danh sách đơn vị quản lý</span>
+            </div>
+          </div>
+        </div> -->
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formModal">
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="text" md="4-8" formControlName="inputSend" label="Gửi" [ngClass]="{'disable-click': true}"></ttkt-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="textarea" rows="3" md="4-8" label="Lời nhắn" formControlName="loiNhanCuaTinh"></ttkt-input>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="onSubmitModal()" [disabled]="formModal.invalid">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+        <button type="button" class="btn btn-default" (click)="lgModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div bsModal #dieuChinhTuChoi="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="dieuChinhTuChoi.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formModal">
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Gửi:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <input class="form-control" value="BHXH VN" type="text" readonly formControlName="inputSend">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Lời nhắn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <textarea autosize class="form-control form-rounded" formControlName="loiNhanCuaTinh" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="onSubmitModal()">
+              <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+            <button type="button" class="btn btn-default" (click)="dieuChinhTuChoi.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- <span class="page-title">DS kế hoạch đã duyệt</span> -->
+      <ttkt-breadcrumb></ttkt-breadcrumb>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-danger mb-1" (click)="popUpDsTinhChuaGui()">
+        <i class="fa fa-list-ol" aria-hidden="true"></i> Danh sách tỉnh chưa gửi
+        <span class="index-number">({{dsTinhChuaGui.length}})</span>
+      </button>
+    </div>
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chi tiết</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label for="selectYear" class="col-form-label col-md-1 text-lg-left">Năm: </label>
+              <div class="col-md-8">
+                <select name="" id="selectYear" class="custom-select" [formControl]="selectYear" (change)="changeYear($event)">
+                  <option *ngFor="let item of listYear" [value]="item">{{ item }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row mb-1">
+          <div class="col-lg-3" style="word-spacing: nowrap; display: flex; align-items: center">
+            Tổng số kế hoạch dự kiến: {{ currentKeHoach }}/{{ sumKeHoach }}
+          </div>
+          <div class="col-lg-9 text-right">
+            <!--<button class="btn btn-default mr-1 my-1">-->
+              <!--<i class="fa fa-print" aria-hidden="true"></i> In báo cáo sai phạm</button>-->
+            <button class="btn btn-default my-1" (click)="inBaoCaoTongHop()">
+              <i class="fa fa-print" aria-hidden="true"></i> In báo cáo tổng hợp</button>
+            <!--<button class="btn btn-success my-1">-->
+              <!--<i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel</button>-->
+          </div>
+        </div>
+
+        <ttkt-danh-sach-ke-hoach-table [kieuKh] = "1" [listKeHoach]="listKeHoach" [displayTongSo]="true" [editGhichu]='true'></ttkt-danh-sach-ke-hoach-table>
+        <!-- <div class="form-group row mt-2">
+          <div class="col-12 text-right">
+            <button class="btn btn-primary" (click)="goToGiaoKeHoachChoCacTinh()" [disabled]="listKeHoach.length == 0"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tiến hành giao kế hoạch cho tỉnh</button>
+          </div>
+        </div> -->
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- popup danhsachtinhchuagui -->
+<div bsModal #dsTinhChuaGuiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left heading-page-popup">{{title}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <div class="cnt-page ttkt-page">
+          <div class="ttkt-form-default">
+            <form novalidate>
+              <fieldset>
+                <legend> Lời nhắn: <span style="color: red">*</span></legend>
+                <textarea autosize class="form-control" rows="2" [formControl]="loiNhan" style="margin-bottom: 15px"></textarea>
+              </fieldset>
+            </form>
+          </div>
+        </div> -->
+        <div class="text-right">
+          <button class="btn btn-primary my-1" (click)="chonTatCa()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Chọn tất cả</button>
+          <button class="btn btn-dark my-1" (click)="boTatCa()">
+            <i class="fa fa-minus-square-o" aria-hidden="true"></i> Bỏ tất cả</button>
+        </div>
+        <div class="group">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="th-size">STT</th>
+                  <th class="table-resize">Tên tỉnh</th>
+                  <th>Gửi nhắc nhở</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="dsTinhChuaGui.length > 0">
+                <tr *ngFor="let item of dsTinhChuaGui; let i = index">
+                  <td class="text-center">{{i + 1}}</td>
+                  <td>{{ item.tenTinhHuyen }}</td>
+                  <td class="text-center">
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [checked]="item.active" (change)="changeCheckboxThemMoi(item)">
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="gui()" [disabled]="isDisabledGui">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+        <button class="btn btn-default" (click)="close()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

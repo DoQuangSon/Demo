@@ -1,0 +1,36 @@
+@import './../../../../../../styles/_variables.scss';
+#thongtintimkiem {
+    .col-md-4 {
+        margin-bottom: 1rem;
+    }
+}
+
+.table-responsive {
+    table {
+        thead {
+            background-color: $colorLightGray;
+            tr {
+                th,
+                td {
+                    text-align: center;
+                    vertical-align: middle;
+                }
+            }
+        }
+        tbody {
+            tr {
+                td:nth-child(1),
+                {
+                    text-align: center;
+                }
+                td {
+                    span:hover {
+                        color: #0c4e84;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

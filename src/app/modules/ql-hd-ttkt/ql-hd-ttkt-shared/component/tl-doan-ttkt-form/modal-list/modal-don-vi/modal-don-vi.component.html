@@ -1,0 +1,51 @@
+<div class="modal-content" [ngClass]="{'form-disable': isDelete}">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">{{ title }}</h5>
+    <button type="button" class="close pull-right" (click)="modalDonVi.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="donViForm" *ngIf="donViForm">
+      <ttkt-input
+        type="text"
+        lg="4-8"
+        [readOnly]="true"
+        [formControl]="donViForm.controls.tenDoiTuong"
+        label="Tên đơn vị"
+      ></ttkt-input>
+      <ttkt-input
+        [display]="tldoanForm?.value?.chonNoiDung =='thanhTra'"
+        lg="4-8"
+        type="select"
+        label="Nội dung thanh tra/ kiểm tra"
+        [formControl]="donViForm.controls.noiDungTT"
+        [data]="{
+          options: listNDTTDvi,
+          multiple: true,
+          placeholder: 'Chọn nội dung thanh tra'
+        }"
+      ></ttkt-input>
+      <ttkt-input
+        lg="4-8"
+        type="select"
+        [display]="tldoanForm?.value?.chonNoiDung =='kiemTra'"
+        label="Nội dung thanh tra/ kiểm tra"
+        [formControl]="donViForm.controls.noiDungKT"
+        [data]="{
+          options: listNDKTDvi,
+          multiple: true,
+          placeholder: 'Chọn nội dung kiểm tra'
+        }"
+      ></ttkt-input>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" *ngIf="type == 'edit'" (click)="saveDonVi()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+    <button type="button" class="btn btn-danger" *ngIf="type == 'delete'" (click)="saveDonVi()">
+      <i class="fa fa-trash" aria-hidden="true"></i> Đồng ý</button>
+    <button type="button" class="btn btn-default" (click)="modalDonVi.hide()">
+      <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+  </div>
+</div>

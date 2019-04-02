@@ -1,0 +1,339 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title">Danh mục phân loại tiêu thức</span>
+    </div>
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách phân loại tiêu thức</legend>
+        <div class="pull-right mb-1">
+          <button class="btn btn-primary" (click)="actionDmPhanLoaiTT('add')">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th>Mã tiêu thức</th>
+                <th class="table-resize">Tên tiêu thức</th>
+                <!-- <th class="text-center">Thao tác</th> -->
+                <!-- <th>Tên tiêu thức</th> -->
+                <th class="table-resize">Mô tả</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!listDmTieuThucMapping.length">
+                <td colspan="5" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+              <ng-container *ngFor="let item of listDmTieuThucMapping; let i = index">
+                <tr>
+                  <td class="text-center">{{ pageSize * number + i + 1 }}</td>
+                  <td class="text-center">{{convertToRomanNumber(pageSize * number + i + 1)}}</td>
+                  <td class="text-primary" (click)="showChiTietTieuThuc(item.id)">{{ item.tenPhanLoai }}</td>
+                  <td class="text-left">{{ item.moTa }}</td>
+                  <td class="text-center th-td">
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="actionDmPhanLoaiTT('edit', item.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" (click)="actionDmPhanLoaiTT('delete', item.id)">
+                          <i class="fa fa-pencil" aria-hidden="true"></i> Xóa</button>
+                      <!-- <button type="button" class="btn btn-danger btn-sm delete" (click)="actionDmPhanLoaiTT('deactive', item.id)" [disabled]="item.actived == false">
+                        <i class="fa fa-ban" aria-hidden="true"></i> Deactive</button>
+                      <button type="button" class="btn btn-success btn-sm delete" (click)="actionDmPhanLoaiTT('active', item.id)" [disabled]="item.actived == true">
+                        <i class="fa fa-check" aria-hidden="true"></i> Active</button> -->
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngFor="let item2 of item.child; let i2 = index">
+                  <td class="text-center">{{ pageSize * number + i + 1 }}.{{ i2 + 1 }}</td>
+                  <td class="text-center">{{convertToRomanNumber(pageSize * number + i + 1)}}.{{ i2 + 1 }}</td>
+                  <td class="text-primary" (click)="showChiTietTieuThuc(item2.id)">{{ item2.tenPhanLoai }}</td>
+                  <td class="text-left">{{ item2.moTa }}</td>
+                  <td class="text-center">
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="actionDmPhanLoaiTT('edit', item2.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" (click)="actionDmPhanLoaiTT('delete', item2.id)">
+                          <i class="fa fa-pencil" aria-hidden="true"></i> Xóa</button>
+                      <!-- <button type="button" class="btn btn-danger btn-sm delete" (click)="actionDmPhanLoaiTT('deactive', item.id)" [disabled]="item.actived == false">
+                        <i class="fa fa-ban" aria-hidden="true"></i> Deactive</button>
+                      <button type="button" class="btn btn-success btn-sm delete" (click)="actionDmPhanLoaiTT('active', item.id)" [disabled]="item.actived == true">
+                        <i class="fa fa-check" aria-hidden="true"></i> Active</button> -->
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+<!-- <ttkt-thuc-hien-ket-luan></ttkt-thuc-hien-ket-luan> -->
+<!-- modalTieuThuc -->
+<div bsModal #modalTieuThuc="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_model}}</h5>
+        <button type="button" class="close pull-right" (click)="modalTieuThuc.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="tieuThucForm">
+          <div class="row">
+            <div class="col-md-12" class="visibled">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <input class="form-control" type="text" formControlName="id" placeholder="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Tên tiêu thức:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <input class="form-control" type="text" formControlName="tenPhanLoai" [readOnly]="statusOption == 'delete' || statusOption == 'deactive' || statusOption == 'active'" ng-trim="true">
+                  <p class="help-block text-danger" *ngIf="tieuThucForm.controls.tenPhanLoai?.errors?.required &&  (tieuThucForm.controls.tenPhanLoai?.touched || tieuThucForm.controls.tenPhanLoai?.dirty || tieuThucFormSubmited)">
+                    Tên tiêu thức không được để trống</p>
+                  <p class="help-block text-danger">{{ _alert.nospaceValidator(tieuThucForm.get('tenPhanLoai')) }}</p>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Mô tả:
+                  <!-- <span class="text-danger">*</span> -->
+                </label>
+                <div class="col-md-9">
+                  <textarea class="form-control"  rows="3" formControlName="moTa" [readOnly]="statusOption == 'delete' || statusOption == 'deactive' || statusOption == 'active'"></textarea>
+                  <!-- <p class="help-block text-danger" *ngIf="tieuThucForm.controls.moTa?.errors?.required &&  (tieuThucForm.controls.moTa?.touched || tieuThucForm.controls.moTa?.dirty || tieuThucFormSubmited)">
+                   Mô tả không được để trống</p> -->
+                   <p class="help-block text-danger" *ngIf="tieuThucForm.controls.moTa.dirty && tieuThucForm.controls.moTa.errors?.maxlength">
+                    Mô tả không được quá 255 ký tự</p>
+                  <p class="help-block text-danger">{{ _alert.nospaceValidator(tieuThucForm.get('moTa')) }}</p>
+                </div>
+              </div>
+              <ttkt-input
+                label="Tiêu thức cha"
+                md="3-9"
+                formControlName= "parentId"
+                type="select"
+                [data]="{
+                  options: listDmTieuThucOptions,
+                  valueType: 'tenPhanLoai'
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitActionDmPhanLoaiTT('add')">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+        <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitActionDmPhanLoaiTT('edit')">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOption == 'delete'" (click)="onSubmitActionDmPhanLoaiTT('delete')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Xóa</button>
+        <button type="button" class="btn btn-danger" *ngIf="statusOption == 'deactive'" (click)="onSubmitActionDmPhanLoaiTT('deactive')">
+          <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-success" *ngIf="statusOption == 'active'" (click)="onSubmitActionDmPhanLoaiTT('active')">
+          <i class="fa fa-check" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-dafault" (click)="modalTieuThuc.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalChiTietTieuThuc -->
+<div bsModal #modalChiTietTieuThuc="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Chi tiết tiêu thức</h5>
+        <button type="button" class="close pull-right" (click)="modalChiTietTieuThuc.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate>
+          <div class="pull-right mb-1">
+            <button class="btn btn-primary" (click)="actionChiTietTieuThuc('add')">
+              <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+          </div>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center th-size">STT</th>
+                  <th class="table-resize">Tiêu thức con</th>
+                  <!-- <th class="text-center">Thao tác</th>
+                  <th>Tên chi tiết tiêu thức</th> -->
+                  <th class="th-size">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!listChiTietTieuThuc.length">
+                  <td colspan="3" class="text-center">
+                    Không có dữ liệu
+                  </td>
+                </tr>
+                <tr *ngFor="let item of listChiTietTieuThuc; let i = index">
+                  <td class="text-center">{{ paggingTT.itemsPerPage * paggingTT.currentPage + i + 1 }}</td>
+                  <td>{{ item.tenTieuThuc }}</td>
+                  <td class="text-center">
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="actionChiTietTieuThuc('edit', item.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                      <button type="button" class="btn btn-danger btn-sm delete" (click)="actionChiTietTieuThuc('delete', item.id)" [disabled]="item.actived == false">
+                        <i class="fa fa-ban" aria-hidden="true"></i> Xóa</button>
+                      <!-- <button type="button" class="btn btn-success btn-sm delete" (click)="actionChiTietTieuThuc('active', item.id)" [disabled]="item.actived == true">
+                        <i class="fa fa-check" aria-hidden="true"></i> Active</button> -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation example" *ngIf="paggingTT.totalItems > 1" class="pull-right">
+              <pagination [totalItems]="paggingTT.totalItems" [itemsPerPage]="paggingTT.itemsPerPage" (pageChanged)="pageChangedChiTietTT($event)" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+              </pagination>
+            </nav>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dafault" (click)="modalChiTietTieuThuc.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalCRUDChiTietTieuThuc -->
+<div bsModal #modalCRUDChiTietTieuThuc="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_model}}</h5>
+        <button type="button" class="close pull-right" (click)="closeCRUDChiTietTieuThuc()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="chiTietTieuThucForm">
+          <div class="row">
+            <div class="col-md-12" class="visibled">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <input class="form-control" type="text" formControlName="id" placeholder="">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <ttkt-input
+                type="text"
+                label="Tên tiêu thức con"
+                md="3-9"
+                [readOnly]="statusOption == 'delete'"
+                formControlName="tenTieuThuc"
+              ></ttkt-input>
+              <ttkt-input
+                type="select"
+                label="Chọn nội dung"
+                [readOnly]="statusOption == 'delete'"
+                md="3-9"
+                placeholder= 'Chọn nội dung thanh tra kiểm tra'
+                formControlName="dmChiTietND"
+                [data]="{
+                  options: listNoiDungTT,
+                  valueType: 'tenChiTietNoiDung',
+                  multiple: true
+                }"
+              ></ttkt-input>
+              
+              <ttkt-input
+                type="radio"
+                md="3-9"
+                label=""
+                [readOnly]="statusOption == 'delete'"
+                formControlName="tieuChiTTKT"
+                [data]="{
+                  options: listTieuChiTTKT
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitActionChiTietTieuThuc('add')">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+        <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitActionChiTietTieuThuc('edit')">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button type="button" class="btn btn-danger" *ngIf="statusOption == 'delete'" (click)="onSubmitActionChiTietTieuThuc('delete')">
+          <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-danger" *ngIf="statusOption == 'deactive'" (click)="onSubmitActionChiTietTieuThuc('deactive')">
+          <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-success" *ngIf="statusOption == 'active'" (click)="onSubmitActionChiTietTieuThuc('active')">
+          <i class="fa fa-check" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-dafault" (click)="closeCRUDChiTietTieuThuc()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalStatus -->
+<div bsModal #modalStatusChiTietTieuThuc="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Trạng thái chi tiết nội dung TTKT</h5>
+        <button type="button" class="close pull-right" (click)="closeStatusChiTietTieuThuc()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn active chi tiết nội dung TTKT này?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitStatus()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Đồng ý</button>
+        <button class="btn btn-default" (click)="closeStatusChiTietTieuThuc()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

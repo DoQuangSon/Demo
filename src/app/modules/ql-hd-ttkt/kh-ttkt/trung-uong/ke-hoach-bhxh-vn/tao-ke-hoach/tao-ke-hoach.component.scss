@@ -1,0 +1,14 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .router {
+            cursor: pointer;
+            color: $colorBlue;
+            text-decoration: underline;
+        }
+        .router:hover {
+            color: red;
+            text-decoration: underline;
+        }
+    }
+}

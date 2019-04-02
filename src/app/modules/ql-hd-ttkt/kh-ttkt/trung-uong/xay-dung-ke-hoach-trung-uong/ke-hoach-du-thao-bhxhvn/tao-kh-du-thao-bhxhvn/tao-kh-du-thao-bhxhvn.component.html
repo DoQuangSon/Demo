@@ -1,0 +1,262 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title-breadcrumb">Kế hoạch Dự thảo Bảo Hiểm Xã Hội Việt Nam</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Tạo kế hoạch</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <!-- <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="isDuyet">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button> -->
+      <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('tao')" *ngIf="isLuuTao">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <!-- <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('sua')" *ngIf="isLuuSua">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-primary" (click)="onSua()" *ngIf="isSua">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button> -->
+      <button type="button" class="btn btn-link" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="taoKHForm">
+      <fieldset [disabled]="disableForm">
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="nam" class="col-form-label">Năm:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <select class="custom-select" id="nam" formControlName="nam" [disabled]="isLuuSua">
+                  <option value="" selected>Chọn</option>
+                  <option *ngFor="let choice of optionNam" [value]="choice">{{ choice }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" label="Tên kế hoạch" formControlName="tenKehoach" xl="4-8"></ttkt-input>
+          </div>
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="date" [ngClass]="{'disable-click': true}" label="Ngày tạo" formControlName="ngayTao" xl="4-8"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" label="Số quyết định" formControlName="soQuyetDinh" xl="4-8"></ttkt-input>
+          </div>
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="date" [ngClass]="{'disable-click': true}" label="Ngày ký" formControlName="ngayKy" xl="4-8"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" label="Người ký" formControlName="nguoiKy" xl="4-8"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">File quyết định:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <label for="uploadFile" class="btn btn-default btn-sm" *ngIf="!disableForm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFile" hidden type="file" name="file" formControlName="fileQuyetDinh"
+                  #fileQuyetDinhTaoKH (change)="upFileQuyetDinhTaoKH()">
+                <b class="ten-fileUpload">{{ tenFileQuyetDinh }}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input type="text" label="Người gửi" formControlName="tenNguoiTao" xl="4-8"></ttkt-input>
+            <!-- <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label for="nam" class="col-form-label">Người gửi:
+                    <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-8">
+                    <input class="form-control" type="text" formControlName="tenNguoiTao" id="tenNguoiTao" disabled />
+                    <p class="help-block text-danger mb-1" *ngIf="taoKHForm.controls.tenNguoiTao?.errors?.required &&  (taoKHForm.controls.tenNguoiTao?.touched || taoKHForm.controls.tenNguoiTao?.dirty)">
+                      Người gửi không được để trống</p>
+                </div>
+              </div> -->
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Danh sách kế hoạch</legend>
+        <div class="pull-right">
+          <!-- <button type="button" class="btn btn-secondary mb-1">
+            <i class="fa fa-download" aria-hidden="true"></i> Tải mẫu</button>
+          <button type="button" class="btn btn-success mb-1" (click)="onNhapKHExcel()" *ngIf="!disableForm">
+            <i class="fa fa-table" aria-hidden="true"></i> Nhập Excel</button> -->
+          <button type="button" class="btn btn-primary mb-1" (click)="onOpenModalADD()" *ngIf="!disableForm">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <ttkt-list-ke-hoach-bhxh-vn-table (updateListKH)="onListKH($event)" [emitIsSua]="isLuuSua" [listKeHoach]="listKeHoach"
+          [isTao]="true" [hiddeDotXuat]="true" [excel]="excel" [khDuThao]="true"></ttkt-list-ke-hoach-bhxh-vn-table>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #chooseFileExcel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Chọn file</h5>
+        <button type="button" class="close pull-right" (click)="chooseFileExcel.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formModalChooseFile">
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-3 text-lg-right">Chọn file Excel:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-8">
+              <input class="form-control" type="file" formControlName="inputFile">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onSendFile()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <button type="button" class="btn btn-default" (click)="chooseFileExcel.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #addKehoach="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="addKehoachform">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Thêm kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="addKehoach.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="selectQuy">Chọn quý:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-8">
+              <select name="" id="selectQuy" formControlName="chonQuy" class="custom-select">
+                <option value="0">Chọn</option>
+                <option *ngFor="let item of listQuy" [value]="item.id">{{ item.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="selectTinh">Chọn tỉnh:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-8">
+              <select name="" id="selectTinh" formControlName="chonTinh" class="custom-select">
+                <option value="0">Chọn</option>
+                <option *ngFor="let item of listTinhThanh" [value]="item.id">{{ item.tenTinhHuyen }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="loaiHinhTTKT.length > 0">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="selectTinh">Loại hình TTKT:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-8">
+              <select name="" id="loaiHinhTTKT" formControlName="loaiHinhTTKT" class="custom-select form-control"
+                (change)="changeLoaiHinh()">
+                <option value="0">Chọn loại hình</option>
+                <option *ngFor="let item of loaiHinhTTKT" [value]="item.id">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="listDmChutriPhoihopByType.length > 0">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="donViChuTri">Đơn vị chủ trì:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-8">
+              <select name="" id="donViChuTri" formControlName="donViChuTri" class="custom-select form-control">
+                <option value="0">Chọn đơn vị chủ trì</option>
+                <option *ngFor="let item of listDmChutriPhoihopByType" [value]="item.id">{{item.tenDonViChuTriPhoiHop}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="validLoaiHinh">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="selectTinh">Đơn vị phối hợp:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-8">
+              <ng-select [allowClear]="true" [multiple]="true" [items]="listDonViPhoiHop" (data)="refreshValueDVPH($event)"
+                formControlName="donViChiPhoi" placeholder="Đơn vị phối hợp">
+              </ng-select>
+            </div>
+          </div>
+          <p class="help-block text-center text-danger" *ngIf="errorTaoKHForm">
+            Bạn cần điền đầy đủ thông tin</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onThem()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="addKehoach.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

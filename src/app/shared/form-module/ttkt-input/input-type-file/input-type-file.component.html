@@ -1,0 +1,6 @@
+<label for="uploadFile" class="btn btn-default btn-sm">
+<i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+<input id="uploadFile" hidden type="file" name="file"
+#fileInput (change)="onAttachFile()">
+<input hidden type="hidden" [formControl]="formControlInput">
+<b *ngIf="ten" class="ten-fileUpload">{{ ten }}</b>

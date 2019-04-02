@@ -1,0 +1,18 @@
+<!-- duyet modal -->
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Duyệt quyết định</h5>
+    <button type="button" class="close pull-right" (click)="modalDuyet.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h6>Bạn có chắc chắn muốn duyệt quyết định?</h6>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="onSubmitDuyet()">
+      <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+    <button class="btn btn-default" (click)="modalDuyet.hide()">
+      <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+  </div>
+</div>

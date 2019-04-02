@@ -1,0 +1,59 @@
+<div class="">
+  <a (click)="showNotification()" class="notify-header" href="#" data-toggle="dropdown" role="button" aria-haspopup="true"
+    aria-expanded="false">
+    <i class="fa fa-bell-o" aria-hidden="true"></i>
+    <span class="badge">{{ newNoti }}</span>
+  </a>
+  <ul class="dropdown-menu notify-drop" [ngClass]="{show: isShow}">
+    <div class="notify-drop-title">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-6">Thông Báo (
+          <b>{{ newNoti }}</b>)</div>
+        <div class="col-md-6 col-sm-6 col-6 text-right">
+          <a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="tümü okundu.">
+            <i class="fa fa-dot-circle-o"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- end notify title -->
+    <!-- notify content -->
+    <div class="drop-content">
+      <li *ngFor="let noti of listNoti; let i = index">
+        <div class="row">
+          <div class="col-md-2 col-sm-2 col-2">
+            <div class="notify-img">
+              <i *ngIf="noti.notifiType=='1'" class="fa fa-bell" [ngStyle]="{'color':'blue'}"></i>
+              <i *ngIf="noti.notifiType=='2'" class="fa fa-bell" [ngStyle]="{'color':'red'}"></i>
+              <i *ngIf="noti.notifiType=='3'" class="fa fa-bell" [ngStyle]="{'color':'green'}"></i>
+            </div>
+          </div>
+          <div class="col-md-10 col-sm-10 col-10 pd-l0" (click)="toDetailNoti(noti.path)">
+            <div class="title_notify"> {{ noti.desc }}</div>
+            <a href="" class="rIcon">
+              <i class="fa fa-dot-circle-o"></i>
+            </a>
+            <a href="" style="display:inline-block;padding-top:10px; padding-left: 5px">{{ noti.title }}</a>
+            <br>
+            <p class="time">{{ noti.created_time | date: 'dd/MM/yyyy hh:mm' }}</p>
+          </div>
+        </div>
+      </li>
+      <!-- <li>
+        <div class="row">
+          <div class="col-md-3 col-sm-3 col-3">
+            <div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div>
+          </div>
+          <div class="col-md-9 col-sm-9 col-9 pd-l0"><a href="">Thông báo</a> tạm hoãn <a href="">KH-TTKT-123 đến ngày...</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+            <p>Nguyên nhân ...</p>
+            <p class="time">27. 10. 2015, 08:00</p>
+          </div>
+        </div>
+      </li> -->
+    </div>
+    <div class="notify-drop-footer text-center">
+      <a href="" (click)="viewAll()" routerLink="/ql-hethong-ttkt/view-all-notification">
+        <i class="fa fa-eye"></i> Xem tất cả</a>
+    </div>
+  </ul>
+</div>

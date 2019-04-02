@@ -1,0 +1,13 @@
+@import './../../../../styles/_variables.scss';
+thead {
+   background-color: $colorLightGray;
+   tr {
+      th {
+         text-align: center;
+      }
+   }
+}
+
+a {
+  cursor: pointer;
+}

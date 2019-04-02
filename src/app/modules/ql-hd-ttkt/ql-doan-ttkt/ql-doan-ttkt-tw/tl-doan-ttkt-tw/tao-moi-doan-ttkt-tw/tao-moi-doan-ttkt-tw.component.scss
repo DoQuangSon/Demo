@@ -1,0 +1,139 @@
+@import './../../../../../../../styles/_variables.scss';
+.table-responsive {
+  thead {
+    background-color: $colorLightGray;
+    tr {
+      th {
+        text-align: center;
+      }
+    }
+  }
+  tbody {
+    tr {
+      i {
+        cursor: pointer;
+      }
+      .fa-pencil {
+        margin-right: 0.5rem;
+        color: #6495ed;
+      }
+      .fa-trash {
+        margin-right: 0.5rem;
+        color: #ff0000;
+      }    
+      .fa-plus-circle {
+        color: $colorBlue;
+      }
+    }
+  }
+}
+button {
+  cursor: pointer;
+}
+
+.heading-page button {
+  position: relative;
+}
+
+.tableTV {
+  tbody {
+    tr {
+      td {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.tableDV {
+  tbody {
+    tr {
+      th {
+        text-align: center;
+      }
+      th:nth-child(2){
+        text-align: left;
+      }
+      td:first-child,td:last-child {
+        text-align: center
+      }
+    }
+  }
+}
+
+.modal-xoa {
+  textarea {
+    width: 100%;
+  }
+  input {
+    background-color: white;
+  }
+}
+
+select {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+}
+
+.custom-control-input:checked ~ .custom-control-indicator {
+  color: #fff;
+  background-color: $colorBlue;
+}
+
+.tenbienban {
+  background-color: ghostwhite;
+  padding: 8px 5px;
+}
+
+.chekbox-noidung {
+  padding-top: calc(0.5rem - 1px * 2);
+  padding-bottom: calc(0.5rem - 1px * 2);
+  margin-bottom: 0;
+}
+
+.required,
+.errMessage {
+  color: #ff0000;
+}
+
+.chekbox-content {
+  padding-top: calc(0.5rem - 1px * 2);
+  padding-bottom: calc(0.5rem - 1px * 2);
+  margin-bottom: 0;
+}
+
+.margin-top {
+  margin-top: -1rem;
+}
+
+.btn.btn-uploadfile {
+  @media (max-width: 1200px) {
+    margin-top: 12px;    
+  }
+}
+
+.table-uploadfile {
+  thead {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    tr {
+      th {
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        text-align: center;
+      }
+
+    }
+  }
+}
+

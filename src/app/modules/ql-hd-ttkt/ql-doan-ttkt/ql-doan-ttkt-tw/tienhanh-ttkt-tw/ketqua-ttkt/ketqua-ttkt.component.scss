@@ -1,0 +1,29 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .table-responsive {
+            tbody {
+                tr {
+                    td:first-child,
+                    th:first-child {
+                        text-align: center;
+                    }
+                }
+            }
+            .table-KTKCB {
+                min-width: 1100px;
+            }
+        }
+    }
+}
+
+.nav-link {
+    padding: .5rem 1rem; // font-weight: bold;
+    font-size: 14px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    background: #f3f4f4;
+}
+.table-responsive {
+    background-color: #fff;
+}

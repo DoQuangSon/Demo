@@ -1,0 +1,122 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-12">
+            <span class="page-title-breadcrumb">GIẢI TRÌNH CHẤP HÀNH TTKT</span>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="page-title text-primary">DS đơn vị</span>
+        </div>
+    </div>
+</h4>
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+        <form novalidate>
+            <fieldset>
+                <legend>Thông tin chung</legend>
+                <div class="row container">
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Kế hoạch năm:</label>
+                            <label class="col-form-label content-label">{{ data.keHoachYear }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Tên đơn vị:</label>
+                            <label class="col-form-label content-label">{{ data.tenDonViMoSo }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container">
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Số quyết định:</label>
+                            <label class="col-form-label content-label">{{ data.soQuyetDinh }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Tên quyết định:</label>
+                            <label class="col-form-label content-label">{{ data.tenQuyetDinh }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row container mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Thời kỳ từ:</label>
+                            <label class="col-form-label content-label">{{ data.thoiKyTu | date: 'dd/MM/yyyy' }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-0">
+                            <label class="col-form-label">Thời kỳ đến ngày:</label>
+                            <label class="col-form-label content-label">{{ data.thoiKyDen | date: 'dd/MM/yyyy' }}</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <form novalidate [formGroup]="dsDonViForm">
+            <fieldset>
+                <legend>Danh sách đơn vị</legend>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-6 col-sm-6">
+                            <input class="form-control" type="text" formControlName="search">
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <button type="button" class="btn btn-default text-lg-right">
+                                <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table-scroll-x">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th rowspan="2" class="th-size">STT</th>
+                            <th rowspan="2" class="table-resize">Tên đơn vị</th>
+                            <th colspan="2">Thời kỳ</th>
+                            <th colspan="2" rowspan="2">Thao tác</th>
+                        </tr>
+                        <tr>
+                            <th>Từ</th>
+                            <th>Đến</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngFor="let item of dataTable, let i = index">
+                        <tr>
+                            <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}</th>
+                            <th>{{item.tenDanhMuc}}</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr *ngFor="let el of (item || {}).children, let j = index">
+                            <td class="text-center">{{j + 1}}</td>
+                            <td>
+                                <div class="text-left text-primary" *ngIf="el.daTTKT == true" (click)="chiTietSoTheoDoidv(el.dviID, el.doiTuongTTKTId)">{{el.tenDoiTuongTTKT}}</div>
+                                <!--<div class="text-left text-primary" *ngIf="el.daTTKT == false" (click)="onThongBao()">{{el.tenDoiTuongTTKT}}</div>-->
+                            </td>
+                            <td class="text-center">{{ el.ngayBatDau | date: 'dd/MM/yyyy' }}</td>
+                            <td class="text-center">{{ el.ngayKetThuc | date: 'dd/MM/yyyy' }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-success">
+                                    <i class="fa" aria-hidden="true"></i>Không giải trình</button>&nbsp;
+                                <button type="button" class="btn btn-dark">
+                                    <i class="fa" aria-hidden="true"></i>Không chấp nhận giải trình</button>&nbsp;
+                                <button type="button" class="btn btn-danger" (click)="goToChapNhanGiaiTrinhForm(el.doiTuongTTKTId)">
+                                    <i class="fa" aria-hidden="true"></i>Chấp nhận giải trình</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="pull-right">
+        <button type="button" class="btn btn-link" (click)="onBack()">
+            <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+</div>

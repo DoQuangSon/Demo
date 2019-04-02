@@ -1,0 +1,388 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title-breadcrumb">Kế hoạch BHXH VN</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Chi tiết kế hoạch năm {{ keHoachNam }}</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="onDieuChinh()" *ngIf="statusKH!=5013">
+        <i class="fa fa-line-chart" aria-hidden="true"></i> Xin điều chỉnh</button>
+      <!-- <button type="button" class="btn btn-primary" (click)="onXemDC()" *ngIf="isDaDuocDieuChinh==true && statusKH==5010 || isDaDuocDieuChinh==false && statusKH==5013">
+          <i class="fa fa-line-chart" aria-hidden="true"></i> Xem điều chỉnh</button> -->
+    </div>
+  </div>
+</h4>
+<ttkt-thong-tin-chung-tinh [chiTietKH]="chiTietKH"></ttkt-thong-tin-chung-tinh>
+<ng-container *ngIf="(this.chiTietKH.soQuyetDinhDieuChinh !== undefined && this.chiTietKH.soQuyetDinhDieuChinh !== null)
+|| (this.chiTietKH.lyDoDieuChinh !== undefined && this.chiTietKH.lyDoDieuChinh !== null)
+|| (this.chiTietKH.ngayXinDieuChinh !== undefined && this.chiTietKH.ngayXinDieuChinh !== null)">
+  <ttkt-thong-tin-dieu-chinh [chiTietKH]="chiTietKH" [taiKhoanTinh]="'true'" [isKeHoachBHXHVN]="true"></ttkt-thong-tin-dieu-chinh>
+</ng-container>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="chiTietKHBHXHVNForm">
+      <!-- <fieldset *ngIf="currentDC > 0">
+        <legend>Thông tin điều chỉnh</legend>
+        <div id="thongtindieuchinh">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Lần điều chỉnh:</label>
+                </div>
+                <div class="col-xl-6">
+                  <select class="form-control" (change)="chonDieuChinh(chiTietKHBHXHVNForm.value.lanDieuChinh)" formControlName="lanDieuChinh">
+                    <option *ngFor="let choice of lanDieuChinh" [value]="choice">Lần điều chỉnh {{choice}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Quyết định điều chỉnh: </label>
+                </div>
+                <div class="col-xl-6">
+                  <b>{{ tenFileQDDieuChinh }}</b>
+                  <button type="submit" class="btn btn-primary btn-sm" (click)="downLoadFile()">
+                    <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Lý do điều chỉnh: </label>
+                </div>
+                <div class="col-xl-8">
+                  <textarea autosize row="2" class="form-control" formControlName="lyDoDieuChinh" disabled></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Số quyết định điều chỉnh: </label>
+                </div>
+                <div class="col-xl-8">
+                  <input type="text" class="form-control" formControlName="soDuyetDinh" value="{{soDuyetDinh}}" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset> -->
+      <fieldset>
+        <legend>Chi tiết kế hoạch</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2">Thanh tra chuyên
+                  <br>ngành đóng</th>
+                <th colspan="2">Liên ngành</th>
+                <th colspan="4">Kiểm tra</th>
+                <th rowspan="2">Tổng số</th>
+              </tr>
+              <tr>
+                <th>Thanh tra</th>
+                <th>Kiểm tra</th>
+                <th>Nội bộ cơ
+                  <br> quan BHXH</th>
+                <th>Đơn vị
+                  <br> SDLĐ</th>
+                <th>Cơ sở khám
+                  <br> chữa bệnh</th>
+                <th>Đại lý thu,
+                  <br> đại diện chi trả</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="length > 0">
+              <tr>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.thanhTraChuyenNganhDVSDLD }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="thanhTraChuyenNganhDVSDLD" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.lienNganhTT }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="lienNganhTT" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.lienNganhKT }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="lienNganhKT" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.noiBoCoQuanBHXH }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="noiBoCoQuanBHXH" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.donViSDLD }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="donViSuDungLD" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.coSoKhamChuaBenh }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="coSoKhamChuaBenh" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.daiLyThuChiTra }}</p>
+                  <div class="row" *ngIf="dieuChinh==true">
+                    <input type="number" min="0" ttktchecknumberonly formControlName="daiLyThuDaiDienChiTra" class="form-control col-sm-10 offset-sm-1">
+                  </div>
+                </td>
+                <td class="text-right">
+                  <p *ngIf="!dieuChinh">{{ responseData.tongSo }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-success" data-toggle="modal" data-target="#showDialogHistory" style="margin-bottom: 15px"
+          [disabled]="!isShowBtnLichSu">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Xem lịch sử ({{countLichSu}})</button>
+      </fieldset>
+    </form>
+  </div>
+  <button type="button" class="btn btn-link pull-right" (click)="onClose()">
+    <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+</div>
+
+<!-- show dialog lịch sử -->
+<ng-container>
+  <div class="modal " id="showDialogHistory">
+    <div class="modal-dialog modal-lg">
+      <ttkt-show-dialog-history [chiTietKH]="chiTietKH" [listLichSu]="listLichSu" [taiKhoanTinh]="'true'"
+        [isKeHoachBHXHVN]="true"></ttkt-show-dialog-history>
+    </div>
+  </div>
+</ng-container>
+
+<div bsModal #lgModal="bs-modal" id="lgModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formModal">
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="text" md="4-8" formControlName="inputSend" label="Gửi" [ngClass]="{'disable-click': true}">BHXH
+                VN</ttkt-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="textarea" rows="3" md="4-8" label="Lời nhắn" formControlName="loiNhanCuaTinh"></ttkt-input>
+            </div>
+          </div>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="onGui()" [disabled]="formModal.invalid">
+              <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+            <button type="button" class="btn btn-default" (click)="lgModal.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<!-- <div bsModal #confirmModal="bs-modal" id="confirmModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="confirmModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn gửi kế hoạch?</h6>
+        <div class="pull-right">
+          <button class="btn btn-success" (click)="onGui()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Đồng ý</button>
+          <button class="btn btn-default" (click)="confirmModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div bsModal #xinDieuChinh="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Thông tin điều chỉnh</h5>
+        <button type="button" class="close pull-right" (click)="xinDieuChinh.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="formXinDieuChinh">
+          <fieldset>
+            <div id="thongtindieuchinh">
+              <div class="row">
+                <div class="col-md-6 disable-click">
+                  <ttkt-input type="date" md="4-8" label="Ngày điều chỉnh"
+                    formControlName="ngayDieuChinh"></ttkt-input>
+                </div>
+                <div class="col-md-6">
+                  <ttkt-input type="text" md="4-8" label="Số quyết định điều chỉnh" formControlName="soDuyetDinh"></ttkt-input>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <ttkt-input type="textarea" md="4-8" label="Lý do điều chỉnh" formControlName="lyDoDieuChinh"></ttkt-input>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label">Quyết định điều chỉnh
+                        <span class="text-danger">*</span>:</label>
+                    </div>
+                    <div class="col-xl-8">
+                      <label for="uploadFile" class="btn btn-default btn-sm">
+                        <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                      <input id="uploadFile" hidden type="file" name="file" formControlName="fileQuyetDinhDCKH"
+                        #fileQuyetDinhDCKH (change)="upFileQuyetDinhDCKH()">
+                      <b class="ten-fileUpload">{{ tenFileQuyetDinh }}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <ttkt-input type="text" md="4-8" label="Người kí" formControlName="nguoiKi"></ttkt-input>
+                </div>
+                <div class="col-md-6 disable-click">
+                  <ttkt-input type="text" md="4-8" label="Người gửi"
+                    formControlName="nguoiTao"></ttkt-input>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="table-responsive table-scroll-x">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th rowspan="2">Thanh tra chuyên
+                      <br>ngành đóng</th>
+                    <th colspan="2">Liên ngành</th>
+                    <th colspan="4">Kiểm tra</th>
+                    <th rowspan="2">Tổng số</th>
+                  </tr>
+                  <tr>
+                    <th>Thanh tra</th>
+                    <th>Kiểm tra</th>
+                    <th>Nội bộ cơ
+                      <br> quan BHXH</th>
+                    <th>Đơn vị
+                      <br> SDLĐ</th>
+                    <th>Cơ sở khám
+                      <br> chữa bệnh</th>
+                    <th>Đại lý thu,
+                      <br> đại diện chi trả</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="length > 0">
+                  <tr>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="thanhTraChuyenNganhDVSDLD"
+                          (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="lienNganhTT" (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="lienNganhKT" (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="noiBoCoQuanBHXH"
+                          (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="donViSuDungLD" (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="coSoKhamChuaBenh"
+                          (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="row">
+                        <ttkt-input type="number" min="0" ttktchecknumberonly formControlName="daiLyThuDaiDienChiTra"
+                          (change)="changeTongSo(formXinDieuChinh.value)"></ttkt-input>
+                      </div>
+                    </td>
+                    <td class="text-right">{{ tongSo }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+          <div class="pull-right" *ngIf="xemDieuChinh==false">
+            <button type="button" class="btn btn-primary" (click)="checkValidXinDieuChinh()">
+              <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+            <button type="button" class="btn btn-default" (click)="xinDieuChinh.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

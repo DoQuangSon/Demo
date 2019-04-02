@@ -1,0 +1,131 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Kế hoạch BHXH VN năm {{ keHoachNam }}</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary" (click)="onLuu('capnhat')" *ngIf="isCapNhat || !isDieuChinh">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button class="btn btn-primary" (click)="onLuu('dieuchinh')" *ngIf="isDieuChinh">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+    </div>
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="dieuchinhForm">
+      <fieldset *ngIf="isDieuChinh">
+        <legend>Thông tin điều chỉnh:</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Thông tin điều chỉnh:</span>
+        </div>
+        <div class="row">
+          <div class="col-md-6 disable-click">
+            <ttkt-input type="date" md="4-8" label="Ngày điều chỉnh" formControlName="ngayDc"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input type="text" md="4-8" [disabled]="duyet ? duyet:null" label="Số quyết định điều chỉnh"
+              formControlName="soQuyetdinhDc"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input type="textarea" md="4-8" [disabled]="duyet ? duyet:null" label="Lý do" formControlName="lyDo"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-lg-right">Quyết định điều chỉnh:
+                <span class="text-danger">*</span>
+              </label>
+              <div class="col-md-4">
+                <label for="uploadFileDCKH" class="btn btn-default btn-sm" *ngIf="!disableForm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFileDCKH" hidden type="file" name="file" #fileQDDieuChinhKH (change)="upFileQDDieuChinhKH()">
+                <b class="ten-fileUpload">{{ tenFileQuyetDinhDC }}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 disable-click">
+            <ttkt-input type="text" md="4-8" label="Người gửi" formControlName="nguoiTao"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input type="text" md="4-8" label="Người ký" formControlName="nguoiKi"></ttkt-input>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset *ngIf="!isDieuChinh">
+        <legend>Thông tin chung:</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Thông tin chung:</span>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="nam" class="col-form-label">Năm:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" formControlName="nam" disabled="true">
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" md="4-8" label="Người gửi" formControlName="nguoiTao" [ngClass]="{'disable-click': true}"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" md="4-8" label="Tên kế hoạch" formControlName="tenKehoach"></ttkt-input>
+          </div>
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="date" md="4-8" label="Ngày tạo" formControlName="ngayTao" [ngClass]="{'disable-click': true}"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" md="4-8" label="Số quyết định" formControlName="soQuyetDinh"></ttkt-input>
+          </div>
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="date" md="4-8" label="Ngày ký" formControlName="ngayKy"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 col-sm-6">
+            <ttkt-input type="text" md="4-8" label="Người ký" formControlName="nguoiKy"></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">File quyết định:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <label for="uploadFileTaoKH" class="btn btn-default btn-sm" *ngIf="!disableForm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFileTaoKH" hidden type="file" name="file" #fileQuyetDinhTaoKH (change)="upFileQuyetDinhTaoKH()">
+                <b class="ten-fileUpload">{{ tenFileQuyetDinhTaoKH }}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Danh sách kế hoạch BHXH VN:</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh sách kế hoạch BHXH VN:</span>
+        </div>
+        <ttkt-list-ke-hoach-bhxh-vn-table (updateListKH)="onListKH($event)" [listKeHoach]="listKeHoach" [type]="type"
+          [isDieuChinh]="true" [duyet]="duyet"></ttkt-list-ke-hoach-bhxh-vn-table>
+      </fieldset>
+    </form>
+  </div>
+</div>

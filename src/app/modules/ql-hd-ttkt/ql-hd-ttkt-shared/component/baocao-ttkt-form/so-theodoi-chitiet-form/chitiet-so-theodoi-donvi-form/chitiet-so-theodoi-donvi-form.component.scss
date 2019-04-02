@@ -1,0 +1,54 @@
+@import './../../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .table-responsive {
+            thead {
+                tr:nth-child(2),
+                {
+                    td {
+                        background-color: white;
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.table-VPHC {
+    thead {
+        background-color: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        tr {
+            th {
+                text-align: center;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+}
+
+.thongtin-chitiet {
+    margin-left: 1rem;
+    @media (max-width: 767px) {
+        margin-left: 0
+    }
+}
+
+.modal-dialog.modal-md {
+    max-width: 600px;
+    .modal-body {
+        p {
+            margin-bottom: 0rem
+        }
+    }
+}
+
+.child-node {
+    padding-left: 15px!important;
+}
+
+.visibled {
+    display: none
+}

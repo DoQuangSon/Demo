@@ -1,0 +1,12 @@
+﻿1.	Authen: Mọi thông tin acc đang đăng nhập lấy qua authservice
+2.	Routing: Đặt theo chuẩn cha con, routing con thì bao gồm path của cha
+3.	Define phần chung
+4.	Form -> sử dụng ttkt-input
+5.	Dialog dùng modalService open
+6.	Chú ý về biding sử dụng []=”a” để binding khi a như là 1 biến. dùng =”a” khi a là 1 string, chỉ dùng {{  }} khi muốn hiển thị in ra giá trị của biến k dùng để set cho biến khác
+7.	Sử dụng share module chỉ import form,  directive, pipe chỉ những cái cần thiết k import tất cả
+8.	Validate sẽ có file define msg chung cho toàn app message sẽ được lấy dựa vào tên của formcontrol và rule, nếu đực định nghĩa sẵn truyền vào ttkt-input thì sẽ lấy msg này
+9.	Tất cả rule viết thành rule của formcontrol
+10.	Tạo form theo object phải gửi lên server bỏ qua các bước mapping giữa form và body request
+11.	Pagination sử dụng component chung
+12. 	Các phần chung của form tách thành các component để sử dụng lại

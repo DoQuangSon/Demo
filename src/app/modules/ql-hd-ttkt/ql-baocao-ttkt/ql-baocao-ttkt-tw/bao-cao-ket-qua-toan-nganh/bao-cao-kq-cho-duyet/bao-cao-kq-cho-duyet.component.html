@@ -1,0 +1,108 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title">Báo cáo tổng hợp kết quả TTKT đang chờ duyệt</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách báo cáo kết quả TTKT đang chờ duyệt</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh sách báo cáo kết quả TTKT đang chờ duyệt</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên báo cáo</th>
+                <th>Nơi gửi</th>
+                <th>Ngày gửi</th>
+                <th>Duyệt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bc of dsBaoCao; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-primary">
+                  <span class="router" (click)="chiTietBaoCao(bc.id)">{{ bc.name }}</span>
+                </td>
+                <td>{{ bc.noiGui }}</td>
+                <td>{{ bc.ngayGui }}</td>
+                <td>
+                  <button type="button" class="btn btn-success btn-sm edit" (click)="duyetBC(i)">
+                    <i class="fa fa-check" aria-hidden="true"></i> Duyệt
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm edit" (click)="tuChoiBC(i)">
+                    <i class="fa fa-ban" aria-hidden="true"></i> Từ chối
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+    <div class="pull-right">
+      <button type="button" class="btn btn-link pull-right" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt báo cáo</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt báo cáo?</h6>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button class="btn btn-success" (click)="onSubmitDuyet()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+          <button class="btn btn-default" (click)="duyetModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- tu choi modal -->
+<div bsModal #tuChoiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Từ chối báo cáo</h5>
+        <button type="button" class="close pull-right" (click)="tuChoiModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-form-label col-md-3">Lý do từ chối</label>
+          <textarea class="form-control col-md-8" rows="5"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button class="btn btn-danger" (click)="onSubmitTuChoi()">
+            <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+          <button class="btn btn-default" (click)="tuChoiModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

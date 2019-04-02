@@ -1,0 +1,153 @@
+<h4 class="heading-page">
+  <span class="page-title">Báo cáo tổng hợp</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="baoCaoTongHopForm">
+      <fieldset>
+        <legend>Danh sách báo cáo tổng hợp kết quả</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <div class="col-xl-7 col-lg-10">
+                <input class="form-control mb-md-1" type="text" formControlName="search">
+              </div>
+              <div class="col-xl-2 col-lg-2">
+                <button type="button" class="btn btn-default">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-1 pull-right">
+              <button type="button" class="btn btn-primary" (click)="taoMoiBCTongHopTinh()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên báo cáo</th>
+                <th>Ngày lập</th>
+                <th class="th-size">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dsBaoCaoTongHop; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-primary">
+                  <a (click)="chiTietBCTongHopTinh(item.id)">Báo cáo tổng hợp kết quả TTKT quý {{ item.quy }} năm {{ item.nam }}</a>
+                </td>
+                <td>{{ item.thoiGianLap }}</td>
+                <td class="trangthai_{{item.trangThai_id}}">
+                  <div *ngIf="item.trangThai_id == 0" title="Gửi báo cáo">
+                    {{item.trangThai}}
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                  </div>
+                  <div *ngIf="item.trangThai_id != 0">
+                    {{item.trangThai}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end mb-1">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Danh sách báo cáo lĩnh vực TTKT</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <div class="col-xl-7 col-lg-10">
+                <input class="form-control mb-md-1" type="text" formControlName="search">
+              </div>
+              <div class="col-xl-2 col-lg-2">
+                <button type="button" class="btn btn-default">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-1 pull-right">
+              <button type="button" class="btn btn-primary" (click)="taoMoiBCLinhVucTinh()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên báo cáo</th>
+                <th>Ngày lập</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dsBaoCaoLinhVuc; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-primary">
+                  <a (click)="chiTietBCTongHopTinh(item.id)">{{ item.name }}</a>
+                </td>
+                <td>{{ item.thoiGianLap }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end mb-1">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

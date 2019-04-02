@@ -1,0 +1,35 @@
+<div class="table-responsive table-scroll-x">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th rowspan="2">Thanh tra chuyên
+            <br>ngành đóng</th>
+          <th rowspan="2">Thanh tra, kiểm tra
+            <br>liên ngành</th>
+          <th colspan="4">Kiểm tra</th>
+          <th rowspan="2">Tổng số</th>
+        </tr>
+        <tr>
+          <th>Nội bộ cơ
+            <br> quan BHXH</th>
+          <th>Đơn vị
+            <br> SDLĐ</th>
+          <th>Cơ sở khám
+            <br> chữa bệnh</th>
+          <th>Đại lý thu,
+            <br> đại diện chi trả</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.thanhTraDvSDLD }}</td>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.lienNganhThanhTra + chiTietKH.chiTietKhTinh.lienNganhKiemTra }}</td>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraBHXH }}</td>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraDvSDLD }}</td>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraCsKCB }}</td>
+          <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraDaiLyThuChi }}</td>
+          <td class="text-right"><b>{{ chiTietKH.chiTietKhTinh.tongSo }}</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

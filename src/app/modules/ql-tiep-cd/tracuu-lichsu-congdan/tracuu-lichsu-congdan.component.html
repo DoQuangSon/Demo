@@ -1,0 +1,156 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-6">
+            <span class="page-title">Tra cứu lịch sử công dân</span>
+        </div>
+        <!-- <div class="col-md-6 pull-right">
+            <button class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+        </div> -->
+    </div>
+</h4>
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default giaiquyet-dt">
+        <form novalidate [formGroup]="tracuuLsCdForm">
+            <div>
+                <fieldset class="fieldset-search">
+                    <legend>Thông tin tìm kiếm</legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-xl-4 text-xl-right">
+                                    <label for="" class="col-form-label">Từ ngày:</label>
+                                </div>
+                                <div class="col-xl-8">
+                                    <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayDenFrom"></my-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-xl-4 text-xl-right">
+                                    <label for="" class="col-form-label">Đến ngày:</label>
+                                </div>
+                                <div class="col-xl-8">
+                                    <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayDenTo"></my-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-xl-4 text-xl-right">
+                                    <label for="" class="col-form-label">Tên công dân:</label>
+                                </div>
+                                <div class="col-xl-8">
+                                    <input class="form-control" type="text" formControlName="hoTenCongDan">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-xl-4 text-xl-right">
+                                    <label for="" class="col-form-label">Số CMT:</label>
+                                </div>
+                                <div class="col-xl-8">
+                                    <input class="form-control" type="text" formControlName="soCMTND">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <div class="col-xl-4 text-xl-right">
+                                    <label for="" class="col-form-label">Loại nội dung:</label>
+                                </div>
+                                <div class="col-xl-8">
+                                    <ng-select [allowClear]="true" [items]="listNoiDung" formControlName="phanLoaiNoiDungId" (data)="refreshNoiDung($event)" (removed)="removed($event)" placeholder="Chọn nội dung">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-default" (click)="search($event)">
+              <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                    </div>
+                </fieldset>
+            </div>
+            <fieldset>
+                <legend>Danh sách công dân</legend>
+                <div class="row" *ngIf="listCoQuan && listCoQuan.length > 0">
+                    <div class="offset-md-8 col-md-4">
+                      <ttkt-input 
+                        type="select" label=""
+                        [fullWidth]="true" 
+                        formControlName="coQuan"
+                        [data]="{
+                          options: listCoQuan,
+                          valueType: 'tenDonVi',
+                          firstOption: 'Chọn tất cả'
+                        }"></ttkt-input>
+                    </div>
+                  </div>
+                <div class="table-responsive table-scroll-x">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="th-size">STT
+                                    <br>
+                                </th>
+                                <th class="table-resize">Tên công dân</th>
+                                <th>Ngày tiếp nhận</th>
+                                <th>Nơi tiếp nhận</th>
+                                <th class="table-resize">Nội dung</th>
+                                <th class="th-size">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="dsTracuuCongdan.length == 0">
+                                <td class="text-center" colspan="6">Không có dữ liệu</td>
+                            </tr>
+                            <tr *ngFor="let item of dsTracuuCongdan; let i = index">
+                                <td class="text-center">{{currentPage*10 + i + 1}}</td>
+                                <td>{{item.hoTenCongDan}}</td>
+                                <td>{{item.ngayCongVan | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{item.dmbhxh?.tenDonVi}}</td>
+                                <td>{{item.dmPhanLoaiNoiDung?.tenNoiDung}}</td>
+                                <td>{{item.status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- pagination -->
+                <nav aria-label="Page navigation example" *ngIf="pager.pages && pager.pages.length">
+                    <ul class="pagination justify-content-end mb-1">
+
+                        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang đầu">
+                            <a class="page-link" aria-label="First" (click)="setPage(0)">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang trước">
+                            <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                                <span aria-hidden="true">&#60;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+                            <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+                        </li>
+                        <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top" title="Trang sau">
+                            <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                                <span aria-hidden="true">&#62;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top" title="Trang cuối">
+                            <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </fieldset>
+        </form>
+    </div>
+</div>

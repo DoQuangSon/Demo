@@ -1,0 +1,161 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- <span class="page-title">DS kế hoạch giao cho các Tỉnh năm {{ khYear }}</span> -->
+      <ttkt-breadcrumb></ttkt-breadcrumb>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary mb-1" (click)="onOpenPopup()" *ngIf="!onGiaoKh">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Giao kế hoạch cho tỉnh</button>
+      <button class="btn btn-primary mb-1" (click)="onDieuChinh()" *ngIf="coDieuChinh==false && luu==false && !onGiaoKh"
+        [disabled]="listKeHoach.length == 0">
+        <i class="fa fa-line-chart" aria-hidden="true"></i> Điều chỉnh</button>
+      <!-- <button class="btn btn-secondary mb-1" [disabled]="listKeHoach.length == 0" [hidden]="true">
+        <i class="fa fa-download" aria-hidden="true"></i> Nhập Excel</button>
+      <button class="btn btn-success mb-1" [disabled]="listKeHoach.length == 0" [hidden]="true">
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel</button> -->
+    </div>
+  </div>
+</h4>
+
+<!-- Thông tin chung-->
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+
+        <!-- năm-->
+        <div class="row">
+          <div class="col-xl-6 text-xl-right">
+            <div class=" row form-group">
+              <div class="col-xl-4 text-xl-right">
+                <label for="selectYear">Năm: </label>
+                <label style="color: red">*</label>
+              </div>
+              <div class="col-xl-8 text-xl-left">
+                <select name="" id="selectYear" class="custom-select" [formControl]="selectYear" (change)="changeYear($event)">
+                  <option *ngFor="let item of listYear" [value]="item">{{ item }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Tên kế hoạch-->
+        <div class="row">
+          <div class="col-xl-6">
+            <ttkt-input xl="4-8" type="text" label="Tên kế hoạch" [formControl]="tenKh"></ttkt-input>
+          </div>
+          <div class="col-xl-6">
+            <ttkt-input xl="4-8" type="date" label="Ngày" [formControl]="ngay"></ttkt-input>
+          </div>
+        </div>
+
+        <!-- Số quyết định-->
+
+        <div class="row">
+          <div class="col-xl-6">
+            <ttkt-input xl="4-8" type="text" label="Sô quyết định" [formControl]="soQd"></ttkt-input>
+          </div>
+          <div class="col-xl-6">
+            <div class=" row form-group">
+              <div class="col-xl-4 text-xl-right">
+                <label>File quyết định:</label>
+                <label style="color: red">*</label>
+              </div>
+              <div class="col-xl-8">
+                <label for="uploadFile" class="btn btn-default btn-sm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFile" hidden type="file" (change)="upFileQuyetDinh()" #fileQuyetDinhTaoKH>
+                <b class="ten-fileUpload">{{ tenFile }}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Người kí-->
+        <div class="row">
+          <div class="col-xl-6">
+            <ttkt-input xl="4-8" type="text" label="Người ký" [formControl]="nguoiKi"></ttkt-input>
+          </div>
+          <div class="col-xl-6">
+            <ttkt-input xl="4-8" type="text" label="Người gửi" [formControl]="nguoiTao" [ngClass]="{'disable-click': true}"></ttkt-input>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- DS kế hoach-->
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách kế hoạch</legend>
+        <ttkt-danh-sach-ke-hoach-table [listKeHoach]="listKeHoach" [tinh]="true" [coDieuChinh]="coDieuChinh"
+          [tienHanhGiao]="'true'" [displayTongSo]="true"></ttkt-danh-sach-ke-hoach-table>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #guiKHModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="guiKHModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGuiKHModal">
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="text" md="4-8" formControlName="inputSend" label="Gửi" [ngClass]="{'disable-click': true}">BHXH
+                Tỉnh</ttkt-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <ttkt-input type="textarea" rows="3" md="4-8" label="Lời nhắn" formControlName="noiDungLn"></ttkt-input>
+            </div>
+          </div>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="guiKHModal.hide()">
+              <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+            <button type="button" class="btn btn-default" (click)="guiKHModal.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #giaoKehoachModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Giao kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="giaoKehoachModel.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group container">
+          <label for="" class="col-form-label">Bạn có chắc chắn muốn giao kế hoạch?</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onLuu()" *ngIf="!onGiaoKh">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="giaoKehoachModel.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

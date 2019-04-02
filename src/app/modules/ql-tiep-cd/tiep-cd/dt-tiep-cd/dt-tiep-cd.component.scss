@@ -1,0 +1,43 @@
+@import './../../../../../styles/variables.scss';
+
+#modalLichTiepCongDanCBTT,
+#modalLichTiepCongDanTTDV {
+    .row {
+        margin-bottom: 1rem;
+    }
+}
+
+.colorRequired,
+.errNguoiTiep,
+.errMessage {
+    color: #ff0000;
+}
+
+.visibled {
+    display: none;
+}
+
+.page-item {
+    cursor: pointer;
+    &:hover {
+        background-color: #dddddd
+    }
+}
+
+.page-item.active .page-link {
+    color: #fff
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.inline-row {
+    text-align: center;
+    border-bottom: 1px solid #eceeef;
+
+    &:last-child {
+        border: none;
+    }
+}
+

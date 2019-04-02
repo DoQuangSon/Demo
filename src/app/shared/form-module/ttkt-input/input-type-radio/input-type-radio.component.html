@@ -1,0 +1,7 @@
+<div *ngFor="let item of data.options" class="form-check {{ item.class }}" [ngClass]="{'form-check-inline': data.inline}">
+    <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input" [formControl]="formControlInput" [value]="item.value">
+        <span class="custom-control-indicator"  [ngClass]="{'checked': formControlInput.value == item.value}"></span>
+        <span class="custom-control-description">{{ item.text }}</span>
+    </label>
+</div>

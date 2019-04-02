@@ -1,0 +1,60 @@
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <!-- Left-->
+          <div class="col-12 col-md-6">
+
+            <!-- năm-->
+            <div class="form-group">
+              <label for="selectYear">Năm: </label>
+              {{ chiTietKH ? chiTietKH.keHoachYear: ''}}
+            </div>
+
+            <!-- Số quyết định-->
+            <div class="form-group">
+              <label>Số quyết định:</label>
+              <span> {{chiTietKH ? chiTietKH.soQuyetDinhTaoKeHoach : ''}}</span>
+            </div>
+            <!--Ngày-->
+            <ng-container>
+              <div class="form-group">
+                <label>Ngày tạo:</label>
+                {{ (chiTietKH ? chiTietKH.ngayQuyetDinhTaoKeHoach : '') | date:"dd/MM/yyyy"}}
+                <!-- <my-date-picker [formControl]="ngay" locale="vi" style="width: 100"></my-date-picker> -->
+              </div>
+            </ng-container>
+
+            <!-- người tạo -->
+            <div class="form-group">
+              <label>Người gửi:</label>
+              <span> {{chiTietKH ? chiTietKH.tenNguoiTao : ''}}</span>
+            </div>
+          </div>
+          <!-- right-->
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label>Tên kế hoạch:</label>
+              <span> {{chiTietKH ? chiTietKH.tenKeHoach: ''}}</span>
+            </div>
+            <!-- Người kí-->
+            <div class="form-group">
+              <label>Người kí:</label>
+              <span> {{chiTietKH ? chiTietKH.nguoiKyQDTaoKeHoach : ''}}</span>
+            </div>
+            <!--File quyết định-->
+            <div class="form-group">
+              <span class="col-form-label">File quyết định:
+                <b class="ten-fileUpload">{{ tenFile }}</b>
+              </span>
+              <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFile()">
+                <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,341 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-6">
+            <span class="page-title">Danh sách tỉnh quản lý</span>
+        </div>
+        <!-- <div class="col-md-6 pull-right">
+            <button class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+                <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+        </div> -->
+    </div>
+</h4>
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+        <form novalidate id="thongtintimkiem" [formGroup]="thongtintimkiemForm">
+            <div class="display-hidden">
+                <fieldset class="fieldset-search">
+                    <legend>Thông tin tìm kiếm</legend>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-xl-6 text-xl-right">
+                                    <label class="col-form-label">Từ năm: </label>
+                                </div>
+                                <div class="col-xl-6">
+                                    <ng-select [allowClear]="true" [items]="namOption" formControlName="yearFrom"
+                                        placeholder="Chọn năm">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-xl-6 text-xl-right">
+                                    <label class="col-form-label">Đến năm: </label>
+                                </div>
+                                <div class="col-xl-6">
+                                    <ng-select [allowClear]="true" [items]="namOption" formControlName="yearTo"
+                                        placeholder="Chọn năm">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-xl-5 text-xl-right">
+                                    <label class="col-form-label">Địa bàn: </label>
+                                </div>
+                                <div class="col-xl-7">
+                                    <ng-select [allowClear]="true" [items]="dmTinh" formControlName="tinhHuyenId"
+                                        placeholder="Chọn địa bàn">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-xl-5 text-xl-right">
+                                    <label class="col-form-label">Lịch sử TTKT: </label>
+                                </div>
+                                <div class="col-xl-7">
+                                    <ng-select [allowClear]="true" [items]="tingTrangOption" formControlName="lichSuTtkt"
+                                        placeholder="Chọn tình trạng TTKT">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button class="btn btn-default" (click)="onSearchDanhSachTinhViQuanLy()">
+                            <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                    </div>
+
+                </fieldset>
+            </div>
+            <fieldset>
+                <legend>Danh sách chi tiết</legend>
+                <div class="table-responsive table-scroll-x">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="th-size">STT
+                                    <br>
+                                </th>
+                                <th>Tỉnh, thành phố</th>
+                                <th>Mã
+                                    <br>Tỉnh, thành phố</th>
+                                <th>Lịch sử
+                                    <br>TTKT
+                                </th>
+                                <th>Năm TTKT
+                                    <br>gần nhất
+                                </th>
+                                <th>Trong
+                                    <br>kế hoạch</th>
+                                <th>Đang
+                                    <br>TTKT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="danhSachTinh.length === 0">
+                                <td colspan="6" class="text-center">Không có dữ liệu</td>
+                            </tr>
+                            <tr *ngFor="let tinh of danhSachTinh; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td class="text-left text-primary">
+                                    <a (click)="chiTietDvTTKT(tinh.id)">{{tinh.tinh}}</a>
+                                </td>
+                                <td>{{tinh.matinh}}</td>
+                                <td>
+                                    <span (click)="showhistory(tinh.id)">{{tinh.lichsuttkt}}</span>
+                                </td>
+                                <td>{{tinh.namTtktGanNhat}}</td>
+                                <td>
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" [checked]="tinh.trongkehoach"
+                                            disabled>
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success btn-sm" *ngIf="tinh.trongkehoach && tinh.thanhLapDoanId != null"
+                                        (click)="xemTienDo(tinh.thanhLapDoanId)">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> Xem tiến độ</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <button *ngIf="statusActive == 'KH_TTKT'" type="button" class="btn btn-link pull-right" (click)="onBack()">
+                <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+        </form>
+    </div>
+</div>
+
+<div bsModal #historyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-xemlichsu">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lịch sử Thanh Tra Kiểm Tra</h5>
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true" (click)="close()">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label">Đơn vị:
+                            <b>{{mapTinhHuyenName(currentPViId)}}</b>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pull-right mb-1">
+                            <button class="btn btn-primary" (click)="addLichSu()" *ngIf="statusActive != 'KH_TTKT'">
+                                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table-scroll-x">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Loại hình
+                                    <br>TTKT</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Đơn vị chủ trì</th>
+                                <th>Đơn vị phối hợp</th>
+                                <th>Ghi chú</th>
+                                <th class="th-size">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="dsLichSuTTKT.length == 0">
+                                <td colspan="7" class="text-center">Không có dữ liệu</td>
+                            </tr>
+
+                            <tr *ngFor="let item of dsLichSuTTKT; let index = index">
+                                <td>{{ mapLoaiHinhTTKTName(item.loaiHinhTTKT) }}</td>
+                                <td class="text-center">{{ item.ngayBatDau | date: "dd/MM/yyyy" }}</td>
+                                <td class="text-center">{{ item.ngayKetThuc | date: "dd/MM/yyyy" }}</td>
+                                <td>{{ item.donViCTri.tenDonViChuTriPhoiHop }}</td>
+                                <td>{{ item.dvPhoiHops| mapArray : "tenDonViChuTriPhoiHop" }}</td>
+                                <td>{{ item.ghiChu ? item.ghiChu : '' }}</td>
+                                <td>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-sm edit" (click)="editLichSu(item.thanhLapDoanId)">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                                        <button type="button" class="btn btn-danger btn-sm delete" *ngIf="item.isCustom == true"
+                                            (click)="deleteLichSu(item.thanhLapDoanId)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation" *ngIf="pagerDSLichSuTTKT.pages && pagerDSLichSuTTKT?.pages.length">
+                    <ul class="pagination justify-content-end mb-1">
+                        <li title="Trang đầu" class="page-item" [ngClass]="{disabled:pagerDSLichSuTTKT.currentPage === 0}">
+                            <a class="page-link" aria-label="First" (click)="setPageDSLichSuTTKT(0)">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li title="Trang trước" class="page-item" [ngClass]="{disabled:pagerDSLichSuTTKT.currentPage === 0}">
+                            <a class="page-link" aria-label="Previous" (click)="setPageDSLichSuTTKT(pagerDSLichSuTTKT.currentPage - 1)">
+                                <span aria-hidden="true">&#60;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of pagerDSLichSuTTKT.pages" [ngClass]="{active:pagerDSLichSuTTKT.currentPage === page - 1}">
+                            <a class="page-link" (click)="setPageDSLichSuTTKT(page-1)">{{page}}</a>
+                        </li>
+                        <li title="Trang tiếp" class="page-item" [ngClass]="{disabled:pagerDSLichSuTTKT.currentPage + 1 === pagerDSLichSuTTKT.totalPages}">
+                            <a class="page-link" aria-label="Next" (click)="setPageDSLichSuTTKT(pager.currentPage + 1)">
+                                <span aria-hidden="true">&#62;</span>
+                            </a>
+                        </li>
+                        <li title="Trang cuối" class="page-item" [ngClass]="{disabled:pagerDSLichSuTTKT.currentPage + 1 === pagerDSLichSuTTKT.totalPages}">
+                            <a class="page-link" aria-label="Last" (click)="setPageDSLichSuTTKT(pagerDSLichSuTTKT.totalPages - 1)">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary" (click)="onSaveLichSuTTKT()">
+                  <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button> -->
+                <button type="button" class="btn btn-default" (click)="close()">
+                    <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #modalLichSuTTKT="bs-modal" id="modalLichSuTTKT" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">
+                    <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalLichSu()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" [formGroup]="lichSuTTKTForm">
+                <div class="form-group row" *ngIf="typeModal != 'delete'">
+                    <p class="col-md-12 text-lg-left" style="font-style: italic;">Các trường có
+                        <span class="text-danger">*</span> là bắt buộc</p>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Loại hình TTKT:
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': !isCustom}">
+                        <select class="custom-select" formControlName="loaiHinh_InForm" [attr.disabled]="(typeModal === 'delete' ? true : null)">
+                            <option value="" selected>Chọn loại hình TTKT</option>
+                            <option *ngFor="let donVi of listLoaiHinh" [value]="donVi.id">{{ donVi.name }}</option>
+                        </select>
+                        <p class="help-block text-danger" *ngIf="lichSuTTKTForm.controls.loaiHinh_InForm?.errors?.required &&  (lichSuTTKTForm.controls.loaiHinh_InForm?.touched || lichSuTTKTForm.controls.loaiHinh_InForm?.dirty)">
+                            Loại hình TTKT không được để trống!</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Ngày bắt đầu:
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': !isCustom}">
+                        <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayBatDau_InForm"
+                            [disabled]="(typeModal === 'delete')"></my-date-picker>
+                        <p class="help-block text-danger" *ngIf="lichSuTTKTForm.controls.ngayBatDau_InForm?.errors?.required &&  (lichSuTTKTForm.controls.ngayBatDau_InForm?.touched || lichSuTTKTForm.controls.ngayBatDau_InForm?.dirty)">
+                            Ngày bắt đầu không được để trống!</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Ngày kết thúc:
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': !isCustom}">
+                        <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayKetThuc_InForm"
+                            [disabled]="(typeModal === 'delete')"></my-date-picker>
+                        <p class="help-block text-danger" *ngIf="lichSuTTKTForm.controls.ngayKetThuc_InForm?.errors?.required &&  (lichSuTTKTForm.controls.ngayKetThuc_InForm?.touched || lichSuTTKTForm.controls.ngayKetThuc_InForm?.dirty)">
+                            Ngày kết thúc không được để trống!</p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Đơn vị chủ trì:
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': !isCustom}">
+                        <select class="custom-select" formControlName="dvChuTri_InForm" [attr.disabled]="(typeModal === 'delete' ? true : null)">
+                            <option value="" selected>Chọn đơn vị chủ trì</option>
+                            <option *ngFor="let donVi of cacDonViChuTri" [value]="donVi.id">{{
+                                donVi.tenDonViChuTriPhoiHop }}</option>
+                        </select>
+                        <p class="help-block text-danger" *ngIf="lichSuTTKTForm.controls.dvChuTri_InForm?.errors?.required &&  (lichSuTTKTForm.controls.dvChuTri_InForm?.touched || lichSuTTKTForm.controls.dvChuTri_InForm?.dirty)">
+                            Đơn vị chủ trì không được để trống!</p>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="showDvPhoiHop">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Đơn vị phối hợp:</label>
+                        <span class="required">*</span>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': !isCustom}">
+                        <ng-select [multiple]="true" [items]="cacDonViPhoiHop" [disabled]="(typeModal === 'delete')"
+                            (data)="refreshValueDVPH($event)" placeholder="Chọn đơn vị" class="ng-select"
+                            formControlName="donViPhoiHop">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 text-lg-right">
+                        <label class="col-form-label">Ghi chú:</label>
+                    </div>
+                    <div class="col-md-8" [ngClass]="{'disable-click': typeModal == 'delete'}">
+                        <textarea type="text" class="form-control" formControlName="ghiChu_InForm"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class=" modal-footer ">
+                <button [ngClass]="colorButtonSave " (click)="saveLichSu()" [disabled]="!lichSuTTKTForm.valid">
+                    <i [ngClass]="iconButtonSave " aria-hidden="true "></i> {{nameButtonSave}}</button>
+                <button class="btn btn-default " (click)="closeModalLichSu() ">
+                    <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>

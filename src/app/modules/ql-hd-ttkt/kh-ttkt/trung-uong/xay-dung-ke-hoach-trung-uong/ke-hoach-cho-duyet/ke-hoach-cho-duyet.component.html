@@ -1,0 +1,39 @@
+<h4 class="heading-page">
+  <!-- <span class="page-title">DS kế hoạch chờ duyệt</span> -->
+  <ttkt-breadcrumb></ttkt-breadcrumb>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend><i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chi tiết</legend>
+        <div class="form-group row mb-1">
+          <div class="col-lg-9 offset-lg-3 text-right">
+            <!--<button class="btn btn-default mr-1 my-1"><i class="fa fa-print" aria-hidden="true"></i> In báo cáo sai phạm</button>-->
+            <!--<button class="btn btn-success my-1"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất excel</button>-->
+          </div>
+        </div>
+        <ttkt-danh-sach-ke-hoach-table [kieuKh] = "1" [listKeHoach]="listKeHoach" [pending]="true"></ttkt-danh-sach-ke-hoach-table>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()"><img src="assets/images/icon_dong.svg" class="img-close"> Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

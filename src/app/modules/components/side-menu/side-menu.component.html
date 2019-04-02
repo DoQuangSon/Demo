@@ -1,0 +1,70 @@
+<div id="sidebar-wrapper">
+  <div [ngClass]="{'slider': true, 'open': open}">
+    <nav>
+      <ul class="gw-nav gw-nav-list sidebar-nav desktop">
+        <li class="sidebar-brand">
+          <button class="btn-show" title="Ẩn/Hiện Sidebar" [ngClass]="{'icon-bar': true, 'toggle': open}" (click)="toggle()">
+            <i class="icon-bar"></i>
+            <i class="icon-bar"></i>
+            <i class="icon-bar"></i>
+          </button>
+        </li>
+        <li *ngFor="let item of data; let i = index"
+           class="init-arrow-down an">
+          <a *ngIf="item.class == accountType && checkPermission(item.url)"
+             [routerLinkActive]="['active', 'open']"
+             [routerLink]="[ item.children ? item.path : item.url ]"
+             [ngClass]="{'last-active': !item.children}"
+             [title]="item.name"
+             ttktDropdownSidemenu>
+             <img src="{{ item.urlImage }}" class="icon-menu" title=""><span class="nav-header-primary">{{ item.name }}</span>
+             <span class="icon__sub"><i *ngIf="(item.children != null)" class="fa fa-angle-down fa-lg"></i></span>
+          </a>
+          <!-- @TODO: Bỏ comment khi fix xong bug phân quyền -->
+          <ul class="nav nav-list collapse sub-menu">
+            <li *ngFor="let it of item.children">
+              <a *ngIf="item.class == accountType && checkPermission(it.url)"
+                  [routerLinkActive]="['active', 'open']"
+                  [ngClass]="{'last-active': !it.children}"
+                  [title]="it.name"
+                  [routerLink]="[ it.url ]" ttktDropdownSidemenu>
+                   <img src="{{ it.urlImageli }}" class="iconli" title=""><span class="nav-header-primary">{{ it.name }}</span>
+                   <span class="icon__sub"><i *ngIf="(it.children != null)" class="fa fa-angle-down fa-lg"></i></span>
+              </a>
+             <ul class="nav nav-sub2 collapse sub-menu">
+                <li *ngFor="let sub2 of it.children">
+                  <a *ngIf="item.class == accountType && checkPermission(sub2.url)"
+                      routerLinkActive="active"
+                      [routerLink]="[ sub2.url ]"
+                      [ngClass]="{'last-active': !sub2.children}"
+                      [title]="sub2.name"><span class="nav-header-primary mg__sub">{{ sub2.name }}</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <!-- <ul class="nav nav-list collapse sub-menu">
+              <li *ngFor="let it of item.children"
+                  ttktRouterActive="active"
+                  [RouterActiveLink]="it.activeSlug || it.url">
+                <a *ngIf="item.class == accountType"
+                    [routerLink]="[ it.url ]"
+                     title="Title" ttktDropdownSidemenu><img src="{{ it.urlImageli }}" class="iconli" title=""><span class="nav-header-primary">{{ it.name }}</span>
+                </a>
+                <ul class="nav nav-sub2 collapse sub-menu">
+                  <li *ngFor="let sub2 of it.children"
+                      ttktRouterActive="active"
+                      [RouterActiveLink]="sub2.activeSlug || sub2.url">
+                    <a *ngIf="item.class == accountType"
+                        [routerLink]="[ sub2.url ]"
+                         title="Title"><img src="{{ sub2.urlImageli }}" class="iconli" title=""><span class="nav-header-primary">{{ sub2.name }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul> -->
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

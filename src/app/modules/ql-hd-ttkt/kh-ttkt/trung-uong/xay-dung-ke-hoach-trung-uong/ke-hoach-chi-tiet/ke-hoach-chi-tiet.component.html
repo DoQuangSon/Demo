@@ -1,0 +1,228 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-9">
+      <ttkt-breadcrumb></ttkt-breadcrumb>
+    </div>
+    <div class="col-md-3 pull-right" *ngIf="isDuyetTuChoi">
+      <button class="btn btn-success" (click)="duyetKH()">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <button class="btn btn-default" (click)="tuChoiKH()">
+        <i class="fa fa-ban" aria-hidden="true"></i> Từ chối</button>
+    </div>
+  </div>
+</h4>
+<ttkt-thong-tin-chung [chiTietKH]="chiTietKH"></ttkt-thong-tin-chung>
+<div *ngIf="isDaChinhSua && (chiTietKH.status == daGiao || chiTietKH.status == chapNhanDieuChinh || chiTietKH.status == TWDaDieuChinh)">
+  <ttkt-thong-tin-dieu-chinh [chiTietKH]="chiTietKH"></ttkt-thong-tin-dieu-chinh>
+</div>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Chi tiết kế hoạch</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Chi tiết kế hoạch</span>
+        </div>
+        <!-- <div class="row mb-1">
+          <div class="col-xl-4">
+            <p class="col-form-label">Năm:
+              <b>{{ chiTietKH.keHoachYear }}</b>
+            </p>
+          </div>
+          <div class="col-xl-6">
+            <p class="col-form-label">Phạm vi:
+              <b>{{ chiTietKH.tenTinhHuyen }}</b>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-xl-4">
+            <p class="col-form-label">Tên kế hoạch:
+              <b>{{ chiTietKH.tenKeHoach }}</b>
+            </p>
+          </div>
+          <div class="col-xl-6">
+            <p class="col-form-label">Ngày tạo:
+              <b>{{ chiTietKH.ngayQuyetDinhTaoKeHoach | date: 'dd/MM/yyyy' }}</b>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-xl-4">
+            <p class="col-form-label">Số quyết định:
+              <b>{{ chiTietKH.soQuyetDinhTaoKeHoach }}</b>
+            </p>
+          </div>
+          <div class="col-xl-6">
+            <p class="col-form-label">Ngày ký quyết định:
+              <b>{{ chiTietKH.ngayKyQDTaoKeHoach | date: 'dd/MM/yyyy' }}</b>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-xl-4">
+            <p class="col-form-label">Người ký quyết định:
+              <b>{{ chiTietKH.nguoiKyQDTaoKeHoach }}</b>
+            </p>
+          </div>
+          <div class="col-xl-6">
+            <span class="col-form-label">File quyết định:
+              <b class="ten-fileUpload">{{ tenFileQuyetDinh }}</b>
+            </span>
+            <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFile()">
+              <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-6">
+            <p class="col-form-label">Tình trạng:
+              <b>{{getTinhTrang()}}</b>
+            </p>
+          </div>
+        </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2">Thanh tra chuyên
+                  <br>ngành đóng</th>
+                <th rowspan="2">Thanh tra, kiểm tra
+                  <br>liên ngành</th>
+                <th colspan="4">Kiểm tra</th>
+                <th rowspan="2">Tổng số</th>
+              </tr>
+              <tr>
+                <th>Nội bộ cơ
+                  <br> quan BHXH</th>
+                <th>Đơn vị
+                  <br> SDLĐ</th>
+                <th>Cơ sở khám
+                  <br> chữa bệnh</th>
+                <th>Đại lý thu,
+                  <br> đại diện chi trả</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="length > 0">
+              <tr>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.thanhTraDvSDLD }}</td>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.lienNganhThanhTra +
+                  chiTietKH.chiTietKhTinh.lienNganhKiemTra }}</td>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraBHXH }}</td>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraDvSDLD }}</td>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraCsKCB }}</td>
+                <td class="text-right">{{ chiTietKH.chiTietKhTinh.kiemTraDaiLyThuChi }}</td>
+                <td class="text-right">{{ sumRow }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-success" data-toggle="modal" data-target="#showDialogHistory" style="margin-bottom: 15px"
+          [disabled]="!isShowBtnLichSu" *ngIf="chiTietKH.status == daGiao || chiTietKH.status == chapNhanDieuChinh || chiTietKH.status == TWDaDieuChinh ">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Xem lịch sử ({{countLichSu}})</button>
+      </fieldset>
+      <!-- Show dialog lich su -->
+      <ng-container *ngIf="chiTietKH.status == daGiao || chiTietKH.status == chapNhanDieuChinh || chiTietKH.status == TWDaDieuChinh">
+        <div class="modal " id="showDialogHistory">
+          <div class="modal-dialog modal-lg">
+            <ttkt-show-dialog-history [chiTietKH]="chiTietKH" [listLichSu]="listLichSu"></ttkt-show-dialog-history>
+          </div>
+        </div>
+      </ng-container>
+
+      <fieldset *ngIf="chiTietKH.status != daGiao && chiTietKH.status != chapNhanDieuChinh && chiTietKH.status != TWDaDieuChinh">
+        <legend>Lịch sử giao nhận</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Lịch sử giao nhận</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="table-resize">Tên cơ quan, tổ chức
+                  <br>
+                </th>
+                <th>Lời nhắn</th>
+                <th>Thời gian</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of optionLichsu; let i = index">
+                <td class="text-left">{{ item.coquan }}</td>
+                <td class="text-left">{{ item.loinhan }}</td>
+                <td class="text-center">{{ item.thoigian | date:"dd/MM/yyyy"}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <button type="button" class="btn btn-link pull-right" (click)="onClose()">
+    <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+</div>
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="duyetKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="pull-right">
+            <button class="btn btn-success" (click)="duyet()">
+              <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+            <button class="btn btn-default" (click)="duyetModal.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- tu choi modal -->
+<div bsModal #tuChoiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="tuChoiKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Từ chối kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="tuChoiModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ttkt-input autosize type="textarea" md="4-8" label="Lý do từ chối" rows="5" formControlName="lyDoTuChoi"></ttkt-input>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="pull-right">
+            <button class="btn btn-danger" (click)="tuChoi()">
+              <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+            <button class="btn btn-default" (click)="tuChoiModal.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

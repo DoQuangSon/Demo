@@ -1,0 +1,231 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Sổ theo dõi tiếp nhận, giải quyết đơn thư</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="taoMoiSoTiepNhan()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+      <button type="button" class="btn btn-success">
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel</button>
+    </div> -->
+    <!--<div class="col-md-6" style="text-align: right;" (click)="printPDF()">-->
+    <!--<button type="button" class="btn">-->
+    <!--<i class="fa fa-print" aria-hidden="true"></i> In</button>-->
+    <!--</div>-->
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary" (click)="isCollapseDirective = !isCollapseDirective"> Xem đột xuất</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="soTheoDoiForm">
+      <div class="row" [ttktCollapse]="isCollapseDirective">
+        <div class="col-md-3">
+          <ttkt-input 
+          type="thang" 
+          label="Tháng"
+          sm="4-8" 
+          formControlName="fromMonth"></ttkt-input>
+        </div>
+        <div class="col-md-3">
+          <ttkt-input 
+          type="nam" 
+          label="Năm"
+          sm="4-8" 
+          formControlName="fromYear"></ttkt-input>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-primary" type="button" (click)="xemChiTietLive()">Xem chi tiết</button>
+        </div>
+      </div>
+      <fieldset>
+        <legend>Danh sách sổ theo dõi tiếp nhận và giải quyết đơn định kỳ</legend>
+        <div class="row">
+          <div class="offset-md-8 col-md-4">
+            <ttkt-input class="nam-right" type="nam" label="Năm" sm="4-8" [formControl]="soTheoDoiForm.controls.nam" (change)="changeYear($event)"></ttkt-input>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên sổ tiếp nhận</th>
+                <th class="table-resize">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsSoTD.length == 0">
+                <td class="text-center" colspan="7">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of dsSoTD; let i = index">
+                <td class="text-center">{{i+ 1}}</td>
+                <td class="text-primary">
+                  <a (click)="goToChiTietSoSach(item.id)">Sổ theo dõi tiếp nhận giải quyết đơn thư tháng {{item.ngayTao | date: 'MM/yyyy'}}</a>
+                </td>
+                <td class="text-center">
+                    <!--<button type="button" class="btn btn-success" (click)="printPDF(item, 1)">-->
+                        <!--<i class="fa fa-file-excel-o" aria-hidden="true"></i> In PDF</button>&nbsp;-->
+                    <button type="button" class="btn btn-primary" (click)="printPDF(item, 2)">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>Xuất EXCEL</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- <fieldset>
+      <legend>Sổ theo dõi tiếp nhận, giải quyết đơn </legend>
+      <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th rowspan="2" class="th-size">STT</th>
+              <th rowspan="2">Số CV đến</th>
+              <th rowspan="2">Ngày nhận</th>
+              <th rowspan="2" class="table-resize">Họ tên, địa chỉ công dân</th>
+              <th rowspan="2" class="table-resize">Nội dung đơn</th>
+              <th colspan="5" rowspan="1">Phân loại đơn</th>
+              <th rowspan="2">Giải quyết</th>
+              <th rowspan="2">Trích yếu</th>
+            </tr>
+            <tr>
+              <th>Theo nội dung</th>
+              <th>Theo số lượng người đứng tên</th>
+              <th>Theo điều kiện xử lý</th>
+              <th>Theo thẩm quyền</th>
+              <th>Theo trình tự giải quyết</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="thongTinSoDTOList.length == 0">
+              <td class="text-center" colspan="12">Không có dữ liệu</td>
+            </tr>
+            <tr *ngFor="let item of thongTinSoDTOList; let i = index">
+              <td class="text-center">{{i + 1}}</td>
+              <td>{{item.soCvDen}}</td>
+              <td>{{item.ngayNhan | date:"dd/MM/yyyy"}}</td>
+              <td>
+                <p>{{item.hoTenCd}}</p>
+                <p>{{item.diaChi}}</p>
+              </td>
+              <td>{{item.noiDungDon}}</td>
+              <td>{{item.theoNoiDung}}</td>
+              <td>{{item.soNguoi}}</td>
+              <td>{{item.theoDieuKienXuLy}}</td>
+              <td>{{item.theoThamQuyen}}</td>
+              <td>{{item.theoTrinhTuGiaiQuyet}}</td>
+              <td>{{item.giaiQuyet}}</td>
+              <td>{{item.trichYeu}}</td>
+            </tr>
+          </tbody>
+          <tr>
+            <td colspan="4">Đơn kỳ trước chuyển sang: {{kyTruocChuyenSang}}</td>
+            <td colspan="4"></td>
+            <td colspan="4">Tổng số đơn đã giải quyết: {{tongSoDonDaGiaiQuyet}}</td>
+          </tr>
+          <tr>
+            <td colspan="4">Tổng số đơn tiếp nhận trong kỳ: {{tiepNhanTrongKy}}
+            </td>
+            <td colspan="4"></td>
+            <td>Trong đó</td>
+            <td class="text-center">{{khieuNaiDaGQ}}</td>
+            <td colspan="2">đơn khiếu nại</td>
+          </tr>
+
+          <tr>
+            <td>Trong đó</td>
+            <td class="text-center">{{khieuNaiTrongKy}}</td>
+            <td>đơn khiếu nại</td>
+            <td colspan="6"></td>
+
+            <td class="text-center">{{toCaoDaGQ}}</td>
+            <td colspan="2">đơn tố cáo</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="text-center">{{toCaoTrongKy}}</td>
+            <td>đơn tố cáo</td>
+            <td colspan="6"></td>
+
+            <td class="text-center">{{kienNghiDaGQ}}</td>
+            <td colspan="2">đơn KNPA</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="text-center">{{kienNghiTrongKy}}</td>
+            <td>đơn KNPA</td>
+            <td colspan="5"></td>
+            <td colspan="4" class="text-left">Tồn: {{(kyTruocChuyenSang + tiepNhanTrongKy) - tongSoDonDaGiaiQuyet }} </td>
+
+          </tr>
+        </table>
+      </div>
+    </fieldset> -->
+
+    <!-- <fieldset>
+      <legend>Tiếp công dân</legend>
+      <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th rowspan="3" class="th-size">STT</th>
+              <th rowspan="3" class="table-resize">Nội dung</th>
+              <th colspan="6">Tiếp thường xuyên</th>
+              <th colspan="6">Tiếp định kỳ và đột xuất của lãnh đạo</th>
+              <th colspan="3">Kết quả tiếp công dân</th>
+            </tr>
+            <tr>
+              <th rowspan="2">Lượt</th>
+              <th rowspan="2">Người</th>
+              <th rowspan="2">Vụ việc</th>
+              <th colspan="3">Đoàn đông người</th>
+              <th rowspan="2">Lượt</th>
+              <th rowspan="2">Người</th>
+              <th rowspan="2">Vụ việc</th>
+              <th colspan="3">Đoàn đông người</th>
+              <th rowspan="2">Chưa được giải quyết</th>
+              <th rowspan="2">Đã được giải quyết</th>
+              <th rowspan="2">Ghi chú</th>
+
+            </tr>
+            <tr>
+              <th>Số đoàn</th>
+              <th>Người</th>
+              <th>Vụ việc</th>
+              <th>Số đoàn</th>
+              <th>Người</th>
+              <th>Vụ việc</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+              <td>Tố cáo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset> -->
+
+  </div>
+</div>

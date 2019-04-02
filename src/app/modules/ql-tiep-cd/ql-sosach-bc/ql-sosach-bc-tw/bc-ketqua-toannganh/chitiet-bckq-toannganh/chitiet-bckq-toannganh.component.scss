@@ -1,0 +1,36 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .table-responsive {
+            thead {
+                background-color: $colorLightGray;
+                font-size: 13px;
+                tr {
+                    th,
+                    td {
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+                }
+            }
+            tbody {
+                tr {
+                    a {
+                        cursor: pointer;
+                        &:hover {
+                            color: $colorBlue;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+        .table-donthu {
+            min-width: 1300px;
+        }
+    }
+}
+
+.conten-label {
+    font-weight: bold
+}

@@ -1,0 +1,57 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Đơn thư tiếp công dân</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+      <div>
+        <fieldset>
+          <legend>Danh sách chi tiết</legend>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="th-size">STT</th>
+                  <th class="table-resize">Họ tên công dân</th>
+                  <th>Địa chỉ</th>
+                  <th>Phân loại</th>
+                  <th>Ngày tiếp nhận</th>
+                  <th class="table-resize">Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="dslichsu.length == 0">
+                  <td class="text-center" colspan="7">Không có dữ liệu</td>
+                </tr>
+                <tr *ngFor="let item of dslichsu; let i = index">
+                  <td class="text-center">{{pagging.currentPage * pagging.itemsPerPage + i + 1}}</td>
+                  <td class="text-primary">
+                    <a (click)="goToNoiDungTiepDan(item)">{{item.hoTenCongDan}}</a>
+                  </td>
+                  <td>{{item.diaChiCongDan}}</td>
+                  <td>{{ item.tenPhanLoaiNoiDung}}</td>
+                  <td class="text-center">{{ item.createDateTime | date:"dd/MM/yyyy"}}</td>
+                  <td>{{ item.status | dtstatus }}</td>
+                  <td class="text-center">
+                    <!-- <label class="custom-control custom-checkbox"> -->
+                    <button (click)="onClickDieuChinh(item)" class="btn btn-dieuchinh" id="dieuchinh">Điều Chỉnh</button>
+                    <!-- </label> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+              <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+              </pagination>
+            </nav>
+          </div>
+        </fieldset>
+      </div>
+  </div>
+</div>

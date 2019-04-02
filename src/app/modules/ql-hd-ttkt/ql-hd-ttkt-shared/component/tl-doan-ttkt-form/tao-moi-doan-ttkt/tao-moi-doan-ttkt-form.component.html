@@ -1,0 +1,432 @@
+
+    <form novalidate [formGroup]="tldoanForm">
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+            [readOnly]="type !== 'add'"
+              type="radio"
+              xl="4-8"
+              label=""
+              [formControl]="tldoanForm.controls.isTrongKeHoach"
+              [data]="{
+                options: [{ 
+                  text: 'Trong kế hoạch',
+                  value: true
+                }, 
+                {
+                  text: 'Đột xuất',
+                  value: false
+                }]
+              }"
+              class="mb-1"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+              <ttkt-input
+              [readOnly]="type !== 'add'"
+                type="select"
+                label="Địa bàn"
+                [formControl]="tldoanForm.controls.phamViId"
+                xl="4-6"
+                [data]="{
+                  options: dsTinh,
+                  valueType: 'tenTinhHuyen',
+                  firstOption: 'Chọn địa bàn'
+                }"
+              ></ttkt-input>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="text"
+              xl="4-8"
+              label="Tên quyết định"
+              [formControl]="tldoanForm.controls.tenQuyetDinh"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              type="text"
+              xl="4-6"
+              label="Số quyết định"
+              [formControl]="tldoanForm.controls.soQuyetDinh"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="date"
+              xl="4-6"
+              label="Ngày quyết định"
+              [formControl]="tldoanForm.controls.ngayQuyetDinh"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              type="file"
+              xl="4-6"
+              label="File quyết định"
+              [formControl]="tldoanForm.controls.fileQuyetDinh"
+              [data]="{
+                type: FILE.FILE_QUYET_DINH
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="date"
+              xl="4-6"
+              label="Ngày bắt đầu"
+              [formControl]="tldoanForm.controls.ngayBatDau"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              type="date"
+              xl="4-8"
+              label="Ngày kết thúc"
+              [formControl]="tldoanForm.controls.ngayKetThuc"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="text"
+              xl="4-8"
+              label="Cơ quan ban hành"
+              [formControl]="tldoanForm.controls.coQuanBanHanh"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              type="number"
+              xl="4-8"
+              label="Thời hạn thực hiện"
+              [formControl]="tldoanForm.controls.thoiHanThucHien"
+              [disabled] = true
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="select-basic"
+              xl="4-8"
+              label="Căn cứ"
+              [formControl]="tldoanForm.controls.dmCanCuTTKTId"
+              [data]="{
+                options: cacCanCu,
+                firstOption: 'Chọn căn cứ',
+                valueType: 'tenCanCu'
+              }"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              type="text"
+              xl="4-8"
+              label="Người ký quyết định"
+              [formControl]="tldoanForm.controls.nguoiKyQuyetDinh"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="date"
+              xl="4-8"
+              label="Ngày công bố"
+              [formControl]="tldoanForm.controls.ngayCongBo"
+            ></ttkt-input>
+          </div>
+
+          <div class="col-md-6">
+            <ttkt-input
+              type="select-basic"
+              xl="4-6"
+              label="Chức danh"
+              [formControl]="tldoanForm.controls.dmChucDanhId"
+              [data]="{
+                options: listChucVu,
+                valueType: 'chucDanh'
+              }"
+            ></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              type="select"
+              xl="4-8"
+              label="Đơn vị chủ trì"
+              [formControl]="tldoanForm.controls.donViCTriId"
+              [data]="{
+                options: cacDonViChuTriByType,
+                valueType: 'tenDonViChuTriPhoiHop',
+                firstOption: 'Chọn đơn vị chủ trì',
+                disabled: disableDvCTri
+              }"
+            ></ttkt-input>
+            <div class="col-md-6"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ttkt-input
+              [readOnly]="tldoanForm.controls.isTrongKeHoach.value && !isTkTinh"
+              type="radio"
+              xl="4-8"
+              label="Nội dung"
+              [formControl]="tldoanForm.controls.chonNoiDung"
+              [data]="{
+                options: [{
+                  text: 'Thanh tra',
+                  value: 'thanhTra'
+                }, 
+                {
+                  text: 'Kiểm tra',
+                  value: 'kiemTra'
+                }]
+              }"
+            ></ttkt-input>
+              <ttkt-input
+                type="select"
+                [display]="tldoanForm.value.chonNoiDung=='thanhTra'"
+                label=""
+                xl="4-8"
+                [formControl]="tldoanForm.controls.listNoiDungTT"
+                [data]="{
+                  options: cacNoiDungTT,
+                  valueType: 'tenNoiDung',
+                  multiple: true,
+                  placeholder: 'Chọn nội dung thanh tra'
+                }"
+              ></ttkt-input>
+              
+              <ttkt-input
+                type="select"
+                [display]="tldoanForm.value.chonNoiDung=='kiemTra'"
+                label=""
+                xl="4-8"
+                [formControl]="tldoanForm.controls.listNoiDungKT"
+                [data]="{
+                  options: cacNoiDungKT,
+                  valueType: 'tenNoiDung',
+                  multiple: true,
+                  placeholder: 'Chọn nội dung kiểm tra'
+                }"
+              ></ttkt-input>
+          </div>
+          <div class="col-md-6">
+            <ttkt-input
+              [readOnly]="tldoanForm.controls.isTrongKeHoach.value && !isTkTinh"
+              type="radio"
+              xl="4-8"
+              label="Liên ngành"
+              [formControl]="tldoanForm.controls.chonDvPhoiHop"
+              [data]="{
+                options: [{
+                  text: 'Có',
+                  value: 'lienNganh'
+                }, 
+                {
+                  text: 'Không',
+                  value: 'khongLienNganh'
+                }]
+              }"
+            ></ttkt-input>
+            <ttkt-input
+              type="select"
+              [display]="tldoanForm.value.chonDvPhoiHop=='lienNganh'"
+              label=""
+              xl="4-8"
+              [formControl]="tldoanForm.controls.donViPhoiHop"
+              [data]="{
+                options: cacDonViPhoiHop,
+                placeholder: 'Chọn đơn vị',
+                valueType: 'tenDonViChuTriPhoiHop',
+                multiple: true
+              }"
+            ></ttkt-input>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Tài liệu liên quan: </label>
+              </div>
+              <div class="col-xl-8">
+                <label for="uploadFileTaiLieuLienQuan" class="btn btn-default btn-sm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadFileTaiLieuLienQuan" hidden type="file" #fileInput2
+                  (change)="onAttachFileLienQuan()">
+                <b class="ten-fileUpload">{{tenFileTaiLieuLienQuan}}</b>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="form-group row">
+              <div class="col-xl-2"></div>
+              <div class="col-xl-8">
+                <div class="table-responsive table-scroll-x table-uploadfile">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th class="th-size">STT</th>
+                        <th>Tên file</th>
+                        <th>Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of fileTaiLieuLienQuan, let i = index">
+                        <td>{{i + 1}}</td>
+                        <td class="text-left">{{item.fileName}}</td>
+                        <td>
+                          <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteFile(i)">
+                            <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Danh sách đoàn TTKT</legend>
+        <div class="pull-right mb-1">
+          <button class="btn btn-primary" (click)="addThanhVien()">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x tableTV">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Họ tên</th>
+                <th>Chức vụ đoàn</th>
+                <th>Chức vụ công tác</th>
+                <th>Đơn vị</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsThanhVien?.length == 0">
+                <td colspan="6">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of dsThanhVien; let index = index">
+                <td>{{index + 1}}</td>
+                <td>{{item.hoVaTen}}</td>
+                <td>{{item.chucVuDoan}}</td>
+                <td>{{item.chucVuCongTac}}</td>
+                <td>{{item.tenDonViChuTriPhoiHop }}</td>
+                <td>
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editThanhVien(index)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteThanhVien(index)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+      <!-- table thanh tra kiểm tra -->
+      <fieldset *ngIf="(tldoanForm.value.chonNoiDung=='thanhTra' || tldoanForm.value.chonNoiDung=='kiemTra') && tldoanForm.value.chonDvPhoiHop != '' && tldoanForm.value.phamViId !='' ">
+        <legend *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">Thanh tra
+          <span class="text-danger"> *</span>
+        </legend>
+        <legend *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'">Kiểm tra
+          <span class="text-danger"> *</span>
+        </legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <label *ngIf="tldoanForm.value.loaiHinh=='thanhTra' || tldoanForm.value.chonNoiDung=='thanhTra'" class="col-md-12 mb-0 mt-1">
+                Danh sách đơn vị được Thanh tra
+              </label>
+              <label *ngIf="tldoanForm.value.loaiHinh=='kiemTra' || tldoanForm.value.chonNoiDung=='kiemTra'" class="col-md-12 mb-0 mt-1">
+                Danh sách đơn vị được Kiểm tra
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right mb-1">
+              <button class="btn btn-primary" (click)="addDonVi()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x tableDV" *ngIf="(tldoanForm.value.loaiHinh=='kiemTra' || tldoanForm.value.chonNoiDung=='kiemTra') ||
+        (tldoanForm.value.loaiHinh=='thanhTra' || tldoanForm.value.chonNoiDung=='thanhTra')">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên đơn vị</th>
+                <th>Mã đơn vị SDLĐ</th>
+                <th>Mã Cơ sở khám chữa bệnh</th>
+                <th class="table-resize" *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">Nội dung thanh tra</th>
+                <th class="table-resize" *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'">Nội dung kiểm tra</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- co quan BHXH -->
+              <tr *ngIf="tableContent.length == 0">
+                <td colspan="6">Không có dữ liệu</td>
+              </tr>
+              <ng-container *ngFor="let item of tableContent, let i = index">
+                <tr>
+                  <th>{{ i + 1 }}</th>
+                  <th>{{ item.tenDanhMuc}}</th>
+                  <th></th>
+                  <th></th>
+                  <th *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'"></th>
+                  <th *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'"></th>
+                  <th>
+                    <!-- <i class="fa fa-plus-circle fa-lg" aria-hidden="true" (click)="showModalDonVi(1)"></i> -->
+                  </th>
+                </tr>
+                <tr *ngFor="let cq of item.children; let j = index">
+                  <td>{{ j+1 }}</td>
+                  <td>{{ cq.tenDoiTuong }}</td>
+                  <td class="text-center">{{ cq.maSuDungLaoDong }}</td>
+                  <td>
+                    <input class="form-control text-center" type="text" *ngIf="cq.dmPhanLoaiDtId == 2" value="{{ cq.maCoSoKhamChuaBenh }}" #khamChuaBenh (blur)="setValueMaKhamChuaBenh(cq, khamChuaBenh.value)"> {{ cq.dmPhanLoaiDtId == 2 ? '' : cq.maThu }}
+                  </td>
+                  <td class="text-left" *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">{{ cq.noiDungTTName }}</td>
+                  <td class="text-left" *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'">{{ cq.noiDungKTName }}</td>
+                  <td>
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="editDonVi(i,j)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                      <button type="button" class="btn btn-danger btn-sm delete" (click)="editDonVi(i,j, true)">
+                        <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>

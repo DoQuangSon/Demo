@@ -1,0 +1,200 @@
+<h4 class="heading-page">
+  <span class="page-title">Quản lý vai trò</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="NhomNSDNguoiDungForm">
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <div class="col-xl-7 col-lg-10">
+                <input class="form-control mb-md-1" type="text" formControlName="search">
+              </div>
+              <div class="col-xl-2 col-lg-2">
+                <button type="button" class="btn btn-default" (click)="search()">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-1 pull-right">
+              <button type="button" class="btn btn-primary" (click)="showModalAddNhomNSD()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên nhóm</th>
+                <th>Hiển thị</th>
+                <th class="table-resize">Mô tả</th>
+                <th>Cấp quản lý</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of userGroupList; let i = index">
+                <td class="text-center">{{ (pagging.currentPage-1)*pagging.itemsPerPage + i + 1 }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ getCapQuanLyName(i) }}</td>
+                <td class="text-center">
+                  <div>
+                    <button *ngIf="item.id === 1" type="button" class="btn btn-success btn-sm edit" (click)="openModalPhanQuyen(item.id)" disabled>
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Phân quyền</button>
+                    <button *ngIf="item.id !== 1" type="button" class="btn btn-success btn-sm edit" (click)="openModalPhanQuyen(item.id)">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Phân quyền</button>
+                    <!-- <button type="button" class="btn btn-success btn-sm edit" (click)="openModalGanNSD(item.id)">
+                      <i class="fa fa-cog" aria-hidden="true"></i> Gán NSD</button> -->
+                    <button *ngIf="item.id === 1" type="button" class="btn btn-danger btn-sm delete" (click)="actionDelete(item.id)" disabled>
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                    <button *ngIf="item.id !== 1" type="button" class="btn btn-danger btn-sm delete" (click)="actionDelete(item.id)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                    <button *ngIf="item.id === 1" type="button" class="btn btn-primary btn-sm edit" (click)="editNhomNSD(i)" disabled>
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button *ngIf="item.id !== 1" type="button" class="btn btn-primary btn-sm edit" (click)="editNhomNSD(i)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!userGroupList.length">
+                <td colspan="9" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- modalPhanQuyen -->
+<div bsModal #modalPhanQuyen="bs-modal" id="modalPhanQuyen" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Phân quyền người dùng</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalPhanQuyen.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="phanQuyenForm">
+        <ngx-treeview [config]="config" [items]="items" (selectedChange)="selectItemTreeView($event)"></ngx-treeview>
+      </div>
+      <div class=" modal-footer ">
+        <button type="button" class="btn btn-primary" (click)="savePhanQuyen() ">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Ghi nhận</button>
+        <button type="button" class="btn btn-default" (click)="modalPhanQuyen.hide() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalNhomNSD -->
+<div bsModal #modalNhomNSD="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="icon_ModalHeader"></i> {{ type_title_NhomNSD }} vai trò người sử dụng</h5>
+        <button type="button" class="close pull-right" (click)="modalNhomNSD.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="addNhomNSDForm">
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Tên nhóm:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" formControlName="name" ng-trim="true">
+              <span class="errMessage" *ngIf="(addNhomNSDForm.controls.name.errors?.required && (tennhom || addNhomNSDForm.controls.name.touched || addNhomNSDForm.controls.name.dirty))
+              || errtenNhom">Tên nhóm không được để trống</span>
+              <!-- <span class="errMessage" *ngIf="errorUpperCase">Tên nhóm phải viết hoa</span> -->
+              <span class="errMessage" *ngIf="errSpacesWhite">Tên nhóm không thể chỉ chứa khoảng trắng</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="selectState" class="col-form-label col-md-3 text-lg-right">Cấp quản lý:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <!-- <input type="text" class="form-control" formControlName="capQuanLy"> -->
+              <select class="custom-select" formControlName="capQuanLy">
+                <option *ngFor="let item of capQuanLyOptions" [value]="item.id">{{ item.name }}</option>
+              </select>
+              <span class="errMessage" *ngIf="(addNhomNSDForm.controls.capQuanLy.errors?.required &&
+              (capQL || addNhomNSDForm.controls.capQuanLy.touched || addNhomNSDForm.controls.capQuanLy.dirty))">Bạn phải chọn cấp quản lý</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Hiển thị:
+            </label>
+            <div class="col-md-9">
+              <input type="text" class="form-control" formControlName="title">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Mô tả:
+            </label>
+            <div class="col-md-9">
+              <textarea type="text" class="form-control" formControlName="description"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="status_Option == 'add'" (click)="saveUserGroup('add')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+          <button type="button" class="btn btn-primary" *ngIf="status_Option == 'edit'" (click)="saveUserGroup('edit')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-default" (click)="modalNhomNSD.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Xóa nhóm người dùng</h5>
+        <button type="button" class="close pull-right" (click)="modalDelete.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center text-danger">
+          <b>Bạn chắc chắn muốn xóa nhóm người dùng?</b>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="acceptDelete()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="modalDelete.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

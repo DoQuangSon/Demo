@@ -1,0 +1,24 @@
+@import './../../../../../../../styles/_variables.scss';
+.table-responsive {
+    thead {
+        background-color: $colorLightGray;
+        th {
+            text-align: center;
+            vertical-align: middle
+        }
+    }
+    tbody {
+        td {
+            text-align: center;
+        }
+        td:nth-child(2),
+        td:nth-child(3),
+        td:last-child {
+            text-align: left;
+        }
+    }
+}
+
+.content-label {
+    font-weight: bold
+}

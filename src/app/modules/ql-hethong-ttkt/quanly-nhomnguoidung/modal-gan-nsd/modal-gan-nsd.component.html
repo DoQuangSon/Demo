@@ -1,0 +1,41 @@
+<!-- modalGanNSD -->
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Phân nhóm người sử dụng</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalGanNSD.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <ul id="tabsJustified" class="nav nav-tabs">
+          <li class="nav-item">
+            <a href="" data-target="#dsChuaThem" data-toggle="tab" class="nav-link small text-uppercase active" (click)="getListUserPhanQuyen('add')">Thêm người dùng</a>
+          </li>
+          <li class="nav-item">
+            <a href="" data-target="#dsXoa" data-toggle="tab" class="nav-link small text-uppercase" (click)="getListUserPhanQuyen('delete')">Xóa người dùng</a>
+          </li>
+        </ul>
+        <div id="tabsJustifiedContent" class="tab-content">
+          <div id="dsChuaThem" class="tab-pane fade">
+            <ng2-dual-list-box [data]="data" [pagerTreeView]="pagerTreeView" [openTab]="openTab" (currentPageTreeView)="getPageFromDualListBox($event)"
+              (onItemsMoved)="getCurrentMovedListNguoiSD($event)" valueField="id" textField="name" availableText="Người dùng chưa được gán"
+              selectedText="Người dùng sẽ được gán"></ng2-dual-list-box>
+          </div>
+          <div id="dsXoa" class="tab-pane fade active show">
+            <ng2-dual-list-box [data]="data" [pagerTreeView]="pagerTreeView" [openTab]="openTab" (currentPageTreeView)="getPageFromDualListBox($event)"
+              (onItemsMoved)="getCurrentMovedListNguoiSD($event)" valueField="id" textField="name" availableText="Danh sách hiện có"
+              selectedText="Danh sách xóa"></ng2-dual-list-box>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=" modal-footer ">
+    <button type="button" class="btn btn-primary" (click)="saveGanNSD() ">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+    <button type="button" class="btn btn-default" (click)="modalGanNSD.hide()">
+      <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+  </div>
+</div>

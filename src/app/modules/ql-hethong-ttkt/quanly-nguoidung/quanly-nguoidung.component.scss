@@ -1,0 +1,16 @@
+@import './../../../../styles/_variables.scss';
+
+.fa-key {
+    cursor: pointer;
+    color: #428bca
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+
+.not-show {
+  display: none;
+}

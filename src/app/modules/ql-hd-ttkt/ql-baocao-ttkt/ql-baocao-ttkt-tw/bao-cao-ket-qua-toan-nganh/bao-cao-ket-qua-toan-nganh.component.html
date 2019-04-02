@@ -1,0 +1,137 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Báo cáo tổng hợp kết quả TTKT toàn ngành</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-danger mb-1" (click)="popUpDsTinhChuaGui()"><i class="fa fa-list-ol" aria-hidden="true"></i> Danh sách tỉnh chưa gửi <span class="index-number">({{ dsTinhChuaGui.length }})</span></button>
+      <!-- <button class="btn btn-primary mb-1" (click)="goToKhChoDuyet()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Báo cáo chờ duyệt <span class="index-number">(4)</span></button> -->
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="bcKQToanNganhForm">
+        <ttkt-input type="nam" label="Năm" sm="4-8" [formControl]="bcKQToanNganhForm.controls.nam"></ttkt-input>
+        <ttkt-input type="select" label="Tỉnh" formControlName="phamViId" md="4-6" [data]="{
+                options: dsTinh,
+                valueType: 'tenDonVi',
+                firstOption: 'Chọn địa bàn'
+              }"></ttkt-input>
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-8">
+              <button class="btn btn-default" (click)="search(true)">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+          </div>
+        </div>
+      <fieldset>
+        <legend>Danh sách báo cáo kết quả TTKT toàn ngành</legend>
+        <!-- <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label for="selectYear" class="col-form-label col-md-4 text-lg-right">Năm: </label>
+              <div class="col-md-8">
+                <select name="" id="selectYear" class="custom-select" [formControl]="selectYear">
+                  <option *ngFor="let item of listYear" [value]="item">{{ item }}</option> 
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-md-6 col-sm-6">
+                <input class="form-control" type="text" formControlName="search">
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <button type="button" class="btn btn-default text-lg-right"><i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="th-size">Trạng thái</th>
+                <th class="table-resize">Tên báo cáo</th>
+                <th>Nơi gửi</th>
+                <th>Ngày gửi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!dsBaoCao || dsBaoCao.length < 1">
+                <td colspan="5" class="text-center">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let bc of dsBaoCao; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td>
+                  <div class="trangthai_{{bc.trangThai}}">
+                    {{bc.trangThai | trangThaiBcthkqtn}}
+                  </div>
+                </td>
+                <td class="text-primary">
+                  <span class="router" (click)="chiTietBaoCao(bc.id)">{{ bc.tenBc }}</span>
+                </td>
+                <td>{{ bc.tenDonVi }}</td>
+                <td>{{ bc.ngayChuyen| date: 'dd/MM/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="paging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="paging.totalItems" [itemsPerPage]="paging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- popup danhsachtinhchuagui -->
+<div bsModal #dsTinhChuaGuiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left heading-page-popup">{{title}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+      </div>
+      <div class="modal-body">
+        <div class="group">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="th-size">STT</th>
+                  <th class="table-resize">Tên tỉnh</th>
+                  <th>Gửi yêu cầu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dsTinhChuaGui; let i = index">
+                  <td class="text-center">{{i + 1}}</td>
+                  <td>{{ item.tenDonVi }}</td>
+                  <td class="text-center">
+                    <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" (click)="chooseTinh(item)">
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="guiThongBao()" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+        <button class="btn btn-default" (click)="close()"><img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

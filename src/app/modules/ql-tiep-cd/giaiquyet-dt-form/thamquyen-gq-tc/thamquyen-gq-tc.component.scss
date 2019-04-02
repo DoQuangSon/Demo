@@ -1,0 +1,104 @@
+@import './../../../../../styles/variables.scss';
+.selectIdea {
+    margin-top: -15px;
+}
+
+.disable-click {
+    opacity: 0.94;
+    pointer-events: none;
+}
+
+iframe {
+    width: 100%;
+    height: 1200px;
+}
+
+.printDoc {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+}
+
+.printDocDia {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+table {
+    tbody {
+        td:first-child,
+        td:last-child {
+            text-align: center
+        }
+    }
+}
+
+.radio_sau {
+    margin-top: -10px;
+}
+
+.visibled {
+    display: none;
+}
+
+.custom-chip {
+    display: inline-block;
+    background: #eceeef;
+    padding: 0.2rem 0.4rem;
+    margin: 0.2rem 0.2rem 0 0 !important;
+}
+
+.card-block {
+    padding: 0.45rem;
+    min-height: 34px;
+}
+
+.in_in_tailieu {
+    color: #ddd;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.thanhlap {
+    margin-bottom: 1rem;
+}
+
+.tnMydp {
+    bottom: 0px;
+    margin-top: 5px;
+}
+
+.button-in-tailieu {
+    margin-top: -10px;
+}
+
+.thulyIn {
+    padding: 3px;
+    min-width: 40px;
+    margin-left: 10px;
+}
+
+.checkbox-table .custom-control-input:checked~.custom-control-indicator {
+    background-color: #0c4e84;
+}
+
+.pull-right {
+    text-align: right
+}
+
+.errMessage {
+    display: block;
+    color: #ff0000;
+}
+
+.required,
+.fa-exclamation-triangle {
+    color: #ff0000;
+}
+
+.modal-dialog.modal-custom {
+    max-width: 600px
+}

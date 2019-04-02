@@ -1,0 +1,93 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Thành lập đoàn TTKT</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <a (click)="creatTLDoan()">
+        <button type="button" class="btn btn-primary">
+          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+      </a>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form [formGroup]="searchForm">
+      <fieldset>
+        <legend>Danh sách quyết định TTKT</legend>
+        <div class="row">
+          <div class="col-xl-8">
+            <div class="form-group row">
+              <!--<label for="" class="col-form-label col-md-4 text-lg-right">Số lượng: <span class="text-danger">*</span></label>-->
+              <div class="col-md-6">
+                <input class="form-control" type="text" formControlName="tenQuyetDinh">
+              </div>
+              <div class="col-md-6">
+                <button type="button" class="btn btn-default text-lg-right" (click)="search($event)">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên quyết định</th>
+                <th>Ngày thành lập</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsquyetdinh?.length == 0">
+                <td class="text-center" colspan="3">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let qd of dsquyetdinh; let i = index">
+                <td class="text-center">
+                  {{pageSize * pager.currentPage + i + 1}}
+                </td>
+                <td class="text-primary" (click)="detailQuyetDinh(qd.id)">
+                  <span class="router">{{qd.tenQuyetDinh}}</span>
+                </td>
+                <td class="text-center" *ngIf="qd.ngayThanhLap">{{qd.ngayThanhLap | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center" *ngIf="qd.ngayQuyetDinh">{{qd.ngayQuyetDinh | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation" *ngIf="pager.pages && pager.pages.length">
+            <ul class="pagination justify-content-end mb-1">
+
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" title="Trang đầu">
+                <a class="page-link" aria-label="First" (click)="setPage(0)">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" title="Trang trước">
+                <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                  <span aria-hidden="true">&#60;</span>
+                </a>
+              </li>
+              <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+                <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" title="Trang tiếp">
+                <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                  <span aria-hidden="true">&#62;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" title="Trang cuối">
+                <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

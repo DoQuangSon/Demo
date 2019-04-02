@@ -1,0 +1,85 @@
+@import './../../../../../../../styles/_variables.scss';
+.table-kehoach {
+    table {
+        min-width: 1000px;
+        thead {
+            background-color: $colorLightGray;
+            tr {
+                th {
+                    text-align: center;
+                    vertical-align: middle;
+                }
+                th:nth-child(3),
+                th:nth-child(4),
+                {
+                    min-width: 100px;
+                }
+                th:nth-child(6) {
+                    min-width: 200px;
+                }
+            }
+        }
+        tbody {
+            tr {
+                th:first-child,
+                th:last-child {
+                    text-align: center;
+                    i {
+                        color: $colorBlue;
+                    }
+                }
+                td {
+                    label {
+                        padding-left: 1rem;
+                        margin-right: 0rem;
+                    }
+                }
+                td:first-child,
+                td:last-child {
+                    text-align: center;
+                }
+            }
+            .custom-control-input:checked~.custom-control-indicator {
+                background-color: #0c4e84;
+            }
+        }
+    }
+}
+
+.table-ThemDonVi {
+    thead {
+        background-color: $colorLightGray;
+        tr {
+            th {
+                text-align: center;
+                vertical-align: middle
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                vertical-align: middle;
+                label {
+                    padding-left: 1rem;
+                    margin-right: 0rem;
+                }
+            }
+        }
+    }
+}
+
+label.custom-control.custom-checkbox {
+    margin-bottom: 0;
+}
+
+.visibled {
+    display: none;
+}
+
+.loaiNoiDung {
+    margin-top: 1.2rem;
+}
+.center-button{
+    float: right;
+}

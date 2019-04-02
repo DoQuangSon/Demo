@@ -1,0 +1,6 @@
+export const FILE = {
+  FILE_QUYET_DINH: 2,
+  FILE_BIEN_BAN: 3,
+  FILE_TAI_LIEU_LIEN_QUAN: 4,
+  FILE_OTHER: 5
+};

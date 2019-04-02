@@ -1,0 +1,154 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Quản lý phân loại đối tượng TTKT</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-default" (click)="showSearch()">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+    </div> -->
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <!-- Tìm kiếm-->
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="searchForm" (ngSubmit)="search()">
+      <fieldset>
+        <legend>Thông tin tìm kiếm</legend>
+        <div class="ttkt-page-search row">
+          <div class="ttkt-page-search-tdv col-12 col-md-4">
+            <div class="form-group">
+              <label>Tên Đơn Vị</label>
+              <ttkt-input
+                type="text"
+                formControlName="tenDoiTuong"
+                [fullWidth]="true"
+              ></ttkt-input>
+            </div>
+          </div>
+          
+          <div class="ttkt-page-search-mdv col-12 col-md-4">
+            <div class="form-group">
+              <label>Mã sử dụng lao động</label>
+              <ttkt-input
+                type="text"
+                formControlName="maDonVi"
+                [fullWidth]="true"
+              ></ttkt-input>
+            </div>
+          </div>
+          <div class="ttkt-page-search-ndv col-12 col-md-4">
+            <div class="form-group">
+              <label>Nhóm đơn vị</label>
+              <ttkt-input
+                type="select"
+                [fullWidth]="true"
+                formControlName="phanLoaiDtId"
+                [data]="{
+                  options: listNhomDV
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+        </div>
+        <div class="ttkt-page-search row">
+          <div class="ttkt-page-search-ndv col-12 col-md-6" [hidden]="isHideTinh">
+            <div class="form-group">
+              <label>Tỉnh</label>
+              <ttkt-input
+                type="select"
+                [fullWidth]="true"
+                formControlName="tinhId"
+                [data]="{
+                  options: listTinh
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+          <div class="ttkt-page-search-ndv col-12 col-md-6">
+            <div class="form-group">
+              <label>Huyện</label>
+              <ttkt-input
+                type="select"
+                [fullWidth]="true"
+                formControlName="huyenId"
+                [data]="{
+                  options: listHuyen
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+        </div>
+        <div class="ttkt-page-search-btn">
+          <button type="submit" class="btn btn-default">
+            <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <!-- Action-->
+  <div class="ttkt-page-action">
+    <!-- <button type="button" class="btn btn-primary" (click)="addPhanLoaiDt()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới
+      </button> -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNhom" [disabled]="!isActiveBtn">
+      <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm vào nhóm
+    </button>
+  </div>
+  <!-- Table-->
+  <div class="ttkt-page-table ttkt-form-default">
+    <form>
+      <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="th-size">STT</th>
+              <th>Mã sử dụng lao động</th>
+              <th>Mã cơ sở khám chữa bệnh</th>
+              <th class="table-resize">Tên đơn vị</th>
+              <th>Địa chỉ</th>
+              <th>SĐT</th>
+              <th>Nhóm đơn vị</th>
+              <th>Chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listDoiTuong; let i = index">
+              <td class="text-center">{{paging.itemsPerPage * (paging.currentPage - 1) + i + 1}}</td>
+              <td class="text-center">{{item.maSuDungLaoDong}}</td>
+              <td class="text-center">{{item.maCoSoKhamChuaBenh}}</td>
+              <td>{{item.tenDoiTuong}}</td>
+              <td>
+                <span *ngIf="item.tenHuyen !== null">{{item.tenHuyen}},</span> {{item.tenTinhHuyen}}</td>
+              <td>{{item.dienThoai}}</td>
+              <td>{{item.dmPhanLoaiDtName}}</td>
+              <td class="text-center">
+                <input type="checkbox" [checked]="item.active" (change)="changeCheckboxThemMoi(item)">
+              </td>
+            </tr>
+
+            <tr *ngIf="!listDoiTuong.length">
+              <td colspan="8" class="text-center">
+                Không có dữ liệu
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!--padding-->
+        <nav aria-label="Page navigation" class="pull-right">
+          <pagination [totalItems]="paging.totalItems" [itemsPerPage]="paging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+            [maxSize]="5" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+          </pagination>
+        </nav>
+
+        <!-- show dialog create nhóm-->
+        <div class="modal" id="createNhom">
+          <div class="modal-dialog">
+            <ttkt-create-nhom-dt [listThemMoi]="listSelect" (closeModal)="closeDialog($event)"></ttkt-create-nhom-dt>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,353 @@
+<div class="cnt-page ttkt-page" *ngIf="!isTuChoi">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="tienHanhTiepCdForm">
+      <div class="form-group" *ngIf="!readOnly">
+        <p class="help-block text-left" style="font-style: italic;">Các trường có
+          <span class="text-danger">*</span> là bắt buộc</p>
+      </div>
+      <fieldset [disabled]='readOnly' >
+        <legend>Nội dung</legend>
+        <div class="form-group row" [ngClass]="(tienHanhTiepCdForm.controls.ndcdTrinhBay?.errors && (tienHanhTiepCdForm.controls.ndcdTrinhBay?.touched || tienHanhTiepCdForm.controls.ndcdTrinhBay?.dirty)) ? 'has-danger' : ''">
+          <label for="ndcdTrinhBay" class="col-form-label text-lg-right col-md-3">Nội dung công dân trình bày:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-9">
+            <textarea formControlName="ndcdTrinhBay" id="ndcdTrinhBay" class="form-control" autosize></textarea>
+            <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.ndcdTrinhBay?.errors?.required &&  (tienHanhTiepCdForm.controls.ndcdTrinhBay?.touched || tienHanhTiepCdForm.controls.ndcdTrinhBay?.dirty)">
+              Nội dung trình bày không được để trống</p>
+              <p class="help-block text-danger">{{ this.formService.nospaceValidator(tienHanhTiepCdForm.get('ndcdTrinhBay')) }}</p>
+          </div>
+        </div>
+        <div class="form-group row" [ngClass]="(tienHanhTiepCdForm.controls.ndcbTraLoi?.errors && (tienHanhTiepCdForm.controls.ndcbTraLoi?.touched || tienHanhTiepCdForm.controls.ndcbTraLoi?.dirty)) ? 'has-danger' : ''">
+          <label for="ndcbTraLoi" class="col-form-label text-lg-right col-md-3">Nội dung cán bộ trả lời:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-9">
+            <textarea formControlName="ndcbTraLoi" id="ndcbTraLoi" class="form-control" autosize></textarea>
+            <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.ndcbTraLoi?.errors?.required &&  (tienHanhTiepCdForm.controls.ndcbTraLoi?.touched || tienHanhTiepCdForm.controls.ndcbTraLoi?.dirty)">
+              Nội dung trả lời không được để trống</p>
+              <p class="help-block text-danger">{{ this.formService.nospaceValidator(tienHanhTiepCdForm.get('ndcbTraLoi')) }}</p>
+          </div>
+        </div>
+        <div class="form-group row" [ngClass]="(tienHanhTiepCdForm.controls.plVuViec?.errors && (tienHanhTiepCdForm.controls.plVuViec?.touched || tienHanhTiepCdForm.controls.plVuViec?.dirty)) ? 'has-danger' : ''">
+          <label id="plVuViec" class="col-form-label col-md-3 text-lg-right">Phân loại vụ việc:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-3">
+            <select formControlName="plVuViec" id="plVuViec" class="custom-select">
+              <option value="0">Chọn</option>
+              <option *ngFor="let item of phanLoai" [value]="item.id">
+                {{ item.tenNoiDung }}
+              </option>
+            </select>
+            <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.plVuViec?.errors?.required &&  tienHanhTiepCdForm.controls.plVuViec?.touched">
+              Phân loại vụ việc không được để trống</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label id="ndTrinhBay" class="col-form-label col-md-3 text-lg-right">Vụ việc:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-3">
+            <label *ngFor="let item of cuMoi" class="custom-control custom-radio">
+              <input type="radio" formControlName="ndTrinhBay" [value]="item.id" class="custom-control-input" />
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">{{ item.name }}</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset [disabled]='readOnly'>
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" (click)="soNguoiKyDonChange()" (blur)="changeValidateCoDonThu()" formControlName="coDonThu" id="coDonThu" class="custom-control-input" />
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Có đơn thư ?</span>
+        </label>
+
+        <div *ngIf="tienHanhTiepCdForm.value.coDonThu">
+          <div class="form-group row">
+            <label id="plDon" class="col-form-label col-md-3 text-lg-right">Phân loại đơn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-3 disable-click">
+              <select formControlName="plDon" class="custom-select" id="plDon">
+                <option value="0">Chọn</option>
+                <option *ngFor="let item of phanLoai" [value]="item.id">
+                  {{ item.tenNoiDung }}
+                </option>
+              </select>
+              <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.plDon?.errors?.required &&  tienHanhTiepCdForm.controls.plDon?.touched">
+                Phân loại đơn không được để trống</p>
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label class="col-form-label col-md-3 text-lg-right">Vụ việc:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-3">
+              <label class="custom-control custom-radio" *ngFor="let item of cuMoi">
+                <input type="radio" [value]="item.id" formControlName="vuViec" class="custom-control-input">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ item.name }}</span>
+              </label>
+            </div>
+          </div> -->
+          <div class="form-group row" [ngClass]="(tienHanhTiepCdForm.controls.tomTatDon?.errors && (tienHanhTiepCdForm.controls.tomTatDon?.touched || tienHanhTiepCdForm.controls.tomTatDon?.dirty)) ? 'has-danger' : ''">
+            <label for="tomTatDon" class="col-form-label col-md-3 text-lg-right">Tóm tắt đơn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <textarea formControlName="tomTatDon" id="tomTatDon" class="form-control"></textarea>
+              <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.tomTatDon?.errors?.required &&  (tienHanhTiepCdForm.controls.tomTatDon?.touched || tienHanhTiepCdForm.controls.tomTatDon?.dirty)">
+                Tóm tắt đơn không được để trống</p>
+                <p class="help-block text-danger">{{ this.formService.nospaceValidator(tienHanhTiepCdForm.get('tomTatDon')) }}</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ngayThangLapDon" class="col-form-label col-md-3 text-lg-right">Ngày tháng lập đơn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-3">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="ngayThangLapDon" [locale]="vi"></my-date-picker>
+              <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.ngayThangLapDon?.errors?.required &&  (tienHanhTiepCdForm.controls.ngayThangLapDon?.touched || tienHanhTiepCdForm.controls.ngayThangLapDon?.dirty)">
+                Ngày tháng không được để trống</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="soNguoiKyDon" class="col-form-label col-md-3 text-lg-right">Số người ký đơn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-3">
+              <input formControlName="soNguoiKyDon" type="number" id="soNguoiKyDon" class="form-control form-control-15" (keyup)="soNguoiKyDonChange()"
+                (change)="soNguoiKyDonChange()" min="1" max="500" ttktCheckNumberOnly/>
+              <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.soNguoiKyDon?.errors?.required &&  (tienHanhTiepCdForm.controls.soNguoiKyDon?.touched || tienHanhTiepCdForm.controls.soNguoiKyDon?.dirty) || this.errSoNguoiKy === true">
+                Số người ký không đúng</p>
+            </div>
+          </div>
+          <div formArrayName="nguoiKyDon" class="nguoi-ky-don-container">
+            <div class="child-node" *ngFor="let item of tienHanhTiepCdForm.controls.nguoiKyDon.controls; let i = index">
+              <div class="ttkt-node show">
+                <span>#{{i+1}}</span>
+              </div>
+              <div [formGroupName]="i">
+                <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <label for="tenNguoiKy" class="col-form-label col-md-4 text-lg-right">Tên người ký:
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-8">
+                        <input formControlName="tenNguoiKy" id="tenNguoiKy" class="form-control" required/>
+                        <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.tenNguoiKy?.errors?.required && (tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.tenNguoiKy?.touched || tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.tenNguoiKy?.dirty)">
+                          Tên người ký không được để trống</p>
+                          <p class="help-block text-danger">{{ this.formService.nospaceValidator(tienHanhTiepCdForm.controls.nguoiKyDon.at(i).get('tenNguoiKy')) }}</p> 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <label for="chucDanh" class="col-form-label col-md-4 text-lg-right">Chức danh:
+                        <!-- <span class="text-danger">*</span> -->
+                      </label>
+                      <div class="col-md-8">
+                        <input formControlName="chucDanh" id="chucDanh" class="form-control"/>
+                        <!-- <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.chucDanh?.errors?.required && (tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.chucDanh?.touched || tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.chucDanh?.dirty)">
+                          Chức danh không được để trống</p> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <label for="diaChi" class="col-form-label col-md-4 text-lg-right">Địa chỉ: 
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-8">
+                        <textarea type="text" class="form-control" formControlName="diaChi" id="diaChi" required></textarea>
+                        <p class="help-block text-danger" *ngIf="tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.diaChi?.errors?.required && (tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.diaChi?.touched || tienHanhTiepCdForm.controls.nguoiKyDon.at(i).controls.diaChi?.dirty)">
+                          Địa chỉ không được để trống</p>
+                          <p class="help-block text-danger">{{ this.formService.nospaceValidator(tienHanhTiepCdForm.controls.nguoiKyDon.at(i).get('diaChi')) }}</p> 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <label for="sdt" class="col-form-label col-md-4 text-lg-right">Số điện thoại: </label>
+                      <div class="col-md-8">
+                        <input formControlName="sdt" id="sdt" class="form-control" ttktCheckPhoneNumber/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div *ngIf="tienHanhTiepCdForm.value.coDonThu" class="border-bottom">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>Đơn có đủ điều kiện xử lý không?</span>
+          </div>
+          <div class="form-group">
+            <div *ngFor="let item of dieuKienXuLy" class="form-check">
+              <label class="custom-control custom-radio form-check-label">
+                <input type="radio" formControlName="duDieuKien" [value]="item.id" class="custom-control-input"/>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"> {{ item.name }}</span>
+              </label>
+            </div>
+          </div>
+        </div> -->
+
+        <div *ngIf="tienHanhTiepCdForm.value.coDonThu" class="border-bottom"> <!-- && tienHanhTiepCdForm.value.duDieuKien == dieuKienXuLy[0].id -->
+          <div class="form-group mt-3">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" formControlName="coTaiLieuKemTheo" class="custom-control-input"/>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Có tài liệu kèm theo</span>
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="tienHanhTiepCdForm.value.coDonThu && tienHanhTiepCdForm.value.coTaiLieuKemTheo"> <!--  && tienHanhTiepCdForm.value.duDieuKien == dieuKienXuLy[0].id -->
+          <div class="form-group mt-3 mb-1" *ngIf="!readOnly">
+            <button class="btn btn-primary" color="primary" (click)="openThemTaiLieuModal()">
+              <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm tài liệu</button>
+          </div>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th class="th-size">STT</th>
+                  <th class="table-resize">Tên tài liệu</th>
+                  <th class="th-size">Tình trạng</th>
+                  <th class="th-size">Số lượng</th>
+                  <th class="table-resize">Mô tả</th>
+                  <th *ngIf="!readOnly" class="th-size">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of thongTinTaiLieu; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.ten }}</td>
+                  <td>{{ item.tenTinhTrang }}</td>
+                  <td class="text-center">{{ item.soLuong }}</td>
+                  <td readonly>{{ item.moTa }}</td>
+                  <td *ngIf="!readOnly">
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="editTaiLieu(item, i)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                      <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteTaiLieu(item, i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </fieldset>
+      <div *ngIf="!readOnly" class="form-group text-right">
+        <button class="btn btn-primary mt-1" (click)="onSubmit('luu')">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <!-- <button class="btn btn-success mt-1" *ngIf="tienHanhTiepCdForm.value.coDonThu && tienHanhTiepCdForm.value.duDieuKien == dieuKienXuLy[1].id"
+          (click)="onSubmit('ketthuc')">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Kết thúc tiếp công dân</button>-->
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- modal -->
+<div bsModal #themTaiLieuModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ titleHanhDong }} thông tin tài liệu</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="themTaiLieuModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="themTaiLieuForm" class="mt-3">
+          <div class="alert alert-danger" role="alert" [ngClass]="!isSubmit ? 'visibled': ''">
+            Các trường
+            <strong>
+              <span class="text-danger">*</span>
+            </strong> là bắt buộc
+          </div>
+          <div class="form-group row" style="display: none">
+            <label for="ten" class="col-form-label col-md-3 text-right">Tên tài liệu:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <input formControlName="index" id="index" class="form-control" [readonly]="selectedOption === modalOptions.delete" />
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="(themTaiLieuForm.controls.ten?.errors && (themTaiLieuForm.controls.ten?.touched || themTaiLieuForm.controls.ten?.dirty)) ? 'has-danger' : ''">
+            <label for="ten" class="col-form-label col-md-3 text-right">Tên tài liệu:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <input formControlName="ten" id="ten" class="form-control" [readonly]="selectedOption === modalOptions.delete" />
+              <p class="help-block text-danger" *ngIf="themTaiLieuForm.controls.ten?.errors?.required &&  (themTaiLieuForm.controls.ten?.touched || themTaiLieuForm.controls.ten?.dirty)">
+                Tên tài liệu không được để trống</p>
+                <p class="help-block text-danger">{{ formService.nospaceValidator(themTaiLieuForm.get('ten')) }}</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tinhTrang" class="col-form-label col-md-3 text-right">Tình trạng:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-7">
+              <select formControlName="tinhTrang" id="tinhTrang" class="custom-select" [attr.disabled]=" selectedOption === modalOptions.delete ? true: null">-->
+                <!--<option *ngFor="let item of tinhTrang; let i = index" [value]="item.id" [selected]="item.tenTinhTrang == 'Bản gốc' ? 'selected': null">-->
+                <!--<option value="0" selected>Chọn</option>-->
+                <option *ngFor="let item of tinhTrang; let i = index" [value]="item.id">
+                  {{ item.tenTinhTrang }}
+                </option>
+                <!--[selected]=" i == 0"-->
+              </select>
+
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="(themTaiLieuForm.controls.soLuong?.errors && (themTaiLieuForm.controls.soLuong?.touched || themTaiLieuForm.controls.soLuong?.dirty)) ? 'has-danger' : ''">
+            <label for="soLuong" class="col-form-label col-md-3 text-right">Số lượng:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <input formControlName="soLuong" id="soLuong" class="form-control form-control-15" type="number" min="0" [readonly]="selectedOption === modalOptions.delete"
+                ttktCheckNumberOnly />
+              <p class="help-block text-danger" *ngIf="themTaiLieuForm.controls.soLuong?.errors?.required &&  (themTaiLieuForm.controls.soLuong?.touched || themTaiLieuForm.controls.soLuong?.dirty)">
+                Số lượng không được để trống</p>
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="(themTaiLieuForm.controls.moTa?.errors && (themTaiLieuForm.controls.moTa?.touched || themTaiLieuForm.controls.moTa?.dirty)) ? 'has-danger' : ''">
+            <label for="moTa" class="col-form-label col-md-3 text-right">Mô tả:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-9">
+              <textarea formControlName="moTa" id="moTa" class="form-control" autosize [readonly]="selectedOption === modalOptions.delete"></textarea>
+              <p class="help-block text-danger" *ngIf="themTaiLieuForm.controls.moTa?.errors?.required &&  (themTaiLieuForm.controls.moTa?.touched || themTaiLieuForm.controls.moTa?.dirty)">
+                Mô tả không được để trống</p>
+                <p class="help-block text-danger">{{ formService.nospaceValidator(themTaiLieuForm.get('moTa')) }}</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" (click)="addTaiLieu()" *ngIf="selectedOption === modalOptions.add">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+        <button class="btn btn-primary" (click)="updateTaiLieu()" *ngIf="selectedOption === modalOptions.edit">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button class="btn btn-danger" (click)="confirmDeleteTaiLieu()" *ngIf="selectedOption === modalOptions.delete">
+          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+        <button class="btn btn-default" (click)="themTaiLieuModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>

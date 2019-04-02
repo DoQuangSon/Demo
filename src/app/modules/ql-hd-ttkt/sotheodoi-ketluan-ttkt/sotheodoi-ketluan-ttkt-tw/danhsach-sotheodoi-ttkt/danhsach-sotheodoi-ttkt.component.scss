@@ -1,0 +1,26 @@
+@import './../../../../../../styles/_variables.scss';
+.table-responsive {
+    table {
+        thead {
+            background-color: $colorLightGray;
+            tr {
+                th,
+                td {
+                    text-align: center;
+                    vertical-align: middle;
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    span:hover {
+                        color: #0c4e84;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

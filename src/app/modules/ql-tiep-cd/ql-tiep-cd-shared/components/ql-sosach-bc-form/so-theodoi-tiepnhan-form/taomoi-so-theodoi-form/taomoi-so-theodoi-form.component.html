@@ -1,0 +1,184 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Tạo mới sổ theo dõi tiếp nhận</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="luu==true && duyet==false">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <button type="button" class="btn btn-primary" (click)="onDieuChinh()" *ngIf="duyet==false && dieuChinh==false && luu==true">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+      <button type="button" class="btn btn-default" *ngIf="luu==true">
+        <i class="fa fa-print" aria-hidden="true"></i> In</button>
+      <button type="button" class="btn btn-primary" (click)="onLuu()" *ngIf="luu==false">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="creatsoTheoDoiForm">
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-md-2 text-md-right">Tên sổ: </label>
+          <div class="col-md-6 col-xl-5">
+            <input class="form-control" type="text" formControlName="tenSo">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-md-right">Số: </label>
+              <div class="col-md-8">
+                <input class="form-control form-control-25" type="text" formControlName="soNumber">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-md-right">Ngày: </label>
+              <div class="col-md-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngay"></my-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row no-margin-bt">
+              <label class="col-form-label col-md-4 text-lg-right"></label>
+              <div class="form-check form-check-inline col-md-2 col-xl-1">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="options" value="{{quy_option}}" (change)="changeOption()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Quý</span>
+                </label>
+              </div>
+              <div class="form-check form-check-inline col-md-2 col-xl-1">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="options" value="{{thang_option}}" (change)="changeOption()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Tháng</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="options == quy_option">
+          <div class="col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-8">
+                <div class="form-group row">
+                  <label for="" class="col-form-label col-md-2 text-md-right">Quý: </label>
+                  <div class="col-md-8">
+                    <select class="custom-select" id="quy" formControlName="quy">
+                      <option value="0" selected>Chọn</option>
+                      <option *ngFor="let choice of quyOptions" [value]="choice.id">{{ choice.quy }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="options == thang_option">
+          <div class="col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-8">
+                <div class="form-group row">
+                  <label for="" class="col-form-label col-md-2 text-md-right">Tháng: </label>
+                  <div class="col-md-8">
+                    <select class="custom-select" id="thang" formControlName="thang">
+                      <option value="0" selected>Chọn</option>
+                      <option *ngFor="let choice of thangOptions" [value]="choice.id">{{ choice.thang }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="offset-md-4">
+            <button type="button" class="btn btn-primary tong-hop-mau29 mb-3" (click)="onGetTongHopKQ()">
+              <i class="fa fa-search-plus" aria-hidden="true"></i> Tổng hợp kết quả</button>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset *ngIf="tongHopKQ">
+        <legend>Bảng tổng hợp kết quả</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th>Số CV đến</th>
+                <th>Ngày tiếp nhận</th>
+                <th class="table-resize">Họ tên công dân</th>
+                <th>Địa chỉ công dân</th>
+                <th class="table-resize">Nội dung</th>
+                <th>Phân loại đơn</th>
+                <th>Điều kiện xử lý</th>
+                <th class="th-size">Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of chiTietKQ; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{item.soCVDen}}</td>
+                <td>{{item.ngayTiepNhan | date: "dd/MM/yyyy" }}</td>
+                <td>{{item.hoTenCD}}</td>
+                <td>{{item.diaChiCD}}</td>
+                <td>{{item.noiDung}}</td>
+                <td>{{item.phanLoaiDon}}</td>
+                <td>
+                  <div *ngIf="item.phanLoaiDon == 'Khiếu nại'">
+                    Đủ điều kiện xử lý
+                  </div>
+                  <div *ngIf="item.phanLoaiDon == 'Kiến nghị phản ánh'">
+                    Đủ điều kiện xử lý
+                  </div>
+                  <!-- @Todo: refactor -->
+                  <div *ngIf="item.phanLoaiDon == 'Tố cáo đối tượng' || item.phanLoaiDon == 'Tố cáo đơn vị'">
+                    Thuộc thẩm quyền
+                  </div>
+                </td>
+                <td>{{item.trangThai}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+    <button type="button" class="btn btn-link pull-right" (click)="onBack()">
+      <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt sổ theo dõi tiếp nhận</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt sổ theo dõi tiếp nhận?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

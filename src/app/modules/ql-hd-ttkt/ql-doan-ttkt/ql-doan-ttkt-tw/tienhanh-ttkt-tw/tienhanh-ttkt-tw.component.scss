@@ -1,0 +1,75 @@
+@import './../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+  .ttkt-form-default {
+    fieldset {
+      margin-bottom: 3rem;
+    }
+    .danhsach-doanttkt {
+      table {
+        thead {
+          background-color: $colorLightGray;
+        tr {
+          th {
+            text-align: center;
+            vertical-align: middle;
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            text-align: center;
+            vertical-align: middle;
+            .chitiet-qd:hover {
+              color: #0c4e84;
+              text-decoration: underline;
+              cursor: pointer;
+            }
+            i {
+              margin-right: 0.2rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.fa.fa-caret-right {
+  display: inline-block;
+}
+
+button {
+  cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+  #thongtintimkiem {
+    .row {
+      .col-xl-3 {
+        .row {
+          .col-xl-7 {
+            padding: 0;
+          }
+        }
+      }
+      .col-12 {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.details {
+  cursor: pointer;
+  color: black;
+  i {
+    color: #7d7d7d;
+  }
+  &:hover {
+    span, i {
+      color: black
+    }
+  }
+}

@@ -1,0 +1,554 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title-breadcrumb">DS đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title-breadcrumb">Theo dõi hoạt động đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Công bố quyết định TTKT</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <!-- <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="luu==true && duyet==false">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button> -->
+      <button type="button" class="btn btn-primary" (click)="onSubmit()" *ngIf="luu==false && isCanEdit">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button class="btn btn-primary mt-sm-1" (click)="onEdit()" *ngIf="!isCanEdit && isHaveCongBo && !isTTKT">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Cập nhật</button>
+      <button type="button" class="btn btn-link mt-sm-1" (click)="onBack()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page" [ngClass]="{'disable-click': luu}">
+  <div class="ttkt-form-default">
+    <form [formGroup]="quyetDinhTLDForm">
+      <fieldset>
+        <legend>Thông tin quyết định</legend>
+        <div id="thongtinquyetdinh">
+          <div class="row">
+            <div class="col-xl-6">
+              <ttkt-input type="text" sm="3-6" xl="4-8" label="Tên biên bản" formControlName="tenBienBan" [ngClass]="{'disable-click': !isCanEdit}"></ttkt-input>
+            </div>
+            <div class="col-xl-6">
+              <ttkt-input sm="3-6" xl="4-8" [ngClass]="{'disable-click': !isCanEdit}" formControlName="quyetDinhTTKT"
+                type="text" label="Quyết định TTKT" [readOnly]="true">
+              </ttkt-input>
+            </div>
+            <div class="col-xl-6">
+              <ttkt-input sm="3-6" xl="4-8" label="Ngày" [ngClass]="{'disable-click': !isCanEdit}" formControlName="ngay"
+                type="date"></ttkt-input>
+            </div>
+            <div class="col-xl-6">
+              <ttkt-input sm="3-6" xl="4-8" label="Địa điểm" [ngClass]="{'disable-click': !isCanEdit}" formControlName="diaDiem"
+                type="text"></ttkt-input>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group row" *ngIf="quyetDinhTLDForm?.value?.haveFile">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label" for="fileDinhKem">Giấy ủy quyền: </label>
+                </div>
+                <div class="col-xl-6">
+                  <input class="form-control" formControlName="fileBienBan" [ngClass]="{'disable-click': true}">
+                </div>
+                <div class="col-xs-2">
+                  <button type="submit" class="btn btn-primary btn-sm mt-sm-1" (click)="downLoadFileBBCongBo()">
+                    <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="isCanEdit">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label" for="fileDinhKem" *ngIf="!quyetDinhTLDForm?.value?.haveFile">Giấy ủy
+                    quyền:
+                  </label>
+                </div>
+                <div class="col-xl-8">
+                  <!-- <input type="file" #fileBienBanCongBo (change)="upFileQDCongBo()"> -->
+                  <label for="uploadFile" class="btn btn-default btn-sm">
+                    <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                  <input id="uploadFile" hidden type="file" name="file" #fileBienBanCongBo (change)="upFileQDCongBo()">
+                  <b class="ten-fileUpload">{{ tenFileBienBanCongBo }}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Thành phần tham gia</legend>
+        <div id="thanhphanthamgia">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Họ và tên</th>
+                  <th>Chức vụ</th>
+                  <th>Có mặt</th>
+                  <th>Vắng mặt</th>
+                  <th>Lý do vắng mặt</th>
+                  <th *ngIf="isCanEdit" class="th-size">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let thanhVien of thanhPhanThamGia; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td>{{thanhVien.hoVaTen}}</td>
+                  <td>{{thanhVien.chucVuDoan}}</td>
+                  <td>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [checked]="thanhVien.isVangMat && thanhVien.isVangMat == 'false'"
+                        disabled>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [checked]="thanhVien.isVangMat && thanhVien.isVangMat == 'true'"
+                        disabled>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                  <td>{{thanhVien.lyDoVangMat}}</td>
+                  <td *ngIf="isCanEdit">
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="suaThanhPhanThamGia(i)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Danh sách đơn vị tham gia</legend>
+        <div id="danhsachdonvithamgia">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th rowspan="2" class="th-size">STT</th>
+                  <th rowspan="2" class="table-resize">Tên đơn vị</th>
+                  <th rowspan="2">Có mặt</th>
+                  <th rowspan="2">Vắng mặt</th>
+                  <th rowspan="2">Lý do vắng mặt</th>
+                  <th colspan="2">Người đại diện</th>
+                  <th rowspan="2" *ngIf="isCanEdit" class="th-size">Thao tác</th>
+                </tr>
+                <tr>
+                  <th class="table-resize">Họ và tên</th>
+                  <th>Thông tin chi tiết</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of tableContent, let i = index">
+                <tr>
+                  <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}</th>
+                  <th>{{item.tenDanhMuc}}</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th *ngIf="isCanEdit"></th>
+                </tr>
+                <tr *ngFor="let element of (item || {}).children; let j = index">
+                  <td>{{j + 1}}</td>
+                  <td>{{element.tenDoiTuong}}</td>
+                  <td>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [checked]="element.isVangMat && element.isVangMat == 'false'"
+                        disabled>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [checked]="element.isVangMat && element.isVangMat == 'true'"
+                        disabled>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                  <td>{{element.lyDoVangMat || ''}}</td>
+                  <td>{{element.tenNguoiDaiDienCb || ''}}</td>
+                  <td>
+                    <button type="button" class="btn btn-success btn-sm detail" (click)="showThongTinNguoiDaiDien(element)"
+                      *ngIf="element.tenNguoiDaiDienCb">
+                      <i class="fa fa-eye" aria-hidden="true"></i> Xem</button>
+                  </td>
+                  <td *ngIf="isCanEdit">
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editDonViThamGia(i, j)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #editThanhPhanThamGia="bs-modal" id="editThanhPhanThamGia" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md-custom">
+    <div class="modal-content" [formGroup]="formEditThanhPhanThamGia">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Cập nhật thông tin</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="editThanhPhanThamGia.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+
+          </div>
+          <div class="col-xl-3">
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" formControlName="isVangMat" value="false">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Có mặt</span>
+            </label>
+          </div>
+          <div class="col-xl-3">
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" formControlName="isVangMat" value="true">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Vắng mặt</span>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label">Lý do vắng mặt
+              <span class="errMessage2">*</span>:</label>
+          </div>
+          <div class="col-xl-8">
+            <textarea autosize rows="2" formControlName="lyDoVangMat" [attr.disabled]="(!formEditThanhPhanThamGia.value.isVangMat || formEditThanhPhanThamGia.value.isVangMat == 'false') ? true:null"></textarea>
+            <!-- <span class="errMessage" [ngClass]="{hiddenErr: hiddenErr_LyDoVangMat_ThanhPhanThamGia}">Lý do vắng mặt không được để trống</span> -->
+            <p class="text-danger" *ngIf="formEditThanhPhanThamGia.controls.lyDoVangMat?.errors?.required
+            && formEditThanhPhanThamGia.controls.lyDoVangMat?.dirty && (formEditThanhPhanThamGia.value.isVangMat ==true)">
+              Lý do vắng mặt không được để trống</p>
+            <p class="help-block text-danger">{{
+              formService.nospaceValidator(formEditThanhPhanThamGia.get('lyDoVangMat'))
+              }}</p>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" [attr.disabled]="checkButtonCapNhat() == true ? 'disabled' : null"
+          (click)="saveEditThanhPhanThamGia()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button type="button" class="btn btn-default" (click)="editThanhPhanThamGia.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #editDanhSachDonViThamGia="bs-modal" id="editDanhSachDonViThamGia" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md-custom">
+    <div class="modal-content" [formGroup]="formEditDonViThamGia">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Cập nhật thông tin</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalEditDanhSachDonViThamGia.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label for="id" class="col-form-label">Đơn vị cập nhật:
+              <span class="text-danger" *ngIf="formService.isRequired(formEditDonViThamGia.get('tenDonVi'))">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="text" class="form-control" formControlName="tenDonVi" readonly>
+            <p class="help-block text-danger">{{ formService.getErrorMsg(formEditDonViThamGia.get('tenDonVi')) }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label">Tham gia công bố:
+            </label>
+          </div>
+          <div class="col-xl-3">
+            <label class="custom-control custom-radio align-radio">
+              <input type="radio" class="custom-control-input" formControlName="isVangMat" value="false">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Có</span>
+            </label>
+          </div>
+          <div class="col-xl-3">
+            <label class="custom-control custom-radio align-radio">
+              <input type="radio" class="custom-control-input" formControlName="isVangMat" value="true">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Vắng mặt</span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="(formEditDonViThamGia.value.isVangMat === 'true')">
+          <ttkt-input label="Lý do vắng mặt" xl="4-8" type="textarea" formControlName="lyDoVangMat"></ttkt-input>
+        </div>
+        <!-- người đại diện -->
+        <div *ngIf="(!formEditDonViThamGia.value.isVangMat || formEditDonViThamGia.value.isVangMat == 'false') ? true:null">
+          <div class="row">
+            <div class="col-xl-4 text-xl-right">
+              <label id="ndTrinhBay" class="col-form-label">Người đại diện:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-3">
+              <label class="custom-control custom-radio align-radio">
+                <input type="radio" class="custom-control-input" formControlName="hasDaiDien" value="true">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Có</span>
+              </label>
+            </div>
+            <div class="col-xl-3">
+              <label class="custom-control custom-radio align-radio">
+                <input type="radio" class="custom-control-input" formControlName="hasDaiDien" value="false">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Không</span>
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="formEditDonViThamGia.value.hasDaiDien === 'true'">
+            <div class="row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Đại diện theo:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-3">
+                <label class="custom-control custom-radio align-radio">
+                  <input type="radio" class="custom-control-input" formControlName="isUyQuyenCb" value="false" (click)="onResetValueUyQuyen()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Pháp luật</span>
+                </label>
+              </div>
+              <div class="col-xl-3">
+                <label class="custom-control custom-radio align-radio">
+                  <input type="radio" class="custom-control-input" formControlName="isUyQuyenCb" value="true" (click)="onResetValueDaiDien()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Ủy quyền</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Tên người {{strNguoiDaiDienOrUyQuyen}}:
+                  <span class="text-danger" *ngIf="formService.isRequired(formEditDonViThamGia.get('tenNguoiDaiDienCb'))">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control" formControlName="tenNguoiDaiDienCb">
+                <p class="help-block text-danger">{{
+                  formService.getErrorMsg(formEditDonViThamGia.get('tenNguoiDaiDienCb'))
+                  }}</p>
+              </div>
+            </div> -->
+            <div *ngIf="formEditDonViThamGia.value.isUyQuyenCb">
+              <ttkt-input label="Tên người {{strNguoiDaiDienOrUyQuyen}}" md="4-8" type="text" formControlName="tenNguoiDaiDienCb"></ttkt-input>
+            </div>
+
+            <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Số điện thoại:</label>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control" formControlName="sdtNguoiDaiDienCb" min="0" minlength="0"
+                  maxlength="11" ttktCheckNumberOnly>
+                <!-- <p class="help-block text-danger" *ngIf="formEditDonViThamGia.controls.sdtNguoiDaiDienCb?.errors?.pattern &&  (formEditDonViThamGia.controls.sdtNguoiDaiDienCb?.touched || formEditDonViThamGia.controls.sdtNguoiDaiDienCb?.dirty)">
+                Số điện thoại không hợp lệ</p> -->
+              </div>
+            </div>
+
+            <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb === 'false'">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Email:</label>
+                <span class="text-danger" *ngIf="formService.isRequired(formEditDonViThamGia.get('mailNguoiDaiDienCb'))">*</span>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control" formControlName="mailNguoiDaiDienCb">
+                <p class="help-block text-danger" *ngIf="formEditDonViThamGia.controls.mailNguoiDaiDienCb?.errors?.pattern &&  (formEditDonViThamGia.controls.mailNguoiDaiDienCb?.touched || formEditDonViThamGia.controls.mailNguoiDaiDienCb?.dirty)">
+                  Email không hợp lệ</p>
+                <p class="help-block text-danger">{{
+                  formService.getErrorMsg(formEditDonViThamGia.get('mailNguoiDaiDienCb'))
+                  }}</p>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb === 'true'">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Chức danh:</label>
+                <span class="text-danger" *ngIf="formService.isRequired(formEditDonViThamGia.get('dmChucDanhId'))">*</span>
+              </div>
+              <div class="col-xl-8">
+                <select class="custom-select form-control" formControlName="dmChucDanhId">
+                  <option *ngFor="let item of listChucVu" [value]="item.id">{{ item.chucDanh }}</option>
+                </select>
+                <p class="help-block text-danger" *ngIf="formEditDonViThamGia.controls.dmChucDanhId?.errors?.required &&  (formEditDonViThamGia.controls.dmChucDanhId?.touched || formEditDonViThamGia.controls.dmChucDanhId?.dirty)">
+                  Bạn phải chọn chức vụ</p>
+              </div>
+            </div>
+            <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb === 'true'">
+              <div class="col-md-12">
+                <ttkt-input type="text" label="Số giấy ủy quyền" formControlName="soGiayUyQuyenCb" md="4-8"></ttkt-input>
+              </div>
+            </div>
+
+            <div class="" *ngIf="formEditDonViThamGia.value.isUyQuyenCb === 'true'">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label" for="fileDinhKem">Giấy ủy quyền: </label>
+                  <span class="text-danger">*</span>
+                </div>
+                <div class="col-xl-8">
+                  <label for="uploadFileBBCongBo" class="btn btn-default btn-sm">
+                    <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                  <input id="uploadFileBBCongBo" hidden type="file" name="file" #fileBBCongBo (change)="upFileUyQuyenCongBo()">
+                  <b class="ten-fileUpload">{{ getFileName(formEditDonViThamGia.value.fileUyQuyenCb || '')}}</b>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="formEditDonViThamGia.value.isUyQuyenCb === 'true'">
+              <div class="col-md-12">
+                <ttkt-input type="date" md="4-8" label="Hiệu lực từ ngày" [formControl]="formEditDonViThamGia.controls.hieuLucUyQuyenFrom"></ttkt-input>
+                <ttkt-input type="date" md="4-8" label="Hiệu lực đến ngày" [formControl]="formEditDonViThamGia.controls.hieuLucUyQuyenTo"></ttkt-input>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center">
+            <span class="errMessage" [ngClass]="{hiddenErr: hiddenErr_FormEditDonViThamGia}">Mời điền đủ nội dung</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <ng-container>
+            <button type="button" class="btn btn-primary" (click)="saveEditDonViThamGia()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          </ng-container>
+          <button type="button" class="btn btn-default" (click)="modalEditDanhSachDonViThamGia.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt quyết định</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt quyết định công bố?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- thongTinNguoiDaiDien modal -->
+<div bsModal #thongTinNguoiDaiDienModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Thông tin người {{strNguoiDaiDienOrUyQuyen}}</h5>
+        <button type="button" class="close pull-right" (click)="thongTinNguoiDaiDienModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="thongtin-nguoidaidien" *ngIf="childItem">
+          <div class="row">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Họ và tên:</label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{childItem.tenNguoiDaiDienCb || ''}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Số điện thoại:</label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{childItem.sdtNguoiDaiDienCb || ''}}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="childItem.mailNguoiDaiDienCb !==  null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Email:</label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{childItem.mailNguoiDaiDienCb || ''}}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="childItem.mailNguoiDaiDienCb === null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Chức danh : </label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{ childItem.tenChucDanh || '' }}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="childItem.mailNguoiDaiDienCb === null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Số giấy ủy quyền : </label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{childItem.soGiayUyQuyenCb || ''}}</p>
+            </div>
+          </div>
+          <div class="row mb-2" *ngIf="childItem.mailNguoiDaiDienCb === null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">File ủy quyền: </label>
+            </div>
+            <div class="col-xl-8" *ngIf="formEditDonViThamGia.controls.fileUyQuyenCb.value">
+              <button type="submit" class="btn btn-primary btn-sm" (click)="downLoadFileUyQuyenCongBo(childItem.fileUyQuyenCb)">
+                <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+              <span>{{ getFileName(childItem.fileUyQuyenCb || '')}}</span>
+            </div>
+          </div>
+          <div class="row" *ngIf="childItem.mailNguoiDaiDienCb === null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Hiệu lực từ ngày:</label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{(childItem.hieuLucUyQuyenFrom | date: 'dd/MM/yyyy') || ''}}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="childItem.mailNguoiDaiDienCb === null">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label">Hiệu lực đến ngày:</label>
+            </div>
+            <div class="col-xl-8">
+              <p class="form-control">{{(childItem.hieuLucUyQuyenTo | date: 'dd/MM/yyyy') || ''}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="thongTinNguoiDaiDienModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

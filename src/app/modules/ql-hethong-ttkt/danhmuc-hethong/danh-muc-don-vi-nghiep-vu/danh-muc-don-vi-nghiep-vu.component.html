@@ -1,0 +1,84 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title">Danh mục đơn vị nghiệp vụ</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="danhMucNghiepVuForm">
+      <fieldset>
+        <legend>Danh mục đơn vị nghiệp vụ</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh mục đơn vị nghiệp vụ</span>
+        </div>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary mb-1" (click)="action()">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th>Tên nghiệp vụ</th>
+                <th class="text-center th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cd of listNghiepVu; let i = index">
+                <td class="text-center">{{ (pagging.currentPage-1) * pagging.itemsPerPage + i + 1 }}</td>
+                <td>{{ cd.tenNghiepVu }}</td>
+                <td class="text-center">
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="action(cd)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm delete" (click)="onDelete(cd.id)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!listNghiepVu.length">
+                <td colspan="3" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <!--form xóa thông tin-->
+  <div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content addModalContent">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Xóa chi tiết nghiệp vụ</h5>
+          <button type="button" class="close pull-right" (click)="modalDelete.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-center text-danger">
+            <b>Bạn chắc chắn muốn xóa thông tin chi tiết nghiệp vụ?</b>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="actionDelete()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+          <button type="button" class="btn btn-default" (click)="modalDelete.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

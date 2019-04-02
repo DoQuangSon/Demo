@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="mainbox login-box col-lg-6 offset-lg-3">
+    <div class="card card-info card-login">
+      <div class="card-body">
+        <form [formGroup]="loginForm" class="form-horizontal" role="form">
+          <ul class="ul-login">
+            <li class="xs-12 col-sm-12 col-md-12 col-lg-12">
+              <p class="txt-login">Hệ thống quản lý thanh tra kiểm tra</p>
+            </li>
+            <li class="col-12 col-sm-12 col-md-3 col-lg-3 col-line-height">
+              <img src="assets/images/logo_bhxh.svg" class="logo-login" />
+            </li>
+            <li class="col-12 col-sm-12 col-md-9 col-lg-9">
+              <div class="input-group input-baohiem">
+                <div class="input-group col-4 col-sm-4 col-md-4 col-lg-4 non-padding">
+                  <span class="input-group-addon input-cursor" data-tooltip="Chọn cơ quan bảo hiểm"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control form-mabaohiem" (change)="changeMa($event)" formControlName="maDonVi" placeholder="Mã" required autofocus>
+                </div>
+                <div class="input-group col-8 col-sm-8 col-md-8 col-lg-8 non-padding">
+                  <input type="text" class="form-control form-baohiem" formControlName="coquanbaohiem" placeholder="Tên cơ quan" required autofocus readonly>
+                </div>
+              </div>
+              <div class="input-group input-user">
+                <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" formControlName="username" placeholder="Tên đăng nhập" required autofocus>
+              </div>
+              <div class="input-group input-password">
+                <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                <input type="password" class="form-control" formControlName="password" placeholder="Mật khẩu" required>
+              </div>
+              <div class="form-group input-login">
+                <div class="col-sm-12 controls">
+                  <button class="btn btn-dangnhap" (click)="login()">Đăng nhập</button>
+                </div>
+              </div>
+              <div *ngIf="error" class="form-group row show_error">{{ error }}</div>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

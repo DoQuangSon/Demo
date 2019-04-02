@@ -1,0 +1,71 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Sổ theo dõi tiếp công dân</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary" (click)="isCollapseDirective = !isCollapseDirective"> Xem đột xuất</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="soTheoDoiForm">
+      <div class="row" [ttktCollapse]="isCollapseDirective">
+        <div class="col-md-3">
+          <ttkt-input 
+          type="thang" 
+          label="Tháng"
+          sm="4-8" 
+          formControlName="fromMonth"></ttkt-input>
+        </div>
+        <div class="col-md-3">
+          <ttkt-input 
+          type="nam" 
+          label="Năm"
+          sm="4-8" 
+          formControlName="fromYear"></ttkt-input>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-primary" type="button" (click)="xemChiTietLive()">Xem chi tiết</button>
+        </div>
+      </div>
+      <fieldset>
+        <legend>Danh sách sổ theo dõi tiếp công dân định kỳ</legend>
+        <div class="row">
+          <div class="offset-md-8 col-md-4">
+            <ttkt-input class="nam-right" type="nam" label="Năm" sm="4-8" [formControl]="soTheoDoiForm.controls.nam" (change)="changeYear($event)"></ttkt-input>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên sổ tiếp công dân</th>
+                <th class="table-resize">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsSoTD.length == 0">
+                <td class="text-center" colspan="7">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of dsSoTD; let i = index">
+                <td class="text-center">{{i+ 1}}</td>
+                <td class="text-primary">
+                  <a (click)="goToChiTietSoSach(item.id)">Sổ theo dõi tiếp công dân tháng {{item.thangTaoSo}} năm {{item.namTaoSo}}</a>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-success" (click)="printPDF(item, 1)">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i> In PDF</button>&nbsp;
+                    <button type="button" class="btn btn-primary" (click)="printPDF(item, 2)">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>Xuất EXCEL</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

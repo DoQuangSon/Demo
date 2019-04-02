@@ -1,0 +1,60 @@
+@import '../../../../../styles/_variables.scss';
+
+#danhsachthamsohethong {
+  .row {
+    margin-bottom: 1rem;
+  }
+  .table-responsive {
+    table {
+      thead {
+        background-color: $colorLightGray;
+        th {
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+      tbody {
+        td {
+          text-align: center;
+        }
+        td:nth-child(2) {
+          text-align: left;
+        }
+        // td:last-child {
+        //   i:first-child {
+        //     margin-right: 0.5rem;
+        //       color: #6495ed;
+        //   }
+        //   i:last-child {
+        //     color: #ff0000;
+        //   }
+        //   i {
+        //     cursor: pointer;
+        //   }
+        // }
+      }
+    }
+  }
+}
+
+#modalThamSo {
+  .modal-content {
+    .row {
+      margin-bottom: 1rem;
+    }
+  }
+  .modal-footer {
+    // i {
+    //   margin-right: 0.5rem;
+    // }
+  }
+}
+
+.required,
+.errMessage {
+  color: #ff0000;
+}
+
+.visibled {
+  display: none;
+}

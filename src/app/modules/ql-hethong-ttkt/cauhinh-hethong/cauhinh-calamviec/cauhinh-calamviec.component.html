@@ -1,0 +1,142 @@
+<h4 class="heading-page">
+  <span class="page-title">Cấu hình ca làm việc</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form>
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <div id="themmoi" class="text-right">
+          <button class="btn btn-primary mb-1" (click)="addCaLamViec()">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th rowspan="2" class="th-size">STT</th>
+                <th colspan="2">Ca sáng</th>
+                <th colspan="2">Ca chiều</th>
+                <th rowspan="2">Ngày áp dụng</th>
+                <th rowspan="2" class="th-size">Thao tác</th>
+              </tr>
+              <tr>
+                <th>Thời gian bắt đầu</th>
+                <th>Thời gian kết thúc</th>
+                <th>Thời gian bắt đầu</th>
+                <th>Thời gian kết thúc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ca of danhSachCaLamViec; let index = index">
+                <td>{{index + 1}}</td>
+                <td>{{ca.starttime_sang}}</td>
+                <td>{{ca.endtime_sang}}</td>
+                <td>{{ca.starttime_chieu}}</td>
+                <td>{{ca.endtime_chieu}}</td>
+                <td>{{ca.ngay_apdung}}</td>
+                <td>
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editCaLamViec(index)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteCaLamViec(index)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalCaLamViec="bs-modal" id="modalCaLamViec" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalCaLamViec()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formCaLamViec">
+        <div class="cnt-page ttkt-page">
+          <div class="ttkt-form-default">
+            <div class="child-node">
+              <div class="ttkt-node show">
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                <span>Ca sáng</span>
+              </div>
+              <div class="row">
+                <div class="col-6 text-right">
+                  <label class="col-form-label">Thời gian bắt đầu
+                    <span class="required">*</span>:</label>
+                </div>
+                <!-- <div class="col-6">
+                  <timepicker [showMeridian]="ismeridian" formControlName="starttime_sang_InForm" *ngIf="typeModal != 'delete' ? true:''"></timepicker>
+                  <span class="errMessage" *ngIf="errStartTimeSang">Không được để trống</span>
+                  <input type="text" class="form-control" formControlName="starttime_sang_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+                </div>
+                <div class="col-6 text-right">
+                  <label class="col-form-label">Thời gian kết thúc
+                    <span class="required">*</span>:</label>
+                </div>
+                <div class="col-6">
+                  <timepicker [showMeridian]="ismeridian" formControlName="endtime_sang_InForm" *ngIf="typeModal != 'delete' ? true:''"></timepicker>
+                  <span class="errMessage" *ngIf="errEndTimeSang">Không được để trống</span>
+                  <input type="text" class="form-control" formControlName="endtime_sang_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+                </div> -->
+              </div>
+              <div class="ttkt-node show">
+                <i class="fa fa-caret-right" aria-hidden="true"></i>
+                <span>Ca chiều</span>
+              </div>
+              <div class="row">
+                <div class="col-6 text-right">
+                  <label class="col-form-label">Thời gian bắt đầu
+                    <span class="required">*</span>:</label>
+                </div>
+                <!-- <div class="col-6">
+                  <timepicker [showMeridian]="ismeridian" formControlName="starttime_chieu_InForm" *ngIf="typeModal != 'delete' ? true:''"></timepicker>
+                  <span class="errMessage" *ngIf="errStartTimeChieu">Không được để trống</span>
+                  <input type="text" class="form-control" formControlName="starttime_chieu_InForm" *ngIf="typeModal == 'delete' ? true:''"
+                    readonly>
+                </div>
+                <div class="col-6 text-right">
+                  <label class="col-form-label">Thời gian kết thúc
+                    <span class="required">*</span>:</label>
+                </div>
+                <div class="col-6">
+                  <timepicker [showMeridian]="ismeridian" formControlName="endtime_chieu_InForm" *ngIf="typeModal != 'delete' ? true:''"></timepicker>
+                  <span class="errMessage" *ngIf="errEndTimeChieu">Không được để trống</span>
+                  <input type="text" class="form-control" formControlName="endtime_chieu_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-6 text-right">
+                  <label class="col-form-label">Ngày áp dụng
+                    <span class="required">*</span>:</label>
+                </div>
+                <div class="col-6">
+                  <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngay_apdung_InForm" *ngIf="typeModal != 'delete' ? true:''"></my-date-picker>
+                  <span class="errMessage" *ngIf="errNgayApDung">Không được để trống</span>
+                  <input type="text" class="form-control" formControlName="ngay_apdung_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button [ngClass]="colorButtonSave " (click)="saveCaLamViec() ">
+          <i [ngClass]="iconButtonSave " aria-hidden="true "></i> {{nameButtonSave}}</button>
+        <button class="btn btn-default " (click)="closeModalCaLamViec() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form [formGroup]="thongTinDCForm">
+      <fieldset>
+        <legend>Thông tin điều chỉnh</legend>
+        <div id="thongtindieuchinh">
+          <div class="row">
+            <div class="col-md-6">
+              <ttkt-input type="date" label="Ngày điều chỉnh" formControlName="ngayDieuChinh" xl="4-8"></ttkt-input>
+            </div>
+            <div class="col-md-6">
+              <ttkt-input type="text" label="Số quyết định điều chỉnh" formControlName="soQDDC" xl="4-8"></ttkt-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <ttkt-input type="textarea" label="Lý do điều chỉnh" formControlName="lyDoDC" xl="4-8"></ttkt-input>
+            </div>
+            <div class="col-md-6 disable-click">
+              <ttkt-input type="text" label="Người gửi" formControlName="nguoiTao" xl="4-8"></ttkt-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Quyết định điều chỉnh
+                    <span class="text-danger">*</span>:</label>
+                </div>
+                <div class="col-xl-8">
+                  <label for="uploadFile" class="btn btn-default btn-sm">
+                    <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                  <input id="uploadFile" hidden type="file" name="file" #fileQuyetDinhDCKH (change)="upFileQuyetDinhDCKH()">
+                  <b class="ten-fileUpload">{{ tenFile }}</b>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <ttkt-input type="text" label="Người ký" formControlName="nguoiKi" xl="4-8"></ttkt-input>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

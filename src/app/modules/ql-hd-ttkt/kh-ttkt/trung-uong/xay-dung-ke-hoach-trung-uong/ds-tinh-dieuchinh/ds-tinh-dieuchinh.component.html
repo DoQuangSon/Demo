@@ -1,0 +1,155 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">DS các tỉnh điều chỉnh kế hoạch năm {{currentYear}}</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right" [hidden]="true">
+      <button class="btn btn-secondary">
+        <i class="fa fa-download" aria-hidden="true" ></i> Nhập Excel</button>
+      <button class="btn btn-success">
+        <i class="fa fa-file-excel-o" aria-hidden="true" ></i> Xuất Excel</button>
+    </div> -->
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form>
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <!-- <div class="row" [formGroup]="formTimKiem">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-md-6 col-sm-6">
+                <input class="form-control" type="text" formControlName="searchKey" placeholder="Nhập tên tỉnh">
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <button type="button" class="btn btn-default text-lg-right" (click)="onTimKiem()">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2" class="th-size">STT
+                  <br>
+                </th>
+                <th rowspan="2">BHXH Tỉnh/TP</th>
+                <th rowspan="2">Thanh tra chuyên
+                  <br>ngành đóng</th>
+                <th rowspan="2">Thanh tra, kiểm tra
+                    <br>liên ngành</th>
+                <th colspan="4">Kiểm tra</th>
+                <th rowspan="2">Tổng số</th>
+                <th rowspan="2">Thời gian
+                  <br>
+                </th>
+                <th rowspan="2">Điều chỉnh</th>
+                <th rowspan="2">Thao tác</th>
+              </tr>
+              <tr>
+                <th>Nội bộ cơ
+                  <br> quan BHXH</th>
+                <th>Đơn vị
+                  <br> SDLĐ</th>
+                <th>Cơ sở khám
+                  <br> chữa bệnh</th>
+                <th>Đại lý thu,
+                  <br> đại diện chi trả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsTinhDieuChinh?.length == 0">
+                <th colspan="13" class="text-center">Không có dữ liệu</th>
+              </tr>
+              <tr *ngFor="let item of dsTinhDieuChinh; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-primary text-center" (click)="detailKehoach(item.id)">{{ item.tenTinhHuyen ? item.tenTinhHuyen : '' }}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.thanhTraDvSDLD}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.lienNganhKiemTra}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.kiemTraBHXH}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.kiemTraDvSDLD}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.kiemTraCsKCB}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.kiemTraDaiLyThuChi}}</td>
+                <td class="text-right">{{ item.chiTietKhTinh.tongSo}}</td>
+                <td class="text-center">{{ (item.chiTietKhTinh.ngayGuiTW ? item.chiTietKhTinh.ngayGuiTW : '') | date: 'dd/MM/yyyy' }}</td>
+                <td class="text-center">{{ item.currentDieuChinh ? item.currentDieuChinh : '' }} lần</td>
+                <td>
+                  <div>
+                    <button type="button" class="btn btn-success btn-sm edit" (click)="duyetKH(item.id)">
+                      <i class="fa fa fa-check" aria-hidden="true"></i> Duyệt</button>
+                    <button type="button" class="btn btn-default btn-sm delete" (click)="tuChoiKH(item.id)">
+                      <i class="fa fa-ban" aria-hidden="true"></i> Từ chối</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="duyetKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Duyệt điều chỉnh</h5>
+          <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Bạn có chắc chắn muốn duyệt điều chỉnh?</h6>
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="duyet()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+          <button class="btn btn-default" (click)="duyetModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- tu choi modal -->
+<div bsModal #tuChoiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="tuChoiKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Từ chối điều chỉnh</h5>
+          <button type="button" class="close pull-right" (click)="tuChoiModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+          <div class="form-group row">
+            <label class="col-form-label col-md-2">Lý do từ chối:
+              <span class="text-danger">*</span>
+            </label>
+            <textarea class="form-control col-md-9" autosize rows="5" formControlName="lyDoTuChoi"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" (click)="tuChoi()">
+            <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+          <button class="btn btn-default" (click)="tuChoiModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,348 @@
+<div class="table-responsive table-scroll-x">
+  <table class="table table-bordered table-hover" *ngIf="!isDieuChinh">
+    <thead>
+      <tr>
+        <th class="th-size">STT</th>
+        <th *ngIf="!isTao && !hideTrangThai" class="th-size">Trạng thái</th>
+        <th>BHXH tỉnh, thành phố</th>
+        <th>Đơn vị chủ trì</th>
+        <th>Đơn vị phối hợp</th>
+        <th>Loại hình TTKT</th>
+        <th>Thời gian thực hiện</th>
+        <th *ngIf="!hiddeDotXuat">Đột xuất</th>
+        <th *ngIf="emitIsSua" class="th-thaotac">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="!isTao || (isTao && excel)">
+      <tr *ngFor="let item of allQuy; let i = index;">
+        <td class="text-center">{{ i + 1 }}</td>
+        <td class="text-center" *ngIf="!isTao && !hideTrangThai && item.isHoan">
+          <p class="text-danger" *ngIf="item.isHoan">
+            <b>Hoãn TTKT</b>
+          </p>
+          <button class="btn btn-success btn-sm" (click)="xemLyDoHoan(item)" *ngIf="item.isHoan">
+            <i class="fa fa-eye" aria-hidden="true"></i> Xem lý do</button>
+        </td>
+        <td class="text-center" *ngIf="!isTao && item.status == null && !item.isHoan && !hideTrangThai ">Chưa TTKT</td>
+        <td class="text-center" *ngIf="!isTao && item.status != null && !item.isHoan && !hideTrangThai ">{{ getStatusName(item.status) }}</td>
+        <td class="text-left">{{ getTinhHuyen(item.dmTinhHuyenId) ? getTinhHuyen(item.dmTinhHuyenId).tenTinhHuyen : '' }}</td>
+        <td class="text-left">{{ getChitriPhoiHop(item.donViChuTriId) ? getChitriPhoiHop(item.donViChuTriId).tenDonViChuTriPhoiHop : '' }}</td>
+        <td class="text-left">
+          <p *ngFor="let dv of item.phoiHopTwDTOS">{{getChitriPhoiHop(dv.dmCTriPHopId) ? getChitriPhoiHop(dv.dmCTriPHopId).tenDonViChuTriPhoiHop :''}}</p>
+        </td>
+        <td class="text-left">{{ getLoaiHinhTTKT(item.loaiHinhTTKT) ? getLoaiHinhTTKT(item.loaiHinhTTKT).name : '' }}</td>
+        <td class="text-center">{{ getQuy(item.quyThucHien) ? getQuy(item.quyThucHien).name : '' }}</td>
+        <td class="text-center" *ngIf="!hiddeDotXuat">
+          <label class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" [checked]="!item.trongKeHoach" disabled>
+            <span class="custom-control-indicator"></span>
+          </label>
+        </td>
+        <td class="text-center" *ngIf="emitIsSua">
+          <button type="button" class="btn btn-primary btn-sm edit" (click)="suaDonViTTKT(item)">
+            <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+          <button type="button" class="btn btn-danger btn-sm delete" (click)="xoaDonViTTKT(item)">
+            <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="isDieuChinh && type !='edit'">
+    <div class="pull-right" *ngIf="type!='capnhat'">
+      <button type="button" class="btn btn-primary mb-1" (click)="onThemMoi()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới
+      </button>
+    </div>
+    <table class="table table-bordered table-hover mb-1">
+      <thead>
+        <tr>
+          <th class="th-size">STT</th>
+          <th>Tình trạng</th>
+          <th>BHXH tỉnh, thành phố</th>
+          <th>Đơn vị chủ trì</th>
+          <th>Đơn vị phối hợp</th>
+          <th>Thời gian thực hiện</th>
+          <th>Loại hình TTKT</th>
+          <th *ngIf="!hiddeDotXuat">Đột xuất</th>
+          <th class="th-size">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formItem of listKeHoachFormArray; let i = index">
+          <td style="text-align: center">{{ i + 1 }}</td>
+          <td style="text-align: center" *ngIf="formItem.isHoan">
+            <p class="text-danger">
+              <b>Hoãn TTKT</b>
+            </p>
+            <button class="btn btn-success btn-sm" (click)="xemLyDoHoan(formItem)" *ngIf="formItem.isHoan">
+              <i class="fa fa-eye" aria-hidden="true"></i> Xem lý do</button>
+          </td>
+          <td style="text-align: center" *ngIf="formItem.status == null && !formItem.isHoan">Chưa TTKT</td>
+          <td style="text-align: center" *ngIf="formItem.status != null && !formItem.isHoan">{{ getStatusName(formItem.status) }}</td>
+          <td style="text-align: center">{{ getTinhHuyen(formItem.dmTinhHuyenId) ? getTinhHuyen(formItem.dmTinhHuyenId).tenTinhHuyen : '' }}</td>
+          <td style="text-align: center">{{ getChitriPhoiHop(formItem.donViChuTriId) ? getChitriPhoiHop(formItem.donViChuTriId).tenDonViChuTriPhoiHop :
+            '' }}</td>
+          <!-- <td style="text-align: center">{{ formItem.convertDonViPhoiHop ? formItem.convertDonViPhoiHop : '' }}</td> -->
+          <td style="text-align: center">
+            <p *ngFor="let dv of formItem.phoiHopTwDTOS
+            ">{{getChitriPhoiHop(dv.dmCTriPHopId) ? getChitriPhoiHop(dv.dmCTriPHopId).tenDonViChuTriPhoiHop :''}}</p>
+          </td>
+          <td style="text-align: center">{{ getQuy(formItem.quyThucHien).name }}</td>
+          <td style="text-align: left">{{ getLoaiHinhTTKT(formItem.loaiHinhTTKT) ? getLoaiHinhTTKT(formItem.loaiHinhTTKT).name : '' }}</td>
+          <td style="text-align: center" *ngIf="!hiddeDotXuat">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [checked]="!formItem.trongKeHoach" disabled>
+              <span class="custom-control-indicator"></span>
+            </label>
+          </td>
+          <td class="text-center tdEdit">
+            <button type="button" class="btn btn-primary btn-sm" (click)="edit(formItem.id)" *ngIf="!formItem.isHoan" [disabled]="!(formItem.status=== null || formItem.status===2) || !formItem.trongKeHoach">
+              <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+            <button type="button" class="btn btn-default btn-sm" *ngIf="type!='capnhat' && !formItem.isHoan" [disabled]="!(formItem.status=== null || formItem.status===2) || !formItem.trongKeHoach"
+              (click)="hoanTTKT(formItem)">
+              <i class="fa fa-ban" aria-hidden="true"></i> Hoãn</button>
+            <button type="button" class="btn btn-default btn-sm" *ngIf="type!='capnhat' && formItem.isHoan" [disabled]="!(formItem.status=== null || formItem.status===2) || !formItem.trongKeHoach"
+              (click)="huyHoanTTKT(formItem)">
+              <i class="fa fa-ban" aria-hidden="true"></i> Hủy hoãn</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="isDieuChinh && type =='edit'">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary mb-1" (click)="onThemMoi()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới
+      </button>
+    </div>
+    <table class="table table-bordered table-hover mb-1">
+      <thead>
+        <tr>
+          <th class="th-size">STT</th>
+
+          <th style="text-align: left">BHXH tỉnh, thành phố</th>
+          <th style="text-align: left">Đơn vị chủ trì</th>
+          <th style="text-align: left">Đơn vị phối hợp</th>
+          <th>Thời gian thực hiện</th>
+          <th style="text-align: left">Loại hình TTKT</th>
+          <th class="th-thaotac">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formItem of listKeHoachFormArray; let i = index">
+          <td style="text-align: center">{{ i + 1 }}</td>
+
+          <td style="text-align: left">{{ getTinhHuyen(formItem.dmTinhHuyenId) ? getTinhHuyen(formItem.dmTinhHuyenId).tenTinhHuyen : '' }}</td>
+          <td style="text-align: left">{{ getChitriPhoiHop(formItem.donViChuTriId) ? getChitriPhoiHop(formItem.donViChuTriId).tenDonViChuTriPhoiHop :''}}</td>
+          <!-- <td style="text-align: center">{{ formItem.convertDonViPhoiHop ? formItem.convertDonViPhoiHop : '' }}</td> -->
+          <td style="text-align: left">
+            <p *ngFor="let dv of formItem.phoiHopTwDTOS">{{getChitriPhoiHop(dv.dmCTriPHopId) ? getChitriPhoiHop(dv.dmCTriPHopId).tenDonViChuTriPhoiHop :''}}</p>
+          </td>
+          <td style="text-align: center">{{ getQuy(formItem.quyThucHien).name }}</td>
+          <td style="text-align: left">{{ getLoaiHinhTTKT(formItem.loaiHinhTTKT) ? getLoaiHinhTTKT(formItem.loaiHinhTTKT).name : '' }}</td>
+          <td class="text-center tdEdit">
+            <button type="button" class="btn btn-primary btn-sm edit" (click)="edit(formItem.id)">
+              <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+            <button type="button" class="btn btn-default btn-sm" (click)="xoaDonViTTKT(formItem)" *ngIf="!hideDelete">
+              <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--<div class="pull-right mb-2">-->
+<!--<span class="router" (click)="goToDanhSachCacTinh()">Danh sách các tỉnh</span>-->
+<!--</div>-->
+<div bsModal #modalEdit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left" *ngIf="isThemMoi">Thêm kế hoạch BHXH VN</h5>
+        <h5 class="modal-title pull-left" *ngIf="isSua">Sửa kế hoạch BHXH VN</h5>
+        <h5 class="modal-title pull-left" *ngIf="isXoa">Xóa kế hoạch BHXH VN</h5>
+        <button type="button" class="close pull-right" (click)="modalEdit.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [ngClass]="{'disable-click':isXoa}">
+        <form novalidate [formGroup]="editListKehoachForm">
+          <div class="row visibled">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-4 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" formControlName="id">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(editListKehoachForm.controls.quyThucHien?.errors && (editListKehoachForm.controls.quyThucHien?.touched || editListKehoachForm.controls.quyThucHien?.dirty)) ? 'has-danger' : ''">
+                <label for="quyThucHien" class="col-form-label col-md-4 text-lg-right">Quý:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <select class="custom-select form-control" id="quyThucHien" formControlName="quyThucHien">
+                    <option *ngFor="let choice of optionQuy" [value]="choice.id">{{ choice.name }}</option>
+                  </select>
+                  <p class="help-block text-danger" *ngIf="editListKehoachForm.controls.quyThucHien?.errors?.required &&  (editListKehoachForm.controls.quyThucHien?.touched || editListKehoachForm.controls.quyThucHien?.dirty)">
+                    Quý không được bỏ trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" [ngClass]="{'disable-click': isxoa}">
+            <div class="col-md-12">
+                <ttkt-input
+                  [display]="!isThemMoi"
+                  [readOnly]="type=='capnhat'"
+                  type="select"
+                  label="Tỉnh, thành phố"
+                  md="4-8"
+                  formControlName="dmTinhHuyenId"
+                  [data]="{
+                      options: tinhThanhKhongTrongKH,
+                      valueType: 'tenTinhHuyen'
+                  }"
+                ></ttkt-input>
+                <ttkt-input
+                  [display]="isThemMoi"
+                  type="select"
+                  label="Tỉnh, thành phố"
+                  md="4-8"
+                  formControlName="listDmTinhHuyenId"
+                  [data]="{
+                      options: tinhThanhKhongTrongKH,
+                      valueType: 'tenTinhHuyen',
+                      multiple: true
+                  }"
+              ></ttkt-input>
+            </div>
+          </div>
+          <div class="row" [ngClass]="{'disable-click': isxoa}">
+            <div class="col-md-12">
+              <ttkt-input
+                md="4-8"
+                label="Loại hình TTKT"
+                type="select-basic"
+                formControlName="loaiHinhTTKT"
+                (change)="changeLoaiHinh()"
+                [data]="{
+                  options: loaiHinhTTKT,
+                  valueType: 'name'
+                }"
+              ></ttkt-input>
+            </div>
+          </div>
+          <div class="row" [ngClass]="{'disable-click': isxoa}">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(editListKehoachForm.controls.dvChutri?.errors && (editListKehoachForm.controls.dvChutri?.touched || editListKehoachForm.controls.dvChutri?.dirty)) ? 'has-danger' : ''">
+                <label for="selectDvChutri" class="col-form-label col-md-4 text-lg-right">Đơn vị chủ trì:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <select class="custom-select form-control" id="selectDvChutri" formControlName="dvChutri" [ngClass]="{'disable-click': type=='capnhat'}">
+                    <option *ngFor="let choice of donViChuTri" [value]="choice.id">{{ choice.tenDonViChuTriPhoiHop }}</option>
+                  </select>
+                  <p class="help-block text-danger" *ngIf="editListKehoachForm.controls.dvChutri?.errors?.required &&  (editListKehoachForm.controls.dvChutri?.touched || editListKehoachForm.controls.dvChutri?.dirty)">
+                    Đơn vị chủ trì không được bỏ trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" [ngClass]="{'disable-click': isxoa}" *ngIf="validLoaiHinh">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(editListKehoachForm.controls.dvPhoihop?.errors && (editListKehoachForm.controls.dvPhoihop?.touched || editListKehoachForm.controls.dvPhoihop?.dirty)) ? 'has-danger' : ''">
+                <label for="selectDvPhoihop" class="col-form-label col-md-4 text-lg-right">Đơn vị phối hợp:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <ng-select [allowClear]="true" [multiple]="true" [items]="listDonViPhoiHop" (data)="refreshValueDVPH($event)" formControlName="dvPhoihop"
+                    placeholder="Đơn vị phối hợp">
+                  </ng-select>
+                  <p class="help-block text-danger" *ngIf="editListKehoachForm.controls.dvPhoihop?.errors?.required &&  (editListKehoachForm.controls.dvPhoihop?.touched || editListKehoachForm.controls.dvPhoihop?.dirty)">
+                    Đơn vị phối hợp không được bỏ trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onSubmitEdit()" *ngIf="isSua">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button type="button" class="btn btn-primary" (click)="acceptDelete()" *ngIf="isXoa">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Xóa</button>
+        <button type="button" class="btn btn-primary" (click)="luuThemMoi()" *ngIf="isThemMoi">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <button type="button" class="btn btn-default" (click)="modalEdit.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Xóa đơn vị Thanh Tra</h5>
+        <button type="button" class="close pull-right" (click)="modalDelete.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center text-danger">
+          <b>Bạn chắc chắn muốn xóa đơn vị?</b>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="acceptDelete()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="modalDelete.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #modalHoan="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" [formGroup]="formHoanTTKT">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Hoãn Thanh Tra Kiểm Tra</h5>
+        <button type="button" class="close pull-right" (click)="modalHoan.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label" for="ngayTao">Ngày hoãn:
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <my-date-picker [ngClass]="{'disable-click': isXemLyDoHoan}" [options]="myDatePickerOptions" locale="vi" formControlName="ngayHoanTTKT"></my-date-picker>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-xl-4 text-xl-right">Lý do:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-xl-8">
+            <textarea autosize class="form-control" rows="2" formControlName="lyDoHoanTTKT" [readOnly]="isXemLyDoHoan"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="acceptHoanTTKT()" [disabled]="formHoanTTKT.invalid" *ngIf="!isXemLyDoHoan">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="modalHoan.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

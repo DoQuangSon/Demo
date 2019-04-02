@@ -1,0 +1,39 @@
+@import './../../../../../styles/_variables.scss';
+table {
+  thead {
+    background-color: $colorLightGray;
+    th {
+      text-align: center;
+      vertical-align: middle
+    }
+  }
+  tbody {
+    i {
+      cursor: pointer;
+      &:first-child {
+        color: #6495ed;
+        margin-right: 10px;
+        &:hover {
+          color: #053996;
+        }
+      }
+      &:nth-child(2) {
+        color: #ff0000;
+        &:hover {
+          color: #c9302c;
+        }
+      }
+    }
+  }
+}
+
+.visibled {
+  display: none;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
+  

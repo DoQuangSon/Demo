@@ -1,0 +1,47 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Danh mục phân loại nội dung</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="danhmucCqBhxhForm">
+      <fieldset>
+        <legend>Danh sách phân loại nội dung</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh sách phân loại nội dung</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th class="table-resize">Tên nội dung</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tl of listDanhMucTinhHuyen; let i = index">
+                <td class="text-center">{{ pageSize * number + i + 1 }}</td>
+                <td>{{ tl.tenNoiDung }}</td>
+              </tr>
+              <tr *ngIf="!listDanhMucTinhHuyen.length">
+                <td colspan="2" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

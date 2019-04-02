@@ -1,0 +1,311 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Tạo mới báo cáo tổng hợp cấp Tỉnh</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-default" (click)="onSend()" *ngIf="gui==true">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuDieuChinh()" *ngIf="luuDieuChinh==true">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Điều chỉnh</button>
+      <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="duyet==true">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <button type="button" class="btn btn-primary" (click)="onSua()" *ngIf="sua==true">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('tao')" *ngIf="luuTao==true">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-primary" (click)="onLuuTaoSua('sua')" *ngIf="luuSua==true">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-link" (click)="onBack()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="creatBCTongHopTinhForm">
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="kq-ttkt child-node">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>Thông tin báo cáo</span>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-2 text-md-right">Tên báo cáo: </label>
+            <div class="col-md-6 col-xl-5">
+              <input class="form-control" type="text" formControlName="tenBaoCao">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-4 text-md-right">Số: </label>
+                <div class="col-md-8">
+                  <input class="form-control form-control-25" type="text" formControlName="soNumber">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-4 text-md-right">Ngày lập: </label>
+                <div class="col-md-8">
+                  <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayLap"></my-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="kq-ttkt child-node">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>Thông tin lọc dữ liệu</span>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row">
+                <label for="nam" class="col-form-label col-md-4 text-lg-right">Năm: </label>
+                <div class="col-md-8">
+                  <select class="custom-select" id="nam" formControlName="nam">
+                    <option value="" selected>Chọn</option>
+                    <option *ngFor="let choice of namOptions" [value]="choice.id">{{ choice.nam }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row no-margin-bt">
+                <label class="col-form-label col-xl-4 text-lg-right"></label>
+                <div class="form-check form-check-inline col-md-2 col-xl-1">
+                  <label class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" formControlName="options" value="{{quy_option}}" (change)="changeOption()">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Quý</span>
+                  </label>
+                </div>
+                <div class="form-check form-check-inline col-md-2 col-xl-1">
+                  <label class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" formControlName="options" value="{{thang_option}}" (change)="changeOption()">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Tháng</span>
+                  </label>
+                </div>
+                <div class="form-check form-check-inline col-md-4 col-xl-3">
+                  <label class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" formControlName="options" value="{{luyKe_option}}" (change)="changeOption()">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Lũy kế</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="options == quy_option">
+            <div class="col-md-6 col-sm-6">
+              <div class="row">
+                <div class="col-xl-4"></div>
+                <div class="col-md-8">
+                  <div class="form-group row">
+                    <label for="" class="col-form-label col-md-2 text-md-right">Quý: </label>
+                    <div class="col-md-8">
+                      <select class="custom-select" id="quy" formControlName="quy">
+                        <option value="0" selected>Chọn</option>
+                        <option *ngFor="let choice of quyOptions" [value]="choice.id">{{ choice.quy }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="options == thang_option">
+            <div class="col-md-6 col-sm-6">
+              <div class="row">
+                <div class="col-xl-4"></div>
+                <div class="col-md-8">
+                  <div class="form-group row">
+                    <label for="" class="col-form-label col-md-2 text-md-right">Tháng: </label>
+                    <div class="col-md-8">
+                      <select class="custom-select" id="thang" formControlName="thang">
+                        <option value="0" selected>Chọn</option>
+                        <option *ngFor="let choice of thangOptions" [value]="choice.id">{{ choice.thang }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="options == luyKe_option">
+            <div class="col-md-6 col-sm-6">
+              <div class="row">
+                <div class="col-xl-4"></div>
+                <div class="col-xl-4">
+                  <div class="form-group row">
+                    <label for="" class="col-form-label col-md-5 text-md-right">Từ tháng: </label>
+                    <div class="col-md-7">
+                      <select class="custom-select" id="thang" formControlName="luyKe_tuthang">
+                        <option value="0" selected>Chọn</option>
+                        <option *ngFor="let choice of thangOptions" [value]="choice.id">{{ choice.thang }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-4">
+                  <div class="form-group row">
+                    <label for="" class="col-form-label col-md-5 text-md-right">Đến tháng: </label>
+                    <div class="col-md-7">
+                      <select class="custom-select" id="thang" formControlName="luyKe_denthang">
+                        <option value="0" selected>Chọn</option>
+                        <option *ngFor="let choice of thangOptions" [value]="choice.id">{{ choice.thang }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="options == luyKe_option">
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <div class="offset-md-4">
+              <button type="button" class="btn btn-primary tong-hop-mau01 mb-3" (click)="showTongHopKQ()">
+                <i class="fa fa-search-plus" aria-hidden="true"></i> Tổng hợp kết quả</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset [ngClass]="displayKQ ? '': 'visibled'">
+        <legend>Bảng tổng hợp kết quả</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Nội dung
+                  <br>
+                </th>
+                <th>Mã tiêu thức</th>
+                <th>Số thực hiện</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">2</td>
+                <td class="text-center">3</td>
+                <td class="text-center">4</td>
+                <td class="text-center">5</td>
+              </tr>
+              <tr>
+                <th class="text-center">I</th>
+                <th colspan="4">THỰC HIỆN THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of thucHienTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+              <tr>
+                <th class="text-center">II</th>
+                <th colspan="4">KẾT QUẢ THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of ketQuaTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+              <tr>
+                <th class="text-center">III</th>
+                <th colspan="4">THỰC HIỆN KẾT LUẬN THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of ketLuanTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt báo cáo tổng hợp</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn báo cáo tổng hợp?</h6>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="onSubmitDuyet()">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button class="btn btn-default" (click)="duyetModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- gui modal -->
+<div bsModal #guiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Gửi báo cáo</h5>
+        <button type="button" class="close pull-right" (click)="guiModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="guiModalForm">
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Gửi:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" readonly formControlName="inputSend">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-md-3 text-lg-right">Lời nhắn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <textarea autosize class="form-control form-rounded" formControlName="loiNhanCuaTinh" rows="3"></textarea>
+              <p class="help-block text-danger mb-1" *ngIf="guiModalForm.controls.loiNhanCuaTinh?.errors?.required &&  (guiModalForm.controls.loiNhanCuaTinh?.touched || guiModalForm.controls.loiNhanCuaTinh?.dirty || guiModalFormSubmited)">
+                Lời nhắn không được để trống</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="onSubmitSend()">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+        <button type="button" class="btn btn-default" (click)="guiModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

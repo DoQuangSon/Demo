@@ -1,0 +1,121 @@
+@import './../../../../../../styles/_variables.scss';
+#thongtintimkiem {
+    margin-bottom: 2rem; // .row {
+    //   .col-xl-4 {
+    //     margin-bottom: 1rem;
+    //   }
+    // }
+}
+
+.table-responsive {
+    table {
+        thead {
+            background-color: $colorLightGray;
+            th {
+                text-align: center;
+                vertical-align: middle;
+            } // th:first-child {
+            //    width: 4rem;
+            // }
+        }
+        tbody {
+            td {
+                text-align: center;
+                vertical-align: middle;
+                label {
+                    padding-left: 1rem;
+                    margin-right: 0rem;
+                }
+                span {
+                    cursor: pointer;
+                    color: $colorBlue;
+                    text-decoration: underline;
+                }
+                label {
+                    padding-left: 1rem;
+                    margin-right: 0rem;
+                }
+            }
+            td:last-child {
+                span {
+                    text-decoration: none;
+                }
+            }
+            .text-primary {
+                text-decoration: underline
+            }
+        }
+    }
+}
+
+.custom-control-input:checked~.custom-control-indicator {
+    background-color: #0c4e84;
+}
+
+.modal-dialog.modal-lg {
+    max-width: 1100px;
+    .modal-content {
+        .modal-body {
+            .title {
+                margin-bottom: 1rem;
+            }
+            .table-responsive {
+                table {
+                    thead {
+                        background-color: $colorLightGray;
+                        tr {
+                            th {
+                                text-align: center;
+                                vertical-align: middle;
+                            }
+                            th:nth-child(4),
+                            th:nth-child(5),
+                            th:nth-child(6) {
+                                min-width: 200px;
+                            }
+                            th:last-child {
+                                min-width: 115px;
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                padding: 10px;
+                                text-align: left;
+                                vertical-align: top;
+                                textarea {
+                                    width: 100%;
+                                    padding: 0px 6px;
+                                    border: none;
+                                }
+                            }
+                            td:last-child {
+                                padding: 6px;
+                                text-align: center
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-md {
+        max-width: 700px;
+        input,
+        textarea {
+            width: 100%;
+        }
+    }
+}
+
+.visibled {
+    display: none;
+}
+
+.visibility {
+    visibility: hidden;
+}

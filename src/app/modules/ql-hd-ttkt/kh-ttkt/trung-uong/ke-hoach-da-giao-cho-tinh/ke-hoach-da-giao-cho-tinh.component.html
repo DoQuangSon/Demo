@@ -1,0 +1,121 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- <span class="page-title">DS kế hoạch đã giao cho tỉnh</span> -->
+      <ttkt-breadcrumb></ttkt-breadcrumb>
+    </div>
+    <div class="col-md-6 pull-right" [hidden]="coDieuChinh">
+      <button class="btn btn-primary mb-1" (click)="onDieuChinh()">
+        <i class="fa fa-list-ol" aria-hidden="true"></i> Điều chỉnh
+      </button>
+    </div>
+
+    <div class="col-md-6 pull-right" *ngIf="coDieuChinh">
+      <button class="btn btn-primary mb-1" (click)="gui()">
+        <i class="fa fa-list-ol" aria-hidden="true"></i> Gửi
+      </button>
+    </div>
+  </div>
+</h4>
+<ng-container *ngIf="coDieuChinh">
+  <ttkt-form-thong-tin-dieu-chinh [thongTinDCForm]="thongTinDCForm"></ttkt-form-thong-tin-dieu-chinh>
+</ng-container>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <!-- Left-->
+          <div class="col-12 col-md-6">
+
+            <!-- năm-->
+            <div class="form-group">
+              <label for="selectYear">Năm: </label>
+              <select name="" id="selectYear" class="custom-select" [formControl]="selectYear" (change)="changeYear($event)">
+                <option *ngFor="let item of listYear" [value]="item">{{ item }}</option>
+              </select>
+            </div>
+
+            <!-- Số quyết định-->
+            <div class="form-group">
+              <label>Số quyết định:</label>
+              <span> {{soQd}}</span>
+            </div>
+            <!--Ngày-->
+            <div class="form-group">
+              <label>Ngày:</label>
+
+              {{ ngay | date:"dd/MM/yyyy"}}
+              <!-- <my-date-picker [formControl]="ngay" locale="vi" style="width: 100"></my-date-picker> -->
+            </div>
+             <!-- người tạo-->
+             <div class="form-group">
+                <label>Người gửi:</label>
+                <span> {{nguoiTao}}</span>
+              </div>
+          </div>
+          <!-- right-->
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label>Tên kế hoạch:</label>
+              <span> {{tenKh}}</span>
+            </div>
+            <!-- Người kí-->
+            <div class="form-group">
+              <label>Người kí:</label>
+              <span> {{nguoiKi}}</span>
+            </div>
+
+            <!--File quyết định-->
+            <div class="form-group">
+              <span class="col-form-label">File quyết định:
+                <b class="ten-fileUpload">{{ tenFile }}</b>
+              </span>
+              <button type="submit" class="btn btn-primary btn-sm detail" [disabled]="isDisabledTaiFile" (click)="downLoadFile()">
+                <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <ng-container *ngIf="!coDieuChinh && listHistory != undefined && listHistory != []">
+    <div *ngFor="let item of listHistory; let i = index">
+      <ng-container *ngIf="(this.item[0].soQuyetDinhDieuChinh !== undefined && this.item[0].soQuyetDinhDieuChinh !== null)
+  || (this.item[0].lyDoDieuChinh !== undefined && this.item[0].lyDoDieuChinh !== null)
+  || (this.item[0].ngayXinDieuChinh !== undefined && this.item[0].ngayXinDieuChinh !== null)">
+        <ng-container *ngIf="i == 0">
+          <ttkt-thong-tin-dieu-chinh [chiTietKH]="item[0]"></ttkt-thong-tin-dieu-chinh>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+      <form novalidate>
+      <fieldset>
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chi tiết</legend>
+        <ttkt-danh-sach-ke-hoach-table #dsChinhSua [listKeHoach]="listKeHoach" [displayTongSo]="true" [isDaGiao]="true" [coDieuChinh]="coDieuChinh"></ttkt-danh-sach-ke-hoach-table>
+        <ng-container *ngIf="listHistory.length > 0">
+          <button class="btn btn-success" data-toggle="modal" data-target="#showDialogHistory" style="margin-bottom: 15px" [disabled]="!isShowBtnLichSu">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Xem lịch sử ({{listHistory.length - 1}})</button>
+        </ng-container>
+        <ng-container *ngIf="listHistory.length == 0">
+          <button class="btn btn-success" data-toggle="modal" data-target="#showDialogHistory" style="margin-bottom: 15px" [disabled]="!isShowBtnLichSu">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Xem lịch sử (0)</button>
+        </ng-container>
+      </fieldset>
+    </form>
+  </div>
+</div>
+<ng-container *ngIf="listHistory != undefined && listHistory != []">
+  <div class="modal " id="showDialogHistory">
+    <div class="modal-dialog modal-lg">
+      <ttkt-dialog-lich-su-dieu-chinh-da-giao [chiTietKH]="listKeHoach[0]" [listLichSu]="listHistory"></ttkt-dialog-lich-su-dieu-chinh-da-giao>
+    </div>
+  </div>
+</ng-container>

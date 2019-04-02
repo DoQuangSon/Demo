@@ -1,0 +1,46 @@
+<div class="modal-content">
+  <!-- Modal Header -->
+  <div class="modal-header">
+    <h4 class="modal-title">Xem lịch sử</h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body">
+    <div class="lan-chinh-sua"  *ngFor="let item of listLichSu; let i = index">
+      <ng-container>
+          <h3 style="text-align: center">Lần chỉnh sửa thứ {{listLichSu.length - i}}</h3>
+          <hr>
+          <ttkt-thong-tin-chung [chiTietKH]="chiTietKH"></ttkt-thong-tin-chung>
+          <ng-container *ngIf="!taiKhoanTinh">
+            <ng-container *ngIf="(this.item.soQuyetDinhDieuChinh !== undefined && this.item.soQuyetDinhDieuChinh !== null)
+            || (this.item.lyDoDieuChinh !== undefined && this.item.lyDoDieuChinh !== null)
+            || (this.item.ngayXinDieuChinh !== undefined && this.item.ngayXinDieuChinh !== null)">
+              <ttkt-thong-tin-dieu-chinh [chiTietKH]="item"></ttkt-thong-tin-dieu-chinh>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="taiKhoanTinh">
+              <ng-container *ngIf="(this.item.soQuyetDinhDieuChinh !== undefined && this.item.soQuyetDinhDieuChinh !== null)
+              || (this.item.lyDoDieuChinh !== undefined && this.item.lyDoDieuChinh !== null)
+              || (this.item.ngayXinDieuChinh !== undefined && this.item.ngayXinDieuChinh !== null)">
+                <ttkt-thong-tin-dieu-chinh [chiTietKH]="item" [taiKhoanTinh] = "'true'" [isKeHoachBHXHVN]="isKeHoachBHXHVN"></ttkt-thong-tin-dieu-chinh>
+              </ng-container>
+            </ng-container>
+          <ng-container *ngIf="!twGiao">
+              <ttkt-chi-tiet-kh-table [chiTietKH]="item"></ttkt-chi-tiet-kh-table>
+          </ng-container>
+          <ng-container *ngIf="twGiao">
+            <ttkt-list-ke-hoach-bhxh-vn-table [listKeHoach]="item.chiTietKhTWSet"></ttkt-list-ke-hoach-bhxh-vn-table>
+          </ng-container>
+          <hr>
+      </ng-container>
+
+    </div>
+
+  </div>
+
+  <!-- Modal footer -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+  </div>
+</div>

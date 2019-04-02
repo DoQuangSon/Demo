@@ -1,0 +1,103 @@
+<h4 class="heading-page">
+  <span class="page-title">Cấu hình thời hạn</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <div id="danhsachthamsohethong">
+        <fieldset>
+          <legend>Danh sách thời hạn</legend>
+          <!-- <div class="pull-right mb-1">
+              <button class="btn btn-primary" (click)="addThamSo()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div> -->
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="th-size">STT</th>
+                  <th>Mã tham số</th>
+                  <th class="table-resize">Tên tham số</th>
+                  <th>Ngày gửi</th>
+
+                  <th class="th-size">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let thamso of danhSachThoiHan; let index = index">
+                  <td class="text-center">{{index + 1}}</td>
+                  <td class="text-center">{{thamso.id}}</td>
+                  <td class="text-left">{{thamso.tenThamSo}}</td>
+                  <td class="text-center">{{thamso.ngayGui | date:'dd-MM-yyyy'}}</td>
+
+                  <td class="text-center">
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="editThamSo(thamso.id)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                      <!-- <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteThamSo(index)">
+                          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button> -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+              <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+              </pagination>
+            </nav>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalThamSo="bs-modal" id="modalThamSo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalThamSo()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formThamSo">
+
+        <div class="row form-group">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Tên tham số:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="text" class="form-control" formControlName="tenThamSo" [readonly]="typeModal == 'delete' || typeModal == 'edit'">
+            <span class="errMessage" *ngIf="errTenThamSo">Tên tham số không được để trống</span>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Ngày gửi:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayGui"></my-date-picker>
+            <span class="errMessage" *ngIf="errNgayGui">Ngày gửi không được để trống</span>
+          </div>
+        </div>
+
+      </div>
+      <div class=" modal-footer ">
+        <button [ngClass]="colorButtonSave" (click)="saveThamSo() ">
+          <i [ngClass]="iconButtonSave" aria-hidden="true "></i> {{nameButtonSave}}</button>
+        <button class="btn btn-default" (click)="closeModalThamSo() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

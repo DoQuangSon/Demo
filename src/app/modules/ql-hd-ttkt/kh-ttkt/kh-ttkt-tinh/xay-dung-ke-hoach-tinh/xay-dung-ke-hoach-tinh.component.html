@@ -1,0 +1,138 @@
+<h4 class="heading-page">
+    <div class="row">
+        <div class="col-md-6">
+            <span class="page-title">Kế hoạch dự kiến</span>
+        </div>
+        <div class="col-md-6 pull-right">
+            <button type="button" class="btn btn-primary" (click)="taoKehoach()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+    </div>
+</h4>
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+        <form novalidate>
+            <fieldset>
+                <legend>Danh sách kế hoạch</legend>
+                <div class="ttkt-node">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                    <span>Danh sách kế hoạch</span>
+                </div>
+                <div class="row" [formGroup]="formTimKiem">
+                    <div class="col-xl-7">
+                        <div class="form-group row">
+                            <div class="col-md-7">
+                                <input class="form-control" type="text" formControlName="searchKey" placeholder="Nhập tên kế hoạch">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-default mt-sm-1" (click)="setPage(0)">
+                                    <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive table-scroll-x">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="th-size">STT
+                                    <br>
+                                </th>
+                                <th class="table-resize">Tên kế hoạch</th>
+                                <th>Thời gian</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let kh of dskehoach; let i = index">
+                                <td class="text-center">
+                                    {{ pageSize*currentPage + i + 1}}
+                                </td>
+                                <td class="text-primary text-left">
+                                    <span class="router" (click)="detailKehoach(kh.id)">{{kh.tenKeHoach}}</span>
+                                </td>
+                                <td class="text-center">{{ kh.ngayQuyetDinhTaoKeHoach | date: 'dd/MM/yyyy' }}</td>
+                                <td class="text-center">{{ (getStatus(kh.status) ? getStatus(kh.status) : '').name }}</td>
+                            </tr>
+
+                            <tr *ngIf="dskehoach?.length == 0">
+                                <td colspan="4" class="text-center">Không có dữ liệu</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <ng-container *ngIf="!(dskehoach?.length == 0)">
+                        <nav aria-label="Page navigation" *ngIf="pager.pages && pager?.pages.length">
+                            <ul class="pagination justify-content-end mb-1">
+
+                                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip"
+                                    data-placement="top" title="Trang đầu">
+                                    <a class="page-link" aria-label="First" (click)="setPage(0)">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip"
+                                    data-placement="top" title="Trang trước">
+                                    <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                                        <span aria-hidden="true">&#60;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+                                    <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+                                </li>
+                                <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}"
+                                    data-toggle="tooltip" data-placement="top" title="Trang sau">
+                                    <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                                        <span aria-hidden="true">&#62;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}"
+                                    data-toggle="tooltip" data-placement="top" title="Trang cuối">
+                                    <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </ng-container>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div bsModal #guiKHModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">Gửi kế hoạch</h5>
+                <button type="button" class="close pull-right" (click)="guiKHModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formGuiKHModal">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ttkt-input type="text" md="4-8" formControlName="inputSend" label="Gửi" [ngClass]="{'disable-click': true}">BHXH
+                                VN</ttkt-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ttkt-input type="textarea" rows="3" md="4-8" label="Lời nhắn" formControlName="noiDungLn"></ttkt-input>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="guiKHModal.hide()">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+                <button type="button" class="btn btn-default" (click)="guiKHModal.hide()">
+                    <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+            </div>
+        </div>
+    </div>
+</div>

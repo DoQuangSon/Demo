@@ -1,0 +1,176 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Cập nhật sổ theo dõi thực hiện kết luận</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary" *ngIf="isLuu" (click)="luuCapNhat()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button class="btn btn-primary" *ngIf="isCapNhat" (click)="onCapNhat()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+      <button class="btn btn-default">
+        <i class="fa fa-print" aria-hidden="true"></i> In</button>
+      <button type="button" class="btn btn-link" (click)="closeCapNhat()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate id="thongtintimkiem">
+      <fieldset>
+        <legend>Thông tin sổ theo dõi
+          <i class="fa fa-caret-right" aria-hidden="thue"></i>
+        </legend>
+        <div class="ttkt-node">
+          <span>Thông tin sổ theo dõi</span>
+          <i class="fa fa-caret-right" aria-hidden="thue"></i>
+        </div>
+        <label class="col-form-label">Tên đoàn:
+          <b>{{ tenDoan }}</b>
+        </label>
+      </fieldset>
+    </form>
+    <div class="table-responsive table-scroll-x">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th rowspan="3" class="th-size">STT</th>
+            <th rowspan="3" class="table-resize">Tên đơn vị</th>
+            <th rowspan="3">Số văn bản
+              <br>kết luận</th>
+            <th rowspan="3">Thời hạn
+              <br>thực hiện
+              <br>kết luận</th>
+            <th colspan="7">Tiến độ thực hiện</th>
+            <th rowspan="3">Ghi chú</th>
+            <th rowspan="3" *ngIf="isLuu" class="th-size">Thao
+              <br>tác</th>
+          </tr>
+          <tr>
+            <td colspan="2">Theo dõi</td>
+            <td colspan="3">Đôn đốc</td>
+            <td colspan="2">Quyết định kiểm tra</td>
+          </tr>
+          <tr>
+            <td>Đang
+              <br>theo dõi</td>
+            <td>Kết thúc
+              <br>theo dõi
+              <br>(Số BC)</td>
+            <td>Làm việc
+              <br>trực tiếp
+              <br>(ngày làm việc)</td>
+            <td>Ra văn bản
+              <br> (hiệu VB)</td>
+            <td>Kết thúc
+              <br>(Số BC)</td>
+            <td>Số QĐ</td>
+            <td>Kiểm tra
+              <br>kết thúc</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of soKetLuan; let i = index">
+            <td class="text-center">{{i + 1}}</td>
+            <td class="text-left">{{ item.dsDvDcTTKT ? item.dsDvDcTTKT.doiTuongTTKT.tenDoiTuong : '' }}</td>
+            <td class="text-left">{{ item.soVanBanKetLuan || '' }}</td>
+            <td class="text-right">{{ item.thoiHanThucHien || ''}}</td>
+            <td class="text-center">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input " [checked]="item.dangTheoDoi ? true: null" disabled>
+                <span class="custom-control-indicator"></span>
+              </label>
+            </td>
+            <td class="text-left">{{item.ketThucTheoDoi || ''}}</td>
+            <td class="text-left">{{item.donDocLamViecTrucTiep || ''}}</td>
+            <td class="text-left">{{item.donDocRaVanBan || ''}}</td>
+            <td class="text-left">{{item.donDocKetThuc || ''}}</td>
+            <td class="text-left">{{item.qDinhKiemTraSoQd || ''}}</td>
+            <td class="text-left">{{item.qDinhKiemTraKetThuc || ''}}</td>
+            <td class="text-left">{{item.ghiChu || ''}}</td>
+            <td *ngIf="isLuu">
+              <!--<i class="fa fa-pencil fa-lg" aria-hidden="true" (click)="edit(item)"></i>-->
+              <button type="button" class="btn btn-primary btn-sm edit" (click)="edit(item)">
+                <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div bsModal #modalEdit="bs-modal" id="modalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Cập nhật</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalEdit.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formEdit">
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-form-label">Thời hạn thực hiện kết luận:</label>
+            <textarea type="text" class="form-control" autosize formControlName="thoiHanThucHien" (blur)="validate()"></textarea>
+            <span class="text-danger" *ngIf="isError">Thời hạn thực hiện phải là số</span>
+          </div>
+          <div class="col-sm-6">
+            <label class="col-form-label">Làm việc trực tiếp:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="lamViecTrucTiep"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-form-label">Ra văn bản:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="raVanBan"></textarea>
+          </div>
+          <div class="col-sm-6">
+            <label class="col-form-label">Kết thúc:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="ketThuc"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-form-label">Số QĐ:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="soQD"></textarea>
+          </div>
+          <div class="col-sm-6">
+            <label class="col-form-label">Kiểm tra kết thúc:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="kiemTraKetThuc"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-form-label">Kết thúc theo dõi:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="ketThucTheoDoi"></textarea>
+          </div>
+          <div class="col-sm-6">
+            <label class="col-form-label">Ghi chú:</label>
+            <textarea type="text" class="form-control" row="1" autosize formControlName="ghiChu"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-form-label"></label>
+            <div class="form-check">
+              <label class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" formControlName="isTheoDoi">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Đang theo dõi</span>
+                </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="luuEdit()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button class="btn btn-default" (click)="modalEdit.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

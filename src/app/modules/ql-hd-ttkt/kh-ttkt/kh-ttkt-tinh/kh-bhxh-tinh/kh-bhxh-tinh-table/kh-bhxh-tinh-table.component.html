@@ -1,0 +1,72 @@
+<div class="kq-ttkt child-node mt-3">
+  <div class="table-responsive table-scroll-x table-kehoach">
+    <table class="table table-bordered table-hover mb-1" *ngIf="listKehoachB.length > 0">
+      <thead>
+        <tr>
+          <th rowspan="2" class="th-size">STT</th>
+          <!-- <th rowspan="2" class="th-size">Trạng thái</th> -->
+          <th rowspan="2" class="table-resize">Tên đơn vị</th>
+          <th rowspan="2">Mã đơn vị
+            <br> SDLĐ</th>
+          <th rowspan="2">Mã cơ sở
+            <br>khám chữa bệnh</th>
+          <th rowspan="2">Địa bàn</th>
+          <th rowspan="2">Quý
+            <br>(kế hoạch)</th>
+          <th rowspan="2">Loại hình
+            <br> TTKT</th>
+          <!-- <th colspan="2">Quý (thực tế)</th>
+          <th rowspan="2">Đột
+            <br> xuất</th> -->
+        </tr>
+        <!-- <tr>
+          <th class="th-size">Từ ngày</th>
+          <th class="th-size">Đến ngày</th>
+        </tr> -->
+      </thead>
+      <tbody *ngFor="let item of listKehoachB; let i = index">
+        <tr>
+          <th class="text-center">
+            <span *ngIf="i==0">I</span>
+            <span *ngIf="i==1">II</span>
+            <span *ngIf="i==2">III</span>
+            <span *ngIf="i==3">IV</span>
+          </th>
+          <!-- <th></th> -->
+          <th>{{ item.tenDanhMuc }}</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <!-- <th></th>
+          <th></th> -->
+          <!-- <th></th> -->
+        </tr>
+        <tr *ngFor="let kh of item.children; let j = index">
+          <td class="text-center">{{j + 1}}</td>
+          <!-- <td class="text-center">
+            {{ setStatusLabel(kh.status)}}
+            <button class="btn btn-success btn-sm" (click)="xemLyDoHoan(kh)" *ngIf="kh.isHoan">
+              <i class="fa fa-eye" aria-hidden="true"></i> Xem lý do</button>
+          </td> -->
+          <td class="text-center">{{ kh.doiTuongTTKT ? kh.doiTuongTTKT.tenDoiTuong : ''}}</td>
+          <td class="text-right">{{ kh.doiTuongTTKT ? kh.doiTuongTTKT.maSuDungLaoDong : ''}}</td>
+          <td class="text-right">{{ kh.doiTuongTTKT ? kh.doiTuongTTKT.maThu : ''}}</td>
+          <td class="text-left">{{ kh.doiTuongTTKT ? kh.doiTuongTTKT.tenTinhHuyen : ''}}</td>
+          <td class="text-center">{{ kh.quyTrongKeHoach ? getQuy(kh.quyTrongKeHoach).name : ''}}</td>
+          <td class="text-center">{{ kh.loaiHinhTTKT ? getLoaiHinh(kh.loaiHinhTTKT).name : ''}}</td>
+          <!-- <td class="text-center">{{ kh.tinhDuKienLiveDTO ? (kh.tinhDuKienLiveDTO.thucTeTuNgay | date: 'dd/MM/yyyy') : '' }}
+          </td>
+          <td class="text-center">{{ kh.tinhDuKienLiveDTO ? (kh.tinhDuKienLiveDTO.thucTeDenNgay | date: 'dd/MM/yyyy') : '' }}</td> -->
+          <!-- <td class="text-center">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [checked]="!kh.trongKeHoach" disabled>
+              <span class="custom-control-indicator"></span>
+            </label>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

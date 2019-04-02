@@ -1,0 +1,37 @@
+<header class="header fixed-top">
+  <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+    <button class="navbar-toggler navbar-toggler-right collapsed" type="button" (click)="showMobileMenu($event)">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    <a class="navbar-brand" href="#">
+          <img src="../assets/images/logo_bhxh.svg" class="icon-logo-bh" alt="Trang chủ"></a>
+    <div #navbarNavDropdown class="navbar-collapse collapse">
+      <ul class="navbar-nav mr-auto">
+        <li *ngFor="let item of data.items" class="nav-item">
+          <!-- @TODO: Bỏ comment khi fix xong bug phân quyền -->
+          <a [routerLink]="item.url ? [ item.url ] : ''"
+           routerLinkActive='active'
+           class="nav-link top-menu" *ngIf="item.url && checkPermission(item.url)">{{item.name}}<span class="sr-only">(current)</span></a>
+           <!-- <a [routerLink]="item.url ? [ item.url ] : ''"
+           ttktRouterActive="active"
+           [RouterActiveLink]="item.activeSlug || item.url"
+           class="nav-link top-menu" *ngIf="item.url">{{item.name}}<span class="sr-only">(current)</span></a> -->
+           <a class="nav-link top-menu" *ngIf="!item.url">{{item.name}}<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav nav-right">
+        <li class="nav-item dropdown">
+          <ttkt-notification></ttkt-notification>
+        </li>
+        <li class="nav-item dropdown" *ngIf="account">
+          <a class="dropdown-toggle"> <img class="header-user"  onerror="this.src='../assets/images/icon_nguoidung.svg'" id="imageUser" #imageUser >{{ account.tenHienThi }}<span class="caret caret-color"></span></a>
+          <ul class="dropdown-menu li-items account-menu">
+            <li><a href="#"><i class="fa fa-user fa-color"></i> Cá nhân</a></li>
+            <li><a href="#" routerLink = "/auth/change-password"><i class="fa fa-key fa-color"></i> Đổi mật khẩu</a></li>
+            <li  (click)="logout()"><a href="#" ><i class="fa fa-power-off fa-color"></i> Đăng xuất</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

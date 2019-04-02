@@ -1,0 +1,122 @@
+
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title">Danh mục đơn vị</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="danhmucPhongBanForm">
+      <fieldset>
+        <legend>Danh sách đơn vị</legend>
+        <div class="pull-right mb-1">
+          <button type="button" class="btn btn-primary" (click)="actionPhongBan('add')">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th class="table-resize">Tên đơn vị</th>
+                <th class="table-resize">Tên cơ quan tổ chức</th>
+                <th class="text-center th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of listPhongBan; let i = index">
+              <td class="text-center">{{ pagging.currentPage * pagging.itemsPerPage + i + 1 }}</td>
+              <td>{{ item.tenPhongBan}}</td>
+              <td>{{ item.tenDonVi}}</td>
+              <td class="text-center">
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm edit" (click)="actionTinhTrang('edit', item.id)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  <button type="button" class="btn btn-danger btn-sm delete" (click)="actionTinhTrang('delete', item.id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!listPhongBan.length">
+              <td colspan="4" class="text-center">
+                Không có dữ liệu
+              </td>
+            </tr>
+            </tbody>
+          </table>
+           <!--pagination-->
+           <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalDanhmucPhongBan="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog addModalDia">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_model}}</h5>
+        <button type="button" class="close pull-right" (click)="modalDanhmucPhongBan.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="addDanhmucPhongBanForm">
+          
+          <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row" [ngClass]="(addDanhmucPhongBanForm.controls.dmbhxhId?.errors && (addDanhmucPhongBanForm.controls.dmbhxhId?.touched || addDanhmucPhongBanForm.controls.dmbhxhId?.dirty)) ? 'has-danger' : ''">
+                  <!--<div class="form-group row">-->
+                    <label for="" class="col-form-label col-md-4 text-lg-right">Cơ quan tổ chức:
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-8">
+                      <select class="form-control" formControlName="dmbhxhId" [attr.disabled]="statusOption == 'delete' ? true:null">
+                          <option *ngFor="let item of listCoQuanToChuc" [value]="item.id">{{item.tenDonVi}}</option>
+                      </select> 
+                      <p class="text-danger" *ngIf="checkValidCoQuan">Cơ quan tổ chức không được để trống</p> 
+                    </div>
+                  </div>
+                  
+                </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(addDanhmucPhongBanForm.controls.tenPhongBan?.errors && (addDanhmucPhongBanForm.controls.tenPhongBan?.touched || addDanhmucPhongBanForm.controls.tenPhongBan?.dirty)) ? 'has-danger' : ''">
+              <!--<div class="form-group row">-->
+                <label for="" class="col-form-label col-md-4 text-lg-right">Tên đơn vị:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" (blur)="onBlur()" #tenPhongBanDialog formControlName="tenPhongBan" [attr.disabled]="statusOption == 'delete' ? true:null">
+                  <p class="text-danger" *ngIf="blur && tenPhongBanDialog.value.trim() == ''">Tên đơn vị không được để trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitAction('add')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Ghi nhận</button>
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitAction('edit')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOption == 'delete'" (click)="onSubmitAction('delete')">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Xóa</button>
+          <button type="button" class="btn btn-default" (click)="modalDanhmucPhongBan.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

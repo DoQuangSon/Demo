@@ -1,0 +1,114 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Sổ theo dõi chi tiết công tác TTKT</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right">
+      <button class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+    </div> -->
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <div>
+        <fieldset class="fieldset-search">
+          <legend>Thông tin tìm kiếm
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+          </legend>
+          <div [formGroup]="thongTinTimKiemForm">
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-lg-5 text-lg-right">
+                    <label class="col-form-label">Từ ngày:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="searchTuNgay"></my-date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-lg-5 text-lg-right">
+                    <label class="col-form-label">Đến ngày:</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="searchDenNgay"></my-date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <button class="btn btn-default mt-1" (click)="search()">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <fieldset>
+        <legend>Danh sách quyết định</legend>
+        <!-- <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="nam" class="col-form-label col-md-4 text-lg-right">Kế hoạch năm: </label>
+                <div class="col-md-8">
+                  <select class="custom-select" id="nam" formControlName="nam">
+                    <option value="" selected>Chọn</option>
+                    <option *ngFor="let choice of optionNam" [value]="choice.id">{{ choice.nam }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8">
+              <div class="form-group row">
+                <div class="col-md-6 col-sm-6">
+                  <input class="form-control" type="text" formControlName="search">
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <button type="button" class="btn btn-default text-lg-right">
+                    <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2" class="th-size">STT
+                  <br>
+                </th>
+                <th rowspan="2" class="table-resize">Tên quyết định</th>
+                <th colspan="2">Thời kỳ</th>
+              </tr>
+              <tr>
+                <th class="th-size">Từ ngày</th>
+                <th class="th-size">Đến ngày</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsSoThoiDoi?.length == 0">
+                <td class="text-center" colspan="4">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of dsSoThoiDoi; let i = index">
+                <td class="text-center">{{ pagging.currentPage*pagging.itemsPerPage + i + 1 }}</td>
+                <td class="text-primary">
+                  <a (click)="dsSoTheoDoidv(item.thanhLapDoanId)">{{item.tenQuyetDinh}}</a>
+                </td>
+                <td class="text-center">{{ item.thoiKyTuNgay | date: "dd/MM/yyyy" }}</td>
+                <td class="text-center">{{ item.thoiKyDenNgay | date: "dd/MM/yyyy" }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)"
+              [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

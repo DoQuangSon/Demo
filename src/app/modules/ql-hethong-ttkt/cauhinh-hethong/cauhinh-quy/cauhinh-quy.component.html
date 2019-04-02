@@ -1,0 +1,91 @@
+<h4 class="heading-page">
+  <span class="page-title">Cấu hình quý</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <!-- <div id="themquy">
+      <button class="btn btn-primary text-right">Thêm mới</button>
+    </div> -->
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th>Quý</th>
+                <th class="th-size">Từ ngày</th>
+                <th class="th-size">Đến ngày</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let quy of QUY; let index = index">
+                <td>{{index + 1}}</td>
+                <td>{{quy.quy}}</td>
+                <td>{{quy.tungay}}</td>
+                <td>{{quy.denngay}}</td>
+                <td>
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editQuy(index)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalQuy="bs-modal" id="modalQuy" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i class="fa fa-pencil"></i> Sửa quý</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalQuy()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formQuy">
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label">Từ ngày
+              <span class="required">*</span>:</label>
+          </div>
+          <div class="col-xl-8">
+            <!-- <input type="number" min="0" class="form-control" formControlName="tungay_InForm" [readonly]="typeModal == 'delete'"> -->
+            <my-date-picker locale="vi" formControlName="tungay_InForm"></my-date-picker>
+            <span class="errMessage" *ngIf="errTuNgay || formQuy.controls.tungay_InForm.errors?.required &&
+            (formQuy.controls.tungay_InForm.touched || formQuy.controls.tungay_InForm.dirty)">Không được để trống</span>
+            <span class="errMessage" *ngIf="errSoSanhNgay">Ngày kết thúc phải sau ngày bắt đầu</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label">Đến ngày
+              <span class="required">*</span>:</label>
+          </div>
+          <div class="col-xl-8">
+            <!-- <textarea autosize type="text" rows="1" class="form-control" formControlName="denngay_InForm" [readonly]="typeModal == 'delete'"></textarea> -->
+            <my-date-picker locale="vi" formControlName="denngay_InForm"></my-date-picker>
+            <span class="errMessage" *ngIf="errDenNgay || formQuy.controls.denngay_InForm.errors?.required &&
+            (formQuy.controls.denngay_InForm.touched || formQuy.controls.denngay_InForm.dirty)">Không được để trống</span>
+            <span class="errMessage" *ngIf="errSoSanhNgay">Ngày kết thúc phải sau ngày bắt đầu</span>
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button class="btn btn-primary" (click)="saveQuy() ">
+          <i class="fa fa-floppy-o" aria-hidden="true "></i> Cập nhật</button>
+        <button class="btn btn-default" (click)="closeModalQuy() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

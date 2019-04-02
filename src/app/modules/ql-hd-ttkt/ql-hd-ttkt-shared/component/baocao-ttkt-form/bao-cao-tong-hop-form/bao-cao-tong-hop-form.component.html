@@ -1,0 +1,170 @@
+<div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+        <form novalidate>
+            <fieldset>
+                <legend>{{ title }}</legend>
+                <div class="thuc-hien-kh">
+                    <div class="table-responsive table-scroll-x">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="th-size">Số TT<br></th>
+                                    <th class="table-resize">Nội dung<br></th>
+                                    <th >Mã tiêu thức</th>
+                                    <th >Thực hiện trong kỳ</th>
+                                    <th >Lũy kế từ đầu năm</th>
+                                    <th >Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center">2</td>
+                                <td class="text-center">3</td>
+                                <td class="text-center">4</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center">6</td>
+                            </tr>
+                            <!-- phần 1 thực hiện kh ttkt -->
+                            <tr>
+                                <th class="text-center">I</th>
+                                <th colspan="5">THỰC HIỆN THANH TRA, KIỂM TRA</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">I.1</th>
+                                <th>Theo kế hoạch</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <ng-container *ngFor="let nd of soTongHop?.theoKeHoach; let stt=index">
+                                <tr>
+                                    <td class="text-center">{{ stt + 1 }}</td>
+                                    <td>{{ nd.noiDung }}</td>
+                                    <td class="text-center">I.1.{{ stt + 1 }}</td>
+                                    <td class="text-right">{{ nd.thucHienTrongKy }}</td>
+                                    <td class="text-right">{{ nd.luyKe }}</td>
+                                    <td class="text-right">{{ nd.ghiChu }}</td>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <th class="text-center">I.2</th>
+                                <th>Đột xuất</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <ng-container *ngFor="let nd of soTongHop?.dotXuat; let stt=index">
+                                <tr>
+                                    <td class="text-center">{{ stt + 1 }}</td>
+                                    <td>{{ nd.noiDung }}</td>
+                                    <td class="text-center">I.2.{{ stt + 1 }}</td>
+                                    <td class="text-right">{{ nd.thucHienTrongKy }}</td>
+                                    <td class="text-right">{{ nd.luyKe }}</td>
+                                    <td class="text-right">{{ nd.ghiChu }}</td>
+                                </tr>
+                            </ng-container>
+
+                            <!-- //phần 2 theo sổ chi tiết -->
+                            <!-- @Todo: Can check lai -->
+                            <tr>
+                                <th class="text-center">II</th>
+                                <th colspan="5">KẾT QUẢ THANH TRA, KIỂM TRA</th>
+                            </tr>
+                            <ng-container *ngFor="let loai of listDmTieuThucMapping; let stt=index">
+                                <tr>
+                                    <th class="text-center">II.{{ stt + 1 }}</th>
+                                    <th>{{ loai.tenPhanLoai }}</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr *ngFor="let item of loai.children; let i=index">
+                                    <td class="text-center">{{ i+1 }}</td>
+                                    <td>{{ item.tenTieuThuc }}</td>
+                                    <td class="text-center">II.{{ stt + 1 }}.{{ i+1 }}</td>
+                                    <td class="text-right">{{ item.soLieuDieuChinh }}</td>
+                                    <td class="text-right">{{ item.soLuyKe }}</td>
+                                    <td class="text-center">{{ item.ghiChu || 0 }}</td>
+                                </tr>
+                                <ng-container *ngIf="loai.child.length > 0">
+                                    <ng-container *ngFor="let loaiLv2 of loai.child; let sttLv2=index">
+                                        <tr>
+                                            <th class="text-center"></th>
+                                            <th>{{ loaiLv2.tenPhanLoai }}</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        <tr *ngFor="let item of loaiLv2.children; let i=index">
+                                            <td class="text-center">{{ i+1 }}</td>
+                                            <td>{{ item.tenTieuThuc }}</td>
+                                            <td class="text-center">II.{{ sttLv2+1 }}.{{ i+1 }}</td>
+                                            <td class="text-right">{{ item.soLieuDieuChinh }}</td>
+                                            <td class="text-right">{{ item.soLuyKe }}</td>
+                                            <td class="text-right">{{ item.ghiChu || 0 }}</td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+
+                            <!-- Phần 3 Các biện pháp xử lý vi phạm -->
+                            <tr>
+                                <th class="text-center">III</th>
+                                <th colspan="5">CÁC BIỆN PHÁP XỬ LÝ VI PHẠM</th>
+                            </tr>
+                            <ng-container *ngFor="let nd of soTongHop?.cacBienPhapXuLyViPham?.children; let stt=index">
+                                <tr>
+                                    <td class="text-center">{{ stt + 1 }}</td>
+                                    <td>{{ nd.tenTieuThuc }}</td>
+                                    <td class="text-center">III.{{ stt + 1 }}</td>
+                                    <td class="text-right">{{ nd.soLieuDieuChinh }}</td>
+                                    <td class="text-right">{{ nd.soLuyKe }}</td>
+                                    <td class="text-right">{{ nd.ghiChu || 0 }}</td>
+                                </tr>
+                            </ng-container>
+
+                            <tr>
+                                <th class="text-center">IV</th>
+                                <th colspan="5">THỰC HIỆN KẾT LUẬN TTKT</th>
+                            </tr>
+                            <ng-container *ngFor="let nd of soTongHop?.soDaThucHien; let stt=index">
+                                <tr>
+                                    <td class="text-center">{{ stt + 1 }}</td>
+                                    <td>{{ nd.noiDung }}</td>
+                                    <td class="text-center">IV.{{ stt + 1 }}</td>
+                                    <td class="text-right">{{ nd.thucHienTrongKy }}</td>
+                                    <td class="text-right">{{ nd.luyKe }}</td>
+                                    <td class="text-right">{{ nd.ghiChu }}</td>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <th class="text-center">V</th>
+                                <th colspan="5">SỐ PHẢI TIẾP TỤC THỰC HIỆN CHUYỂN SANG KỲ SAU</th>
+                            </tr>
+                            <ng-container *ngFor="let nd of soTongHop?.soChuyenSangKySau; let stt=index">
+                                <tr>
+                                    <td class="text-center">{{ stt + 1 }}</td>
+                                    <td>{{ nd.noiDung }}</td>
+                                    <td class="text-center">V.{{ stt + 1 }}</td>
+                                    <td class="text-right">{{ nd.thucHienTrongKy }}</td>
+                                    <td class="text-right">{{ nd.luyKe }}</td>
+                                    <td class="text-right">{{ nd.ghiChu }}</td>
+                                </tr>
+                            </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </fieldset>
+            <!--<div class="pull-right">-->
+                <!--<button class="btn btn-success" (click)="printExcel()">-->
+                    <!--<i aria-hidden="true" class="fa fa-file-excel-o"></i>Xuất Excel</button>&nbsp;-->
+            <!--</div>-->
+        </form>
+    </div>
+</div>

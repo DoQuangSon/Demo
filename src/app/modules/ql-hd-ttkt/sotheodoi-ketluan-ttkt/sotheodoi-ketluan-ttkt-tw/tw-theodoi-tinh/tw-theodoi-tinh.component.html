@@ -1,0 +1,74 @@
+<h4 class="heading-page">
+  <span class="page-title">Theo dõi thực hiện kết luận của Tỉnh</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate id="thongtintimkiem">
+      <fieldset class="fieldset-search">
+        <legend>Thông tin tìm kiếm</legend>
+        <div id="thongtintimkiem" [formGroup]="searchForm">
+          <div class="row">
+            <div class="col-sm-6 col-md-4">
+              <div class="row">
+                <div class="col-sm-6 text-sm-right">
+                  <label class="col-form-label">Năm</label>
+                </div>
+                <div class="col-sm-6">
+                  <select class="form-control" formControlName="nam_InForm">
+                    <option *ngFor="let nam of DANH_SACH_NAM" [value]="nam.nam">{{nam.nam}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="row">
+                <div class="col-sm-6 text-sm-right">
+                  <label class="col-form-label">Tỉnh/Thành Phố</label>
+                </div>
+                <div class="col-sm-6">
+                  <select class="form-control" formControlName="tinh_InForm">
+                    <option *ngFor="let tinh of DANH_SACH_TINH" [value]="tinh.tinh">{{tinh.tinh}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-right text-md-left">
+              <button class="btn btn-default" (click)="isCollapseDirective = true">
+                <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div [ttktCollapse]="isCollapseDirective">
+        <fieldset>
+          <legend>Danh sách chi tiết</legend>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th rowspan="2" class="th-size">STT</th>
+                  <th rowspan="2" class="table-resize">Tên quyết định</th>
+                  <th colspan="2">Thời kỳ</th>
+                </tr>
+                <tr>
+                  <td class="th-size">Từ ngày</td>
+                  <td class="th-size">Đến ngày</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let qd of DANH_SACH_QD; let i = index">
+                  <td>{{i + 1}}</td>
+                  <td class="text-primary">
+                    <span (click)="xemChiTietQD(i)">{{qd.tenQD}}</span>
+                  </td>
+                  <td>{{qd.tungay}}</td>
+                  <td>{{qd.denngay}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+</div>

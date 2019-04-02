@@ -1,0 +1,28 @@
+<!-- <h4 class="heading-page">DS kế hoạch xin điều chỉnh được duyệt</h4> -->
+<h4 class="heading-page">
+  <ttkt-breadcrumb></ttkt-breadcrumb>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chi tiết</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label for="selectYear" class="col-form-label col-md-1 text-lg-left">Năm: </label>
+              <div class="col-md-8">
+                <select name="" id="selectYear" class="custom-select" [formControl]="selectYear" (change)="changeYear($event)">
+                  <option *ngFor="let item of listYear" [value]="item">{{ item }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ttkt-danh-sach-ke-hoach-table [listKeHoach]="listKeHoach"></ttkt-danh-sach-ke-hoach-table>
+      </fieldset>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,837 @@
+<form [ngClass]="{'disable-click': (editAble == false) ? true : false}" [formGroup]="authorityForm">
+  <div>
+    <fieldset>
+      <legend>Đơn có họ tên, chữ ký của:
+        <span class="text-danger">*</span>
+      </legend>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" checked formControlName="signature" value="{{signature_one}}">
+            <span class="custom-control-indicator"></span>
+
+            <span class="custom-control-description">Một người</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-4">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" formControlName="signature" value="{{signature_many}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Nhiều người</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" formControlName="signature" value="{{signature_none}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Nặc danh</span>
+          </label>
+        </div>
+        <p class="help-block text-danger" *ngIf="authorityForm.controls.signature?.errors?.required && authorityForm.controls.signature?.touched">
+          Bạn phải chọn 1 trường ở bên trái</p>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Trình tự giải quyết:
+        <span class="text-danger">*</span>
+      </legend>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" formControlName="authorityOption" value="{{authorityOption_none}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Chưa được giải quyết</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-4">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" formControlName="authorityOption" value="{{authorityOption_one}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Đã được giải quyết lần đầu</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false) ? true : false}">
+            <input type="radio" class="custom-control-input" formControlName="authorityOption" value="{{authorityOption_many}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Đã được giải quyết nhiều lần</span>
+          </label>
+        </div>
+        <p class="help-block text-danger" *ngIf="authorityForm.controls.authorityOption?.errors?.required && authorityForm.controls.authorityOption?.touched">
+          Bạn phải chọn 1 trường ở bên trái</p>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Đơn có đủ điều kiện xử lý không?<span class="text-danger"> *</span></legend>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio">
+            <input class="custom-control-input" type="radio" formControlName="isDuDieuKienXuLy" value="{{du_dieuKien}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Đủ điều kiện</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-4">
+          <label class="custom-control custom-radio">
+            <input class="custom-control-input" type="radio" formControlName="isDuDieuKienXuLy" value="{{khongDu_dieuKien}}">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Không đủ điều kiện</span>
+          </label>
+          <div lass="form-check" *ngIf="authorityForm.value.isDuDieuKienXuLy == khongDu_dieuKien">
+            <label class="custom-control custom-checkbox ml-3">
+              <input type="checkbox" class="custom-control-input" (change)="saveLetter=!saveLetter" formControlName="saveLetter" value= 'true'>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Lưu đơn</span>
+            </label>
+            <p class="help-block text-danger" *ngIf="authorityForm.controls.saveLetter?.errors?.required || authorityForm.controls.saveLetter?.errors?.touched">
+              Bạn phải chọn lưu thư</p>
+          </div>
+        </div>
+        <p class="help-block text-danger" *ngIf="authorityForm.controls.isDuDieuKienXuLy?.errors?.required || authorityForm.controls.isDuDieuKienXuLy?.errors?.touched">
+          Bạn phải chọn 1 trường ở bên trái</p>
+      </div>
+    </fieldset>
+    <div *ngIf="authorityForm.value.isDuDieuKienXuLy == du_dieuKien">
+    <fieldset>
+      <legend>Đơn có thuộc thẩm quyền không?
+        <span class="text-danger">*</span>
+      </legend>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-check form-check-inline col-md-3">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false)}">
+            <input class="form-check-input" type="radio" class="custom-control-input" formControlName="authority" value="{{depend_authority}}"
+              (change)="changeAuthority()">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Thuộc thẩm quyền</span>
+          </label>
+        </div>
+        <div class="form-check form-check-inline col-md-4">
+          <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false)}">
+            <input class="form-check-input" type="radio" class="custom-control-input" formControlName="authority" value="{{no_depend_authority}}"
+              (change)="changeAuthority()">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Không thuộc thẩm quyền</span>
+          </label>
+        </div>
+        <p class="help-block text-danger" *ngIf="authorityForm.controls.authority?.errors?.required">
+          Bạn phải chọn 1 trường ở bên trái</p>
+      </div>
+      <!-- <div class="row" *ngIf="authority == depend_authority">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+          <div class="form-group ml-3" *ngIf="authority == depend_authority">
+            <div class="form-check row inputTq">
+              <label class="custom-control custom-radio col-md-12" *ngFor="let option of authorityOptions">
+                <input class="form-check-input" type="radio" class="custom-control-input" formControlName="authorityOption"
+                  [value]="option.id">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ option.name }}</span>
+              </label>
+            </div>
+            <p class="help-block text-danger" *ngIf="authorityForm.controls.authorityOption.value != 1 &&
+             authorityForm.controls.authorityOption.value != 2 && authorityForm.controls.authorityOption.value != 3">
+              Bạn phải chọn 1 trường ở bên trên
+            </p>
+          </div>
+        </div>
+      </div> -->
+      <div class="row" *ngIf="authority == no_depend_authority">
+        <div class="col-md-4"></div>
+        <div class="col-md-8">
+          <div class="form-group ml-3" *ngIf="authority == no_depend_authority">
+            <div class="form-check" *ngIf="noAuthorityOptions.length > 0">
+              <label class="custom-control custom-radio col-md-12" *ngFor="let option of noAuthorityOptions">
+                <input class="form-check-input" type="radio" class="custom-control-input" formControlName="noAuthorityOption"
+                  [value]="option.id">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ option.tenMau }}</span>
+                <!-- <div *ngIf="authorityForm.value.thulyThongbao">
+                  <button type="button" class="btn btn-primary thamqXuatmau">In</button>
+                </div> -->
+                <div>
+                  <button (click)="openModalMauDon(option.id)" type="button" class="btn btn-default thamqXuatmau" *ngIf="authorityForm.value.noAuthorityOption == option.id">
+                    <i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>
+                </div>
+              </label>
+              <p class="help-block text-danger" *ngIf="authorityForm.controls.noAuthorityOption.value != 1
+              && authorityForm.controls.noAuthorityOption.value != 2
+              && authorityForm.controls.noAuthorityOption.value != 3
+              && authorityForm.controls.noAuthorityOption.value != 4">
+                Bạn phải chọn 1 trường ở bên trên</p>
+            </div>
+            <div>
+              <button *ngIf="authorityForm.value.noAuthorityOption != ''" (click)="showPopUpThemCongVan()" type="button"
+                class="btn btn-success none-disable">
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{title_them_xem_congvan}} công văn</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    </div>
+    <div *ngIf="authorityForm.value.isDuDieuKienXuLy == du_dieuKien && authority == depend_authority && authority !== no_depend_authority">
+      <fieldset>
+        <legend>Đơn có đủ điều kiện thụ lý không?
+          <span class="text-danger">*</span>
+        </legend>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="form-check form-check-inline col-md-3">
+            <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false)}">
+              <input class="form-check-input" type="radio" class="custom-control-input" formControlName="condition"
+                [value]="enough_condition">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Đủ điều kiện</span>
+            </label>
+          </div>
+          <div class="form-check form-check-inline col-md-4">
+            <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false)}">
+              <input class="form-check-input" type="radio" class="custom-control-input" formControlName="condition"
+                [value]="no_enough_condition">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Không đủ điều kiện</span>
+            </label>
+            <!-- <div class="form-check" *ngIf="authorityForm.value.condition == no_enough_condition">
+              <label class="custom-control custom-radio ml-4">
+                <input type="radio" class="custom-control-input" (change)="saveLetter = !saveLetter" formControlName="saveLetter"
+                  [value]="true">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Lưu đơn</span>
+              </label>
+            </div> -->
+            <div class="form-check" *ngIf="authorityForm.value.condition == no_enough_condition">
+              <label class="custom-control custom-radio ml-4">
+                <input type="radio" class="custom-control-input" formControlName="saveLetter" [value]="false">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Thông báo không đủ điều kiện thụ lý đơn (Mẫu 05)</span>
+                <button type="button" class="btn btn-default thamqXuatmau" (click)="openModalMauDon05()" *ngIf="!authorityForm.controls.saveLetter.value">
+                  <i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>
+                <!--<button type="button" (click)="openModalMauDon()" class="btn btn-default thamqXuatmau" *ngIf="authorityForm.value.huyenOption == huyenOption_Hd">-->
+                <!--<i class="fa fa-print" aria-hidden="true"></i> In mẫu</button>-->
+              </label>
+            </div>
+          </div>
+          <div class="form-check form-check-inline col-md-3">
+            <label class="custom-control custom-radio" [ngClass]="{'disable-click': (editAble == false)}">
+              <input class="form-check-input" type="radio" class="custom-control-input" formControlName="condition"
+                [value]="no_condition">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Không được thụ lý</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div *ngIf=" authorityForm.value.isDuDieuKienXuLy == du_dieuKien && authorityForm.value.condition == enough_condition && authorityForm.value.authority == depend_authority">
+      <fieldset>
+        <legend>Thông báo thụ lý</legend>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4">Số: </label>
+              <div class="col-md-8 col-xl-5" [ngClass]="{'disable-click': (editAble == false)}">
+                <input class="form-control" type="text" formControlName="fillSoqd">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5 pull-xl-2">
+            <ttkt-input type="date" md="4-8" label="Ngày" formControlName="fillNgayQd" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Tiến hành xác minh</legend>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="text" md="4-7" label="Số quyết định thụ lý" formControlName="soQdXacMinhKN"
+              [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="text" md="4-7" label="Người ký quyết định thụ lý"
+              formControlName="nguoiKyThanhLap" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày quyết định thụ lý" formControlName="dateThanhLap"
+              [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày công bố quyết định" formControlName="congBo"
+              [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="col-form-label">Ngày làm việc với người khiếu nại:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-md-6 pull-right" *ngIf="editAble">
+                <button type="button" (click)="showModalAddNgayKN()" class="btn btn-primary inButton mb-1">
+                  <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+              </div>
+            </div>
+            <div class="table-responsive table-scroll-x">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Lần</th>
+                    <th>Ngày</th>
+                    <th>Tiếp nhận tài liệu</th>
+                    <th>Rút đơn</th>
+                    <th>Ghi chú</th>
+                    <th *ngIf="editAble" class="th-size">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tl of listTailieuNKN; let i = index">
+                    <td>Lần {{ i+1 }}</td>
+                    <td>{{ tl.ngay | date: "dd/MM/yyyy" }}</td>
+                    <td>{{ tl.tailieus }}</td>
+                    <td class="text-center">
+                      <label class="custom-control custom-checkbox checkbox-table">
+                        <input formControlName="dataTableCheckbox" type="checkbox" class="custom-control-input"
+                          [checked]="tl.rutdon" disabled>
+                        <span class="custom-control-indicator"></span>
+                      </label>
+                    </td>
+                    <td>{{ tl.ghichu }}</td>
+                    <td *ngIf="editAble">
+                      <div>
+                        <button type="button" class="btn btn-primary btn-sm edit" (click)="editNgayKhieunai(i)">
+                          <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteNgayKhieunai(i)">
+                          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="col-form-label">Ngày làm việc với người bị khiếu nại:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-md-6 pull-right" *ngIf="editAble">
+                <button type="button" class="btn btn-primary inButton mb-1" (click)="showModalAddNgayBiKn()">
+                  <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+              </div>
+            </div>
+            <div class="table-responsive table-scroll-x">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Lần</th>
+                    <th>Ngày</th>
+                    <th>Tiếp nhận tài liệu</th>
+                    <th>Ghi chú</th>
+                    <th *ngIf="editAble" class="th-size">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tl of listTailieuBiKn; let i = index">
+                    <td>Lần {{ i+1 }}</td>
+                    <td>{{ tl.ngay | date: "dd/MM/yyyy"}}</td>
+                    <td>{{ tl.tailieus }}</td>
+                    <td>{{ tl.ghichu }}</td>
+                    <td *ngIf="editAble">
+                      <div>
+                        <button type="button" class="btn btn-primary btn-sm edit" (click)="editNgayBitKhieunai(i)">
+                          <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteNgayBikhieunai(i)">
+                          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row" [ngClass]="isRutdon ? 'visibled': ''">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="col-form-label">Tiến hành làm việc với cơ quan tổ chức có liên quan: </label>
+              </div>
+              <div class="col-md-6 pull-right" *ngIf="editAble">
+                <button type="button" class="btn btn-primary inButton mb-1" (click)="onThemLienquan()">
+                  <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+              </div>
+            </div>
+            <div class="table-responsive table-scroll-x">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="th-size">STT</th>
+                    <th class="table-resize">Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày</th>
+                    <th *ngIf="editAble" class="th-size">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tl of listCqTcLq; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ tl.name }}</td>
+                    <td>{{ tl.diachi }}</td>
+                    <td>{{ tl.ngay | date: "dd/MM/yyyy"}}</td>
+                    <td *ngIf="editAble">
+                      <div>
+                        <button type="button" class="btn btn-primary btn-sm edit" (click)="editKNLienquan(i)">
+                          <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteKNLienquan(i)">
+                          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="text" md="4-7" label="Số công văn trưng cầu giám định"
+              formControlName="numTrungCauGD" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row" [ngClass]="isRutdon ? 'visibled': ''">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày trưng cầu giám định (16/868)"
+              formControlName="dateTrungCauGD" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày tổ chức đối thoại" formControlName="hdDoithoai"
+              [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="text" md="4-7" label="Báo cáo kết quả xác minh" formControlName="reKetQuaXM"
+              [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="text" md="4-7" label="Số quyết định giải quyết khiếu nại"
+              formControlName="numGiaiQuyetKN" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày quyết định giải quyết khiếu nại"
+              formControlName="qdGqKhieunai" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-11">
+            <ttkt-input labelAlign="text-lg-left" type="date" md="4-7" label="Ngày công bố công khai kết quả giải quyết khiếu nại"
+              formControlName="congboCkKqGqKhieunai" [readOnly]="!editAble"></ttkt-input>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset [ngClass]="isRutdon ? '': 'visibled'">
+        <legend>Lý do rút đơn khiếu nại</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Lý do rút đơn khiếu nại</span>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-md-2 text-lg-right">Lý do:
+            <span class="text-danger"> *</span>
+          </label>
+          <div class="col-md-10">
+            <textarea class="form-control form-rounded" [readOnly]="!editAble" formControlName="lydoRutdonKn" rows="3"></textarea>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="pull-right">
+    <!-- <button type="button" class="btn btn-success" [ngClass]="isRutdon ? 'visibled': ''" [ngClass]="saveLetter ? 'visibled' : ''"
+      (click)="onSubmit()">Xuất mẫu</button>
+    <button type="button" class="btn btn-primary" (click)="onXong()">Xong</button> -->
+    <div *ngIf="editAble" class="form-group">
+      <button type="button" class="btn btn-primary" (click)="onLuuTam()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu tạm</button>
+      <button type="button" class="btn btn-success" (click)="onKetThuc()">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Kết thúc làm việc</button>
+    </div>
+    <div *ngIf="error" class="form-group row show_error">{{ error }}</div>
+  </div>
+</form>
+
+<!--Large modal-->
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Chọn lý do không thụ lý đơn khiếu nại</h5>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngClass]="{'disable-click': (editAble == false)}" [formGroup]="formModal">
+          <div class="form-check col-md-12">
+            <label *ngFor="let reason of reasons;let i =index" class="form-check-label">
+              <input type="checkbox" class="form-check-input" [value]="reason.id" name="reason" (change)="onChangeReason(reason.name, $event.target.checked)">
+              {{ reason.name }}
+            </label>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="onSubmitModal()">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+            <button type="button" class="btn btn-default" (click)="lgModal.hide()">
+              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #printDocument="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog printDocDia">
+    <div class="modal-content printDoc">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" (click)="printDocument.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <iframe id="iframePrint" src="" frameborder="0"></iframe>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" (click)="onSubmitPrintDocument()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+          <button type="button" class="btn btn-default" (click)="printDocument.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalAddNgayKhieunai="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ type_title_ngayKn }} ngày làm việc với người {{title_ngayKhieunai}}</h5>
+        <button type="button" class="close pull-right" (click)="modalAddNgayKhieunai.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngClass]="{'disable-click': (editAble == false)}" novalidate [formGroup]="addNgayKhieunaiForm">
+          <div class="row">
+            <div class="col-md-12" class="visibled">
+              <div class="form-group row" [ngClass]="(addNgayKhieunaiForm.controls.id?.errors && (addNgayKhieunaiForm.controls.id?.touched || addNgayKhieunaiForm.controls.id?.dirty)) ? 'has-danger' : ''">
+                <label for="" class="col-form-label col-md-4 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input [readOnly]="!editAble" class="form-control" type="text" formControlName="id">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <ttkt-input type="date" md="3-9" label="Ngày" formControlName="ngay" [ngClass]="{'disable-click': (statusOption == 'delete' || !editAble) ? true : false}" ></ttkt-input>
+            </div>
+            <div class="col-md-12" [ngClass]="statusOption == 'delete' ? 'visibled' : ''">
+              <div class="form-group row">
+                <label for="selectState" class="col-form-label col-md-3 text-lg-right">Tài liệu:
+
+                </label>
+                <div class="col-md-9">
+                  <input [readOnly]="!editAble" type="text" class="form-control" formControlName="fileName">
+                  <!-- <p class="help-block text-danger" *ngIf="addNgayKhieunaiForm.controls.fileName?.errors?.required &&  (addNgayKhieunaiForm.controls.fileName?.touched || addNgayKhieunaiForm.controls.fileName?.dirty || addNgayKhieunaiFormSubmited)">
+                    Bạn phải nhập vào tài liệu</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" [ngClass]="statusOption == 'delete' ? 'visibled' : ''">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Ghi chú:
+
+                </label>
+                <div class="col-md-9">
+                  <textarea class="form-control" formControlName="ghichu"></textarea>
+                  <!-- <p class="help-block text-danger" *ngIf="addNgayKhieunaiForm.controls.ghichu?.errors?.required &&  (addNgayKhieunaiForm.controls.ghichu?.touched || addNgayKhieunaiForm.controls.ghichu?.dirty || addNgayKhieunaiFormSubmited)">
+                    Bạn phải nhập vào ghi chú</p> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" [ngClass]="statusOption == 'delete' ? 'visibled' : ''">
+            <div class="col-md-12">
+              <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" formControlName="isRutdon">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Rút đơn</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitModalAddNgayKn()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitModalEditNgayKn()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOption == 'delete'" (click)="onSubmitModalDeleteNgayKn()">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Đồng ý</button>
+          <button type="button" class="btn btn-default" (click)="modalAddNgayKhieunai.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalAddNgayBiKhieunai="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_ngayBiKhieunai}}</h5>
+        <button type="button" class="close pull-right" (click)="modalAddNgayBiKhieunai.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngClass]="{'disable-click': (editAble == false)}" novalidate [formGroup]="addNgayBiKhieunaiForm">
+          <div class="row">
+            <div class="col-md-12" class="visibled">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-4 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-4">
+                  <input [readOnly]="!editAble" class="form-control" type="text" formControlName="id">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+                <ttkt-input type="date" md="3-9" label="Ngày" formControlName="ngay" [ngClass]="{'disable-click': (statusOption == 'delete' || !editAble) ? true : false}" ></ttkt-input>
+            </div>
+            <div class="col-md-12" [ngClass]="statusOptionBikn == 'delete' ? 'visibled' : ''">
+              <div class="form-group row">
+                <label for="selectState" class="col-form-label col-md-3 text-lg-right">Tài liệu:
+
+                </label>
+                <div class="col-md-9">
+                  <input [readOnly]="!editAble" type="text" class="form-control" formControlName="fileNamebiKN">
+                  <!-- <p class="help-block text-danger" *ngIf="addNgayBiKhieunaiForm.controls.fileNamebiKN?.errors?.required &&  (addNgayBiKhieunaiForm.controls.fileNamebiKN?.touched || addNgayBiKhieunaiForm.controls.fileNamebiKN?.dirty || addNgayBiKhieunaiFormSubmited)">
+                    Bạn phải nhập vào tài liệu</p> -->
+                </div>
+                <!-- <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" *ngIf="type_title_tailieuBiTocao == 'bitocao'" (click)="modalAddtailieuBiTc()" [ngClass]="statusOptionBitc == 'delete' ? 'visibled' : ''"><i class="fa fa-plus-circle fa-lg"></i></button>
+                  </div> -->
+              </div>
+            </div>
+            <div class="col-md-12" [ngClass]="statusOptionBikn == 'delete' ? 'visibled' : ''">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Ghi chú:
+
+                </label>
+                <div class="col-md-9">
+                  <textarea class="form-control" formControlName="ghichu"></textarea>
+                  <!-- <p class="help-block text-danger" *ngIf="addNgayBiKhieunaiForm.controls.ghichu?.errors?.required &&  (addNgayBiKhieunaiForm.controls.ghichu?.touched || addNgayBiKhieunaiForm.controls.ghichu?.dirty || addNgayBiKhieunaiFormSubmited)">
+                    Bạn phải nhập vào ghi chú</p> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- <div class="col-md-12" *ngIf="type_title_tailieuBiTocao == 'bitocao'">
+              <div class="form-group row">
+                <div class="col-md-3" [ngClass]="statusOptionBitc == 'delete' ? 'visibled' : ''"></div>
+                <label for="selectState" class="col-form-label col-md-3 text-lg-right" [ngClass]="statusOptionBitc == 'delete' ? '' : 'visibled'">Tài liệu: </label>
+                <div class="col-md-9">
+                  <div class="card">
+                    <div class="card-block">
+                      <div class="custom-chip" *ngFor="let item of modalListAddTailieuBiTc; let i = index">
+                        {{item.name}}<span class="text-danger">({{ item.soluong }})</span>
+                        <span (click)="modalRemoveTailieuTc(i)" [ngClass]="statusOptionBitc == 'delete' ? 'visibled' : ''"><i class="fa fa-times" ></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="statusOptionBikn == 'add' ? 'visibled': ''" (click)="onSubmitModalAddNgayBiKn()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+          <button type="button" class="btn btn-primary" *ngIf="statusOptionBikn == 'edit' ? 'visibled': ''" (click)="onSubmitModalEditNgayBiKn()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOptionBikn == 'delete' ? 'visibled': ''" (click)="onSubmitModalDeleteNgayBiKn()">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Đồng ý</button>
+          <button type="button" class="btn btn-default" (click)="modalAddNgayBiKhieunai.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #addCqTcLq="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-custom">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ title_tcLienquan }} cơ quan, tổ chức cá nhân có liên quan</h5>
+        <button type="button" class="close pull-right" (click)="addCqTcLq.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [ngClass]="{'disable-click': (editAble == false)}" [formGroup]="addCqTcLqForm">
+          <div class="row">
+            <div class="col-md-12" class="visibled">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Id:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <input [readOnly]="!editAble" class="form-control" type="text" formControlName="id" placeholder="">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Tên:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <input [readOnly]="!editAble" class="form-control" type="text" formControlName="name" placeholder="Tên"
+                    [attr.disabled]="type_tcLienquan == 'delete' ? true : null">
+                  <p class="help-block text-danger" *ngIf="addCqTcLqForm.controls.name?.errors?.required &&  (addCqTcLqForm.controls.name?.touched || addCqTcLqForm.controls.name?.dirty || addCqTcLqFormSubmited)">
+                    Bạn phải nhập tên</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group row">
+                <label for="" class="col-form-label col-md-3 text-lg-right">Địa chỉ:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-9">
+                  <textarea [readOnly]="!editAble" class="form-control" formControlName="diachi" placeholder="Địa chỉ"
+                    [attr.disabled]="type_tcLienquan == 'delete' ? true : null"></textarea>
+                  <p class="help-block text-danger" *ngIf="addCqTcLqForm.controls.diachi?.errors?.required &&  (addCqTcLqForm.controls.diachi?.touched || addCqTcLqForm.controls.diachi?.dirty || addCqTcLqFormSubmited)">
+                    Bạn phải nhập địa chỉ</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+                <ttkt-input type="date" md="3-9" label="Ngày" formControlName="ngay" [ngClass]="{'disable-click': (type_tcLienquan == 'delete' || !editAble) ? true : null}" ></ttkt-input>
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" *ngIf="type_tcLienquan == 'add'" (click)="onSubmitAddCqKNLqModal()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+          <button type="button" class="btn btn-primary" *ngIf="type_tcLienquan == 'edit'" (click)="onSubmitEditCqKNLqModal()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="type_tcLienquan == 'delete'" (click)="onSubmitDeleteCqKNLqModal()">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Đồng ý</button>
+          <button type="button" class="btn btn-dafault" (click)="addCqTcLq.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup Them cong van -->
+<div bsModal #modalThemCongVan="bs-modal" id="modalThemCongVan" class="modal fade" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_popup_congvan}} Công Văn</h5>
+        <button type="button" class="close pull-right none-disable" aria-label="Close" (click)="closeModalThemCongVan()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="themCongVanForm">
+        <ttkt-input
+        label="Số công văn"
+        type="text"
+        xl="4-8"
+        formControlName="soCongVan"
+        ></ttkt-input>
+        <ttkt-input
+        [ngClass]="{'disable-click':title_popup_congvan === 'Xem'}"
+        label="Ngày công văn"
+        xl="4-8"
+        type="date"
+        formControlName="ngayCongVan"
+        ></ttkt-input>
+        <ttkt-input
+        label="Trích yếu"
+        xl="4-8"
+        type="text"
+        formControlName="trichYeu"
+        ></ttkt-input>
+      </div>
+      <div class=" modal-footer ">
+        <button type="button" class="btn btn-primary" [disabled]="editAble == false" (click)="saveCongVan()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> {{title_button_congvan}}</button>
+        <button type="button" class="btn btn-default none-disable" (click)="closeModalThemCongVan()">
+          <img src="assets/images/icon_dong.svg" class="img-close"> Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ttkt-pop-up-print *ngIf="show_Pop_Up_Print" [typeMauDon]="typeMauDon"></ttkt-pop-up-print>
+<ttkt-pop-up-print-mau05 *ngIf="show_Pop_Up_Print_05"></ttkt-pop-up-print-mau05>

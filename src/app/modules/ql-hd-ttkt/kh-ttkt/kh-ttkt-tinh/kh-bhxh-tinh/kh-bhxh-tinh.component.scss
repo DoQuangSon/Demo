@@ -1,0 +1,39 @@
+@import './../../../../../../styles/_variables.scss';
+.router {
+    cursor: pointer;
+    color: $colorBlue;
+    text-decoration: underline;
+    &:hover {
+        color: red;
+        text-decoration: underline;
+    }
+}
+
+.ttkt-form-default {
+    .table-responsive {
+        tbody {
+            tr {
+                .router {
+                    cursor: pointer;
+                }
+                .router:hover {
+                    color: $colorBlue;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.trangthai_0 {
+    color: #4332ff;
+    font-weight: bold;
+    cursor: pointer; // i {
+    //   color: black;
+    // }
+}
+
+.trangthai_1 {
+    // color: #4332ff;
+    font-weight: bold;
+}

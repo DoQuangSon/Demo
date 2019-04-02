@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+
+$fa-font-path: '~font-awesome/fonts';
+
+/***************************
+put Sass variables here:
+eg $input-color: red;
+****************************/
+
+@import '~font-awesome/scss/font-awesome';
+// @import '~@swimlane/ngx-datatable/release/index.css';
+// @import '~@swimlane/ngx-datatable/release/themes/material.css';
+// @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "~ngx-toastr/toastr.css";
+// app global style
+// all app global style must defined in this file
+@import './styles/common.scss';
+@import './styles/variables.scss';
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #efefef;
+    padding-bottom: 50px;
+}
+
+// form readonly
+.form-group-readonly, .form-readonly {
+    input, textarea, select, option, button, .custom-control, .form-control, .ui-select-match, ttkt-input {
+        pointer-events: none;
+        user-select: none;
+        cursor: no-drop;
+    }
+}
+
+.disable-form {
+    input, textarea, select, option, .form-control {
+        background-color: rgb(228, 227, 227);
+        pointer-events: none;
+        user-select: none;
+    }
+    .custom-control {
+        pointer-events: none;
+        user-select: none;
+    }
+}
+
+.form-group-readonly, .form-readonly, .disable-form {
+    .none-disable {
+        cursor: pointer;
+        pointer-events: all;
+    }
+}
+
+.treeview-header {
+    .form-check, .form-check-input {
+        margin: 0;
+        position: relative;
+    }
+}
+
+.active {
+    background-color: #efecec;
+}
+
+.active~ul .active {
+    background-color: #e5e5e5;
+}
+.active.last-active {
+    background-color: #a1bec4 !important;
+}
+
+.ng-select-ttkt {
+    position: relative;
+    .ui-select-match-text {
+        display:inline-block;
+        width: calc(100% - 20px);
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+    }
+    .glyphicon {
+        position: absolute;
+        top: 45%;
+        transform: translate(0, -50%);
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        &.glyphicon-remove {
+            &::before {
+                content: "\f00d";
+            }
+        }
+    }
+}
+
+.ng-select-ttkt {
+    .ui-select-match .form-control {
+        background-color: #fff;
+    }
+}

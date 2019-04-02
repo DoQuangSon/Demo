@@ -1,0 +1,33 @@
+@import './../../../../styles/_variables.scss';
+.visibled {
+    display: none
+}
+
+@media (min-width: 992px) {
+    .modal-lg.modal-ganNSD {
+        max-width: 900px;
+    }
+}
+
+.nav-link {
+    padding: .5rem 1rem;
+    // font-weight: bold;
+    font-size: 14px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    color: white;
+    background-color: #0c4e84;
+    border-color: #ddd #ddd #fff;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+input.form-check-input.ng-pristine.ng-valid.ng-touched {
+    margin-left:0px;
+}
+

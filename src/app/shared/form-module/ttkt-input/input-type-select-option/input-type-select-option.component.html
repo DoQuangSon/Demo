@@ -1,0 +1,16 @@
+<!-- <input class="form-control" type="text" [formControl]="formControlInput"> -->
+<!-- <select class="custom-select" [formControl]="formControlInput">
+  <option value="" selected>Chọn</option>
+  <option *ngFor="let option of data.options; let i = index" [value]="option[data.idType]">{{ option[data.valueType] }}</option>
+</select> -->
+<!-- [active]="selectedItem" -->
+
+<ng-select #select class="ng-select-ttkt" [items]="options"
+        [placeholder]="data.placeholder"
+        [allowClear]="true"
+        [multiple]="data.multiple"
+        [disabled]="data.disabled"
+        (removed)="onRemoved($event)"
+        (typed)="onType($event)"
+        (selected)="onSelected($event)">
+</ng-select>

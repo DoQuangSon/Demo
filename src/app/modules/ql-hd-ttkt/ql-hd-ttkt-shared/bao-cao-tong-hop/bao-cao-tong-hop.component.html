@@ -1,0 +1,85 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Báo cáo tổng hợp BHXH VN</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="taoMoiBCTongHopTw()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="tongHopKqForm">
+      <ttkt-input type="nam" label="Năm" sm="4-8" [formControl]="tongHopKqForm.controls.nam"></ttkt-input>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+          <button class="btn btn-default" (click)="searchBaoCao(true)">
+            <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+        </div>
+      </div>
+      <fieldset>
+        <legend>Danh sách báo cáo tổng hợp</legend>
+        <!-- <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-7 col-lg-10">
+                <input class="form-control mb-md-1" type="text" formControlName="search">
+              </div>
+              <div class="col-xl-2 col-lg-2">
+                <button type="button" class="btn btn-default text-lg-right">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="th-size">STT</th>
+                    <th class="table-resize">Tên báo cáo</th>
+                    <th>Ngày thành lập</th>
+                    <th>Chuyển báo cáo<br> toàn ngành</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="!dsBaoCaoTonghop || dsBaoCaoTonghop.length < 1">
+                    <td colspan="5" class="text-center">Không có dữ liệu</td>
+                </tr>
+                <tr *ngFor="let item of dsBaoCaoTonghop; let i = index">
+                    <td class="text-center">{{ i + 1 }}</td>
+                    <td class="text-primary">
+                      <a (click)="chiTietBCTongHopTw(item.id)">{{item.tenBc}}</a>
+                    </td>
+                    <td class="text-center">{{ item.ngayLap | date: 'dd/MM/yyyy'}}</td>
+                    <td class="text-center trangthai_{{item.daChuyen}}">
+                      <div *ngIf="item.daChuyen" title="Gửi báo cáo">
+                          {{ auth.accountType == 'tw' ? 'Đã chuyển' : 'Đã gửi' }}
+                      </div>
+                      <div *ngIf="!item.daChuyen">
+                          <button class="btn-primary" (click)="chuyenBaoCaoTongHop(item.id)">
+                              {{ auth.accountType == 'tw' ? 'Chưa chuyển' : 'Chưa gửi' }}
+                              <i class="fa fa-share" aria-hidden="true"></i>
+                          </button>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-primary" (click)="printMau01(item.id, 2)">
+                            <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất EXCEL</button>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+            <nav aria-label="Page navigation example" *ngIf="paging.totalItems > 1" class="pull-right">
+                <pagination [totalItems]="paging.totalItems" [itemsPerPage]="paging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

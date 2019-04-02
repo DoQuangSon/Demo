@@ -1,0 +1,4 @@
+<select class="custom-select" id="quy" [formControl]="formControlInput">
+    <option value="">Chọn tháng</option>
+    <option *ngFor="let choice of danhSachThang" [value]="choice.id">{{ choice.name }}</option>
+</select>

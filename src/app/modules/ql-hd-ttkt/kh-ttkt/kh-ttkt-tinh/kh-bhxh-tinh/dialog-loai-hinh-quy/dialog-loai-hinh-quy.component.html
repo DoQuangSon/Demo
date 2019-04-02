@@ -1,0 +1,41 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title pull-left">Chi tiết đơn vị</h5>
+      <button type="button" class="close pull-right" (click)="modalDonVi.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="donViForm">
+        <div class="row container">
+          <div class="col-md-7">
+            <ttkt-input
+              type="select-basic"
+              label="Loại hình TTKT"
+              xl="5-7"
+              [formControl]="donViForm.controls.loaiHinhTTKT"
+              [data]="{
+                options: optionLoaiHinhTTKTs,
+                firstOption: 'Chọn loại hình',
+                valueType: 'name'
+              }"
+            ></ttkt-input>
+          </div>
+          <div class="col-md-5">
+            <ttkt-input
+              type="quy"
+              label="Quý"
+              xl="4-8"
+              [formControl]="donViForm.controls.quyTrongKeHoach"
+            ></ttkt-input>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveDonVi()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+      <button type="button" class="btn btn-default" (click)="modalDonVi.hide()">
+        <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+    </div>
+  </div>

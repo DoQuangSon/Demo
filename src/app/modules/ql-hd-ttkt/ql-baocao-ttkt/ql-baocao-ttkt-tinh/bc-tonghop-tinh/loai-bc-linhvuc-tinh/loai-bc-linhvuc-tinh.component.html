@@ -1,0 +1,753 @@
+<!-- Table Mau 06 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 1 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau06">
+    <thead>
+      <tr>
+        <th class="th-size">STT<br></th>
+        <th class="table-resize">Nội dung<br></th>
+        <th>Trong kỳ</th>
+        <th>Lũy kế từ đầu năm</th>
+        <th>Ghi chú</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+      </tr>
+      <tr>
+        <th class="text-center">I</th>
+        <th colspan="4">THỰC HIỆN THANH TRA, KIỂM TRA</th>
+      </tr>
+      <tr *ngFor="let item of thucHienTTKT; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.noiDung }}</td>
+        <td class="text-right">{{ item.trongKy }}</td>
+        <td class="text-right">{{ item.luyKe }}</td>
+        <td>{{ item.ghiChu }}</td>
+      </tr>
+      <tr>
+        <th class="text-center">II</th>
+        <th colspan="4">KẾT QUẢ THANH TRA, KIỂM TRA</th>
+      </tr>
+      <tr>
+        <th class="text-center">II.1</th>
+        <th>ĐỐI TƯỢNG ĐÓNG</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let item of doiTuongDong; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.noiDung }}</td>
+        <td class="text-right">{{ item.trongKy }}</td>
+        <td class="text-right">{{ item.luyKe }}</td>
+        <td>{{ item.ghiChu }}</td>
+      </tr>
+      <tr>
+        <th class="text-center">II.2</th>
+        <th colspan="4">MỨC ĐÓNG</th>
+      </tr>
+      <tr *ngFor="let item of mucDong; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.noiDung }}</td>
+        <td class="text-right">{{ item.trongKy }}</td>
+        <td class="text-right">{{ item.luyKe }}</td>
+        <td>{{ item.ghiChu }}</td>
+      </tr>
+      <tr>
+        <th class="text-center">II.3</th>
+        <th colspan="4">PHƯƠNG THỨC ĐÓNG</th>
+      </tr>
+      <tr *ngFor="let item of phuongThucDong; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.noiDung }}</td>
+        <td class="text-right">{{ item.trongKy }}</td>
+        <td class="text-right">{{ item.luyKe }}</td>
+        <td>{{ item.ghiChu }}</td>
+      </tr>
+      <tr>
+        <th class="text-center">II.3</th>
+        <th colspan="4">CÁC BIỆN PHÁP XỬ LÝ VI PHẠM ĐÃ ÁP DỤNG</th>
+      </tr>
+      <tr *ngFor="let item of bienPhapXuLy; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.noiDung }}</td>
+        <td class="text-right">{{ item.trongKy }}</td>
+        <td class="text-right">{{ item.luyKe }}</td>
+        <td>{{ item.ghiChu }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 07 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 2 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau07">
+    <thead>
+      <tr>
+        <th rowspan="4" class="th-size">STT</th>
+        <th rowspan="4" class="table-resize">Tên tỉnh</th>
+        <th rowspan="4">Tổng số</th>
+        <th colspan="6">KẾ HOẠCH GIA NĂM ….</th>
+        <th colspan="14">THỰC HIỆN SO KẾ HOẠCH NĂM…</th>
+      </tr>
+      <tr>
+        <td rowspan="3">TT CN đóng</td>
+        <td colspan="4" rowspan="2">Kiểm tra</td>
+        <td rowspan="3">Liên ngành</td>
+        <td colspan="2" rowspan="2">Tổng số</td>
+        <td colspan="2" rowspan="2">TT CN đóng</td>
+        <td colspan="8">Kiểm tra</td>
+        <td colspan="2" rowspan="2">Liên ngành</td>
+      </tr>
+      <tr>
+        <td colspan="2">Nội bộ</td>
+        <td colspan="2">ĐVSDLĐ</td>
+        <td colspan="2">Cơ sở KCB</td>
+        <td colspan="2">ĐL thu, ĐD chi trả</td>
+      </tr>
+      <tr>
+        <td>Nội bộ</td>
+        <td>ĐV SDLĐ</td>
+        <td>Cơ sở KCB</td>
+        <td>ĐL thu, ĐD chi trả</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+        <td>Thực hiện</td>
+        <td>% so KH</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+        <td class="text-center">16</td>
+        <td class="text-center">17</td>
+        <td class="text-center">18</td>
+        <td class="text-center">19</td>
+        <td class="text-center">20</td>
+        <td class="text-center">21</td>
+        <td class="text-center">22</td>
+        <td class="text-center">23</td>
+      </tr>
+      <tr *ngFor="let item of bcMau07; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.tongSo }}</td>
+        <td>{{ item.TTCNDong }}</td>
+        <td>{{ item.noiBo }}</td>
+        <td>{{ item.DVSDLD }}</td>
+        <td>{{ item.coSoKCB }}</td>
+        <td>{{ item.DLThuDDTriTra }}</td>
+        <td>{{ item.lienNganh }}</td>
+        <td>{{ item.thucHienTongSo }}</td>
+        <td>{{ item.phanTramsoKHTongSo }}</td>
+        <td>{{ item.thucHienTTCNDong }}</td>
+        <td>{{ item.phanTramsoKHTTCNDong }}</td>
+        <td>{{ item.thucHienNoiBo }}</td>
+        <td>{{ item.phanTramsoKHNoiBo }}</td>
+        <td>{{ item.thucHienDVSDLD }}</td>
+        <td>{{ item.phanTramsoKHDVSDLD }}</td>
+        <td>{{ item.thucHiencoSoKCB }}</td>
+        <td>{{ item.phanTramsoKHcoSoKCB }}</td>
+        <td>{{ item.thucHienDLThuDDTriTra }}</td>
+        <td>{{ item.phanTramsoKHDLThuDDTriTra }}</td>
+        <td>{{ item.thucHienLienNganh }}</td>
+        <td>{{ item.phanTramsoKHLienNganh }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 08 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 3 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau08">
+    <thead>
+      <tr>
+        <th rowspan="2" class="th-size">STT</th>
+        <th rowspan="2" class="table-resize">Tên tỉnh</th>
+        <th rowspan="2">Số ĐV TTCN</th>
+        <th rowspan="2">Số ĐV kiểm tra</th>
+        <th rowspan="2">Số ĐV TT KT liên ngành</th>
+        <th colspan="3">Số LĐ chưa đóng, đóng thiếu thời gian</th>
+        <th colspan="2">Số LĐ đóng sai đối tượng, đóng sai thời gian</th>
+        <th colspan="3">Số LĐ đóng thiếu mức quy định</th>
+        <th rowspan="2">ST đóng sai phương thức đóng</th>
+        <th rowspan="2">ST lãi do đóng sai phương thức đóng</th>
+      </tr>
+      <tr>
+        <td>Theo dõi</td>
+        <td>Đôn đốc</td>
+        <td>Quyết định kiểm tra</td>
+        <td>Số LĐ</td>
+        <td>Số tiền hoàn trả</td>
+        <td>Số LĐ</td>
+        <td>Số tiền truy đóng</td>
+        <td>Số tiền lãi truy đóng</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+      </tr>
+      <tr *ngFor="let item of bcMau08; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.soDVTTCN }}</td>
+        <td>{{ item.soDVKiemTra }}</td>
+        <td>{{ item.soDVTTKTLienNganh }}</td>
+        <td>{{ item.soLDChuaDong }}</td>
+        <td>{{ item.soTienTruyDong }}</td>
+        <td>{{ item.soTienLaiTruyDong }}</td>
+        <td>{{ item.soLDDongSai }}</td>
+        <td>{{ item.soTienHoanTra }}</td>
+        <td>{{ item.soLDDongThieu }}</td>
+        <td>{{ item.soTienTruyDongSoLDDongThieu }}</td>
+        <td>{{ item.soTienLaiTruyDongLDDongThieu }}</td>
+        <td>{{ item.soTienDongSaiPhuongThuc }}</td>
+        <td>{{ item.soTienLaiDongSaiPhuongThuc }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 09 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 4 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau09">
+    <thead>
+      <tr>
+        <th class="th-size">STT<br></th>
+        <th class="table-resize">Tên tỉnh</th>
+        <th>Số ĐV TTCN</th>
+        <th>Số ĐV kiểm tra</th>
+        <th>Số ĐV TT KT liên ngành</th>
+        <th>Số lao động chưa được cấp sổ BHXH<br></th>
+        <th>Số sổ BHXH chưa trả cho người lao động</th>
+        <th>Số sổ BHXH ghi sai nội dung trên sổ</th>
+        <th>Số LĐ chưa được cấp thẻ BHYT</th>
+        <th>Số thẻ BHYT sai mã quyền lợi</th>
+        <th>Số thẻ BHYT có dấu hiệu cấp trùng<br></th>
+        <th>Số thẻ BHYT cấp sai đối tượng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+      </tr>
+      <tr *ngFor="let item of bcMau09; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.soDVTTCN }}</td>
+        <td>{{ item.soDVKiemTra }}</td>
+        <td>{{ item.soDVTTKTLienNganh }}</td>
+        <td>{{ item.soLDChuaCapSoBHXH }}</td>
+        <td>{{ item.soNumberBHXHChuaTraNguoiLD }}</td>
+        <td>{{ item.soNumberBHXHGhiSaiND }}</td>
+        <td>{{ item.soLDChuaCapTheBHYT }}</td>
+        <td>{{ item.soTheBHYTSaiMaQuyenLoi }}</td>
+        <td>{{ item.soTheBHYTDauHieuTrung }}</td>
+        <td>{{ item.soTheBHYTCapSaiDT }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 10 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 5 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau10">
+    <thead>
+      <tr>
+        <th rowspan="3" class="th-size">STT</th>
+        <th rowspan="3" class="table-resize">Tên đơn vị</th>
+        <th colspan="10">CHẾ ĐỘ BẢO HIỂM XÃ HỘI</th>
+        <th colspan="3">CHẾ ĐỘ BẢO HIỂM Y TẾ</th>
+      </tr>
+      <tr>
+        <td rowspan="2">Số ĐV TTCN</td>
+        <td rowspan="2">Số ĐV kiểm tra</td>
+        <td rowspan="2">Số ĐV TT KT liên ngành</td>
+        <td colspan="2">Hưởng BHXH ngắn hạn sai</td>
+        <td colspan="2">Hưởng BHXH dài hạn sai</td>
+        <td colspan="3">Hưởng thiếu tiền hưởng BHXH</td>
+        <td rowspan="2">Số cơ sở KCB BHYT được KT</td>
+        <td rowspan="2">Số tiền phải thu hồi về quỹ BHYT</td>
+        <td rowspan="2">Số tiền đã thu hồi về quỹ BHYT</td>
+      </tr>
+      <tr>
+        <td>Số lượt</td>
+        <td>Số tiền thu hồi</td>
+        <td>Số LĐ</td>
+        <td>Số tiền thu hồi</td>
+        <td>Số LĐ</td>
+        <td>Số đối tượng</td>
+        <td>Số tiền hoàn trả</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+      </tr>
+      <tr *ngFor="let item of bcMau10; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.soDVTTCN }}</td>
+        <td>{{ item.soDVKiemTra }}</td>
+        <td>{{ item.soDVTTKTLienNganh }}</td>
+        <td>{{ item.soLuot }}</td>
+        <td>{{ item.soTienThuHoiHuongBHXHNganHan }}</td>
+        <td>{{ item.soLDHuongBHXHDaiHan }}</td>
+        <td>{{ item.soTienThuHoiHuongBHXHDaiHan }}</td>
+        <td>{{ item.soLDHuongThieuTienBHXH }}</td>
+        <td>{{ item.soDTHuongThieuTienBHXH }}</td>
+        <td>{{ item.soTienHoanTra }}</td>
+        <td>{{ item.soCoSoKCBBHYT }}</td>
+        <td>{{ item.soTienPhaiThuHoi }}</td>
+        <td>{{ item.soTienDaThuHoi }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 11 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 6 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau11">
+    <thead>
+      <tr>
+        <th rowspan="2" class="th-size">STT</th>
+        <th rowspan="2" class="table-resize">Tên tỉnh</th>
+        <th colspan="2">Số tiền + lãi<br> truy đóng đã thu</th>
+        <th colspan="2">Đã hoàn trả hoặc điều<br> chỉnh giảm cho đơn vị</th>
+        <th colspan="2">Đã thu hồi<br> về quỹ BHXH</th>
+        <th colspan="2">Đã hoàn trả đối<br> tượng hưởng BHXH</th>
+        <th colspan="2">Đã thu hồi<br> về quỹ BHYT</th>
+        <th colspan="4">Đã thu hồi về quỹ BHYT</th>
+      </tr>
+      <tr>
+        <td>Số tiền</td>
+        <td>% so phải truy đóng</td>
+        <td>Số tiền</td>
+        <td>% so phải trả</td>
+        <td>Số tiền</td>
+        <td>% so phải thu</td>
+        <td>Số tiền</td>
+        <td>% so phải trả</td>
+        <td>Số tiền</td>
+        <td>% so phải thu</td>
+        <td>Số đơn vị xử phạt</td>
+        <td>Số tiền phải thu</td>
+        <td>Số tiền đã thu</td>
+        <td>% so phải thu</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+        <td class="text-center">16=15/14</td>
+      </tr>
+      <tr *ngFor="let item of bcMau11; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.soTienLaiTruyDongDaThu }}</td>
+        <td>{{ item.phanTramSoPhaiTruyDong }}</td>
+        <td>{{ item.soTienDaHoanTra }}</td>
+        <td>{{ item.phanTramSoPhaiTraDaHoanTra }}</td>
+        <td>{{ item.soTienDaThuHoiBHXH }}</td>
+        <td>{{ item.phanTramSoPhaiThuBHXH }}</td>
+        <td>{{ item.soTienDaHoanTraDT }}</td>
+        <td>{{ item.phanTramSoPhaiTraDaHoanTraDT }}</td>
+        <td>{{ item.soTienDaThuHoiBHYT }}</td>
+        <td>{{ item.phanTramSoPhaiThuBHYT }}</td>
+        <td>{{ item.soDonViXuPhat }}</td>
+        <td>{{ item.soTienPhaiThu }}</td>
+        <td>{{ item.soTienDaThu }}</td>
+        <td>{{ item.phanTramSoPhaiThuXuPhat }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 12 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 7 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau12">
+    <thead>
+      <tr>
+        <th rowspan="3" class="th-size">STT</th>
+        <th rowspan="3" class="table-resize">Tên đơn vị</th>
+        <th colspan="4" rowspan="2">Số đơn vị SDLĐ<br> được thanh tra, kiểm tra</th>
+        <th colspan="9">Tiến độ thực hiện</th>
+      </tr>
+      <tr>
+        <td colspan="4">Đối tượng đóng</td>
+        <td colspan="2">Mức đóng</td>
+        <td colspan="3">Phương thức đóng</td>
+      </tr>
+      <tr>
+        <td>Tổng số</td>
+        <td>TTCN</td>
+        <td>Kiểm tra</td>
+        <td>Liên ngành</td>
+        <td>LĐ chưa đóng, đóng thiếu TG</td>
+        <td>Số tiền truy đóng</td>
+        <td>LĐ đóng sai, thừa</td>
+        <td>Số tiền hoàn trả</td>
+        <td>LĐ đóng không đúng mức</td>
+        <td>Số tiền truy đóng</td>
+        <td>STiền ĐV nợ khi có QĐ</td>
+        <td>Số tiền đã nộp khi TTKT</td>
+        <td>ST đã nộp khi thực hiện KL</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+      </tr>
+      <tr *ngFor="let item of bcMau11; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.tongSo }}</td>
+        <td>{{ item.TTCN }}</td>
+        <td>{{ item.kiemTra }}</td>
+        <td>{{ item.lienNganh }}</td>
+        <td>{{ item.LDChuaDong }}</td>
+        <td>{{ item.soTienTruyDongDT }}</td>
+        <td>{{ item.LDDongSai }}</td>
+        <td>{{ item.soTienHoanTra }}</td>
+        <td>{{ item.LDDongKhongDungMuc }}</td>
+        <td>{{ item.soTienTruyDongMucDong }}</td>
+        <td>{{ item.STienDVno }}</td>
+        <td>{{ item.soTienDaNopKhiTTKT }}</td>
+        <td>{{ item.STDaNopKhiKL }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 13 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 8 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau13">
+    <thead>
+      <tr>
+        <th rowspan="2" class="th-size">STT</th>
+        <th rowspan="2" class="table-resize">Tên tỉnh</th>
+        <th colspan="4">Số đơn vị SDLĐ được thanh tra, kiểm tra</th>
+        <th colspan="5">Các biện pháp xử lý vi phạm hành chính đã áp dụng</th>
+      </tr>
+      <tr>
+        <td>Tổng số</td>
+        <td>TTCN</td>
+        <td>Kiểm tra</td>
+        <td>Liên ngành</td>
+        <td>Số ĐV đã lập biên<br> bản VPHC</td>
+        <td>Số QĐ xử phạt<br> VPHC đã ban hành</td>
+        <td>Số tiền xử phạt<br> VPHC phải thu</td>
+        <td>Số tiền xử phạt<br> VPHC đã thu</td>
+        <td>Các biện pháp<br> xử lý khác</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+      </tr>
+      <tr *ngFor="let item of bcMau13; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.tongSo }}</td>
+        <td>{{ item.TTCN }}</td>
+        <td>{{ item.kiemTra }}</td>
+        <td>{{ item.lienNganh }}</td>
+        <td>{{ item.soDonVi }}</td>
+        <td>{{ item.soQDXuPhat }}</td>
+        <td>{{ item.soTienXuPhatPhaiThu }}</td>
+        <td>{{ item.soTienXuPhatDaThu }}</td>
+        <td>{{ item.bienPhapXuLy }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 14 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 9 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau14">
+    <thead>
+      <tr>
+        <th rowspan="3" class="th-size">STT</th>
+        <th rowspan="3" class="table-resize">Tên đơn vị</th>
+        <th colspan="5" rowspan="2">Số đơn vị SDLĐ<br> được thanh tra, kiểm tra</th>
+        <th colspan="9">Tiến độ thực hiện</th>
+      </tr>
+      <tr>
+        <td colspan="4">Đối tượng đóng</td>
+        <td colspan="2">Mức đóng</td>
+        <td colspan="3">Phương thức đóng</td>
+      </tr>
+      <tr>
+        <td>Tổng số</td>
+        <td>TTCN</td>
+        <td>%TT so KH</td>
+        <td>Kiểm tra</td>
+        <td>Liên ngành</td>
+        <td>LĐ chưa đóng, đóng thiếu TG</td>
+        <td>Số tiền truy đóng</td>
+        <td>LĐ đóng sai, thừa</td>
+        <td>Số tiền hoàn trả</td>
+        <td>LĐ đóng không đúng mức</td>
+        <td>Số tiền truy đóng</td>
+        <td>STiền ĐV nợ khi có QĐ</td>
+        <td>Số tiền đã nộp khi TTKT</td>
+        <td>ST đã nộp khi thực hiện KL</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+        <td class="text-center">16</td>
+      </tr>
+      <tr *ngFor="let item of bcMau11; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.tongSo }}</td>
+        <td>{{ item.TTCN }}</td>
+        <td>{{ item.phanTramTTsoKH }}</td>
+        <td>{{ item.kiemTra }}</td>
+        <td>{{ item.lienNganh }}</td>
+        <td>{{ item.LDChuaDong }}</td>
+        <td>{{ item.soTienTruyDongDT }}</td>
+        <td>{{ item.LDDongSai }}</td>
+        <td>{{ item.soTienHoanTra }}</td>
+        <td>{{ item.LDDongKhongDungMuc }}</td>
+        <td>{{ item.soTienTruyDongMucDong }}</td>
+        <td>{{ item.STienDVno }}</td>
+        <td>{{ item.soTienDaNopKhiTTKT }}</td>
+        <td>{{ item.STDaNopKhiKL }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 15 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 10 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau15">
+    <thead>
+      <tr>
+        <th rowspan="2" class="th-size">STT</th>
+        <th rowspan="2" class="table-resize">Tên tỉnh</th>
+        <th colspan="4">Số đơn vị SDLĐ được thanh tra, kiểm tra</th>
+        <th colspan="5">Các biện pháp xử lý vi phạm hành chính đã áp dụng</th>
+      </tr>
+      <tr>
+        <td>Tổng số</td>
+        <td>TTCN</td>
+        <td>Kiểm tra</td>
+        <td>Liên ngành</td>
+        <td>Số ĐV đã lập biên<br> bản VPHC</td>
+        <td>Số QĐ xử phạt<br> VPHC đã ban hành</td>
+        <td>Số tiền xử phạt<br> VPHC phải thu</td>
+        <td>Số tiền xử phạt<br> VPHC đã thu</td>
+        <td>Các biện pháp<br> xử lý khác</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+      </tr>
+      <tr *ngFor="let item of bcMau15; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.tongSo }}</td>
+        <td>{{ item.TTCN }}</td>
+        <td>{{ item.kiemTra }}</td>
+        <td>{{ item.lienNganh }}</td>
+        <td>{{ item.soDonVi }}</td>
+        <td>{{ item.soQDXuPhat }}</td>
+        <td>{{ item.soTienXuPhatPhaiThu }}</td>
+        <td>{{ item.soTienXuPhatDaThu }}</td>
+        <td>{{ item.bienPhapXuLy }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Table Mau 16 -->
+<div class="table-responsive table-scroll-x" [ngClass]="loaiBaoCao == 11 ? '':'visibled'">
+  <table class="table table-bordered table-hover table-mau16">
+    <thead>
+      <tr>
+        <th rowspan="4" class="th-size">STT</th>
+        <th rowspan="4" class="table-resize">Tên tỉnh</th>
+        <th colspan="3">Số liệu quản lý</th>
+        <th colspan="8">KH THANH TRA, KIỂM TRA</th>
+      </tr>
+      <tr>
+        <td rowspan="3">Số ĐV SDLĐ</td>
+        <td rowspan="3">Số cơ sở<br> KCB BHYT</td>
+        <td rowspan="3">Số đại lý thu,<br> đại diện chi trả</td>
+        <td colspan="5">CƠ QUAN BHXH THỰC HIỆN</td>
+        <td colspan="3">PHỐI HỢP LIÊN NGÀNH</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Thanh tra</td>
+        <td colspan="4">Kiểm tra</td>
+        <td rowspan="2">Thanh tra</td>
+        <td colspan="2">Kiểm tra</td>
+      </tr>
+      <tr>
+        <td>Cơ quan BHXH</td>
+        <td>Đơn vị SDLĐ</td>
+        <td>Cơ sở KCB BHYT</td>
+        <td>Đại lý thu, đại diện chi trả</td>
+        <td>Đơn vị SDLĐ</td>
+        <td>Cơ sở KCB</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">A</td>
+        <td class="text-center">B</td>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+      </tr>
+      <tr *ngFor="let item of bcMau16; let i=index">
+        <td class="text-center">{{ i+1 }}</td>
+        <td>{{ item.tenTinh }}</td>
+        <td>{{ item.soDVSDLD }}</td>
+        <td>{{ item.soCoSoKCBBHYT }}</td>
+        <td>{{ item.soDaiLyThuSoLieuQuanLy }}</td>
+        <td>{{ item.TTCoQuanBHXHThucHien }}</td>
+        <td>{{ item.coQuanBHXH }}</td>
+        <td>{{ item.DonViSDLDCoQuanBHXH }}</td>
+        <td>{{ item.soCoSoKCBBHYTCoQuanBHXH }}</td>
+        <td>{{ item.daiLyThuCoQuanBHXH }}</td>
+        <td>{{ item.TTPhoiHopLienNganh }}</td>
+        <td>{{ item.DonViSDLDLienNganh }}</td>
+        <td>{{ item.soCoSoKCBLienNganh }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

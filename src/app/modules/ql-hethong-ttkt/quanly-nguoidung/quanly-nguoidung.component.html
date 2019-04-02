@@ -1,0 +1,454 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Thông tin danh sách người dùng</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+    </div> -->
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="formTimKiem">
+      <div class="display-hidden">
+        <fieldset class="fieldset-search">
+          <legend>Thông tin tìm kiếm
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+          </legend>
+          <div class="form-group row">
+
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Họ và tên: </label>
+                </div>
+                <div class="col-xl-8">
+                  <input type="text" class="form-control" formControlName="tenHienThi">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Tên đăng nhập: </label>
+                </div>
+                <div class="col-xl-8">
+                  <input type="text" class="form-control" formControlName="tenDangNhap">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Đơn vị công tác: </label>
+                </div>
+                <div class="col-xl-8">
+                  <input type="text" class="form-control" formControlName="donViCongTac">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Chức danh: </label>
+                </div>
+                <div class="col-xl-8">
+                  <input type="text" class="form-control" formControlName="chucDanh">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-xl-4 text-xl-right">
+                  <label class="col-form-label">Nhóm quyền: </label>
+                </div>
+                <div class="col-xl-8">
+                  <select class="form-control" formControlName="nhomQuyen">
+                    <option value="">Chọn nhóm quyền</option>
+                    <option *ngFor="let item of userGroupList" [value]="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-default" (click)="onSearch()" style="margin-top: 30px">
+                <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </div>
+  <form novalidate>
+    <fieldset>
+      <div class="pull-right mb-1">
+        <button type="button" class="btn btn-primary" (click)="addNguoiDung('add')">
+          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới
+        </button>
+      </div>
+      <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="th-size">STT</th>
+              <th>Mã đơn vị</th>
+              <th>Đơn vị công tác</th>
+              <th>Nhóm quyền</th>
+              <th class="table-resize">Tên đăng nhập</th>
+              <th class="table-resize">Họ và tên</th>
+              <th>Chức danh</th>
+              <th class="th-size">Trạng thái</th>
+              <!-- <th>Reset mật khẩu</th> -->
+              <th class="th-size">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listNguoiDung; let i = index">
+              <td class="text-center">{{pageSize * currentPage +i + 1}}</td>
+              <td>{{item.maDonVi}}</td>
+              <td>{{item.donVi}}</td>
+              <td>{{item.groupUserName}}</td>
+              <td>{{item.login}}</td>
+              <td>{{item.tenHienThi}}</td>
+              <td>{{item.chucDanh}}</td>
+              <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm edit" *ngIf="!item.activated">Không hoạt động</button>
+                <button type="button" class="btn btn-success btn-sm edit" *ngIf="item.activated">Hoạt động</button>
+              </td>
+              <!-- <td class="text-center">
+                <i class="fa fa-key" aria-hidden="true" title="Reset mật khẩu" (click)="openModalResetPass(item)"></i>
+              </td> -->
+              <td class="text-center">
+                <button type="button" class="btn btn-primary btn-sm edit" (click)="editNguoiDung('edit',item)">
+                  <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteNguoiDung(i, item)">
+                  <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+              </td>
+            </tr>
+            <tr *ngIf="!listNguoiDung.length">
+              <td colspan="9" class="text-center">
+                Không có dữ liệu
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation" *ngIf="pager.pages && pager?.pages.length">
+          <ul class="pagination justify-content-end mb-1">
+            <li title="Trang đầu" class="page-item" [ngClass]="{disabled:pager.currentPage === 0}">
+              <a class="page-link" aria-label="First" (click)="setPage(0)">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li title="Trang trước" class="page-item" [ngClass]="{disabled:pager.currentPage === 0}">
+              <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                <span aria-hidden="true">&#60;</span>
+              </a>
+            </li>
+            <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+              <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+            </li>
+            <li title="Trang tiếp" class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}">
+              <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                <span aria-hidden="true">&#62;</span>
+              </a>
+            </li>
+            <li title="Trang cuối" class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}">
+              <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<!-- them moi nguoiDung -->
+<div bsModal #modalThemNguoiDung="bs-modal" id="modalThemNguoiDung" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Thêm người dùng</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalThemNguoiDung.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formThemNguoiDung">
+        <div class="row">
+          <div class="col-xl-9">
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Tên đăng nhập:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control form-control-sm" (blur)="checkExitstUserName()" formControlName="tenDangNhap_InForm" [attr.disabled]="type !== 'add' ? true : null">
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.tenDangNhap_InForm?.errors?.required &&  (formThemNguoiDung.controls.tenDangNhap_InForm?.touched || formThemNguoiDung.controls.tenDangNhap_InForm?.dirty)">
+                  Tên đăng nhập không được để trống</p>
+                  <p class="help-block text-danger">{{ formService.nospaceValidator(formThemNguoiDung.get('tenDangNhap_InForm')) }}</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Họ và tên:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control form-control-sm" formControlName="hoTen_InForm">
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.hoTen_InForm?.errors?.required &&  (formThemNguoiDung.controls.hoTen_InForm?.touched || formThemNguoiDung.controls.hoTen_InForm?.dirty)">
+                  Họ và tên không được để trống</p>
+                  <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.hoTen_InForm?.errors?.pattern &&  (formThemNguoiDung.controls.hoTen_InForm?.touched || formThemNguoiDung.controls.hoTen_InForm?.dirty)">
+                  Họ và tên không được để khoảng trắng</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Mật khẩu:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="password" class="form-control form-control-sm" formControlName="password_InForm">
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.password_InForm?.errors?.required &&  (formThemNguoiDung.controls.password_InForm?.touched || formThemNguoiDung.controls.password_InForm?.dirty)">
+                  Mật khẩu không được để trống</p>
+                <p class="help-block text-danger" *ngIf="(formThemNguoiDung.controls.password_InForm?.errors?.minlength || formThemNguoiDung.controls.password_InForm?.errors?.maxlength) &&  (formThemNguoiDung.controls.password_InForm?.touched || formThemNguoiDung.controls.password_InForm?.dirty)">
+                  Mật khẩu phải có độ dài từ 8-25 kí tự</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Nhập lại mật khẩu:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="password" class="form-control form-control-sm" formControlName="repeatPass_InForm" (keyup)="matchPassword()">
+                <p class="help-block text-danger" *ngIf="errMatchPassword">
+                  Mật khẩu không khớp</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Email:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="email" class="form-control form-control-sm" (blur)="checkExitstEmail()" formControlName="email_InForm">
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.email_InForm?.errors?.required &&  (formThemNguoiDung.controls.email_InForm?.touched || formThemNguoiDung.controls.email_InForm?.dirty)">
+                  Email không được để trống</p>
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.email_InForm?.errors?.pattern &&  (formThemNguoiDung.controls.email_InForm?.touched || formThemNguoiDung.controls.email_InForm?.dirty)">
+                  Email không hợp lệ</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Điện thoại di động:
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input type="text" class="form-control form-control-sm" formControlName="diDong_InForm" min="0" minlength="0" maxlength="11" ttktCheckNumberOnly>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Chức vụ:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <select class="form-control" formControlName="chucDanh_InForm">
+                  <option *ngFor="let item of listChucDanh" [value]="item.id">{{item.chucDanh}}</option>
+                </select>
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.chucDanh_InForm?.errors?.required &&  (formThemNguoiDung.controls.chucDanh_InForm?.touched || formThemNguoiDung.controls.chucDanh_InForm?.dirty)">
+                  Chức vụ không được để trống</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Nhóm quyền:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <select class="form-control" formControlName="nhomQuyen_InForm">
+                  <option *ngFor="let item of userGroupList" [value]="item.id">{{item.name}}</option>
+                </select>
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.nhomQuyen_InForm?.errors?.required &&  (formThemNguoiDung.controls.nhomQuyen_InForm?.touched || formThemNguoiDung.controls.nhomQuyen_InForm?.dirty)">
+                  Nhóm quyền không được để trống</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Cơ quan tổ chức:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <ng-select [formControl]="selectCoQuanToChucForm" [allowClear]="true" disable="false" [items]="listCoQuanToChucSelect" (selected)="selected($event)"
+                  placeholder="Chọn cơ quan tổ chức">
+                </ng-select>
+                <!-- <input class="form-control form-control-sm" formControlName="donVi_InForm"> -->
+                <p class="help-block text-danger" *ngIf="formThemNguoiDung.controls.donVi_InForm?.errors?.required &&  (formThemNguoiDung.controls.donVi_InForm?.touched || formThemNguoiDung.controls.donVi_InForm?.dirty)">
+                  Cơ quan tổ chức không được để trống</p>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-xl-4 text-xl-right"></div>
+              <div class="col-xl-8">
+                <div class="custom-controls-stacked">
+                  <label class="custom-control custom-radio" (click)="offThoiHan()">
+                    <input name="actived" type="radio" class="custom-control-input" value="0" formControlName="actived">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Hoạt động vĩnh viễn</span>
+                  </label>
+                  <label class="custom-control custom-radio" (click)="setThoiHan()">
+                    <input name="actived" type="radio" class="custom-control-input" value="1" formControlName="actived">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Hoạt động có thời hạn</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2" *ngIf="isCoThoiHan">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Từ ngày:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="tuNgay" (dateChanged)="onDateChanged($event,true)"></my-date-picker>
+                <p class="help-block text-danger" *ngIf="errTuNgay">
+                  Ngày hoạt động không được để trống</p>
+              </div>
+            </div>
+            <div class="row mb-2" *ngIf="isCoThoiHan">
+              <div class="col-xl-4 text-xl-right">
+                <label class="label-col-form">Đến ngày:
+                  <span class="required">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="denNgay" (dateChanged)="onDateChanged($event,false)"></my-date-picker>
+                <p class="help-block text-danger" *ngIf="errDenNgay">
+                  Ngày hoạt động không được để trống</p>
+                <p class="errMessage" *ngIf="errCompareDate">Từ ngày không được nhỏ hơn Đến ngày</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3">
+            <div class="img-preview">
+              <img ng-model="fileData" #imageUser width="140" height="162" class="ng-pristine ng-untouched ng-valid" [src]=formThemNguoiDung.controls.imageUrl>
+            </div>
+            <button type="button" class="btn btn-default" (click) = "openChooseImageDiv()">
+              <i class="fa fa-picture-o" aria-hidden="true"></i> Chọn ảnh</button>
+            <input #imageUpload type="file" class="not-show" accept="image/*"/>
+
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button class="btn btn-primary" (click)="saveNguoiDung()">
+          <i class="fa fa-floppy-o" aria-hidden="true "></i> Lưu</button>
+        <button class="btn btn-default" (click)="modalThemNguoiDung.hide() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- reset mat khau -->
+<div bsModal #modalResetPassword="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Reset mật khẩu</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalResetPassword.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formResetPassword">
+        <div class="form-group row mb-2">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Tên đăng nhập:
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="text" class="form-control form-control-sm" formControlName="tenDangNhap_InForm" readonly>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Tên hiển thị:
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="text" class="form-control form-control-sm" formControlName="hoTen_InForm" readonly>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Mật khẩu mới:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="password" class="form-control form-control-sm" formControlName="password_InForm">
+            <p class="help-block text-danger" *ngIf="(formResetPassword.controls.password_InForm?.errors?.minlength || formResetPassword.controls.password_InForm?.errors?.maxlength) &&  (formResetPassword.controls.password_InForm?.touched || formResetPassword.controls.password_InForm?.dirty)">
+              Mật khẩu phải có độ dài từ 8-25 kí tự</p>
+          </div>
+        </div>
+        <div class="form-group row mb-2">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Nhập lại mật khẩu mới:
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="password" class="form-control form-control-sm" formControlName="repeatPass_InForm" (keyup)="matchPassword()">
+            <p class="help-block text-danger" *ngIf="errMatchPassword2">
+              Mật khẩu không khớp</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" [disabled]="formResetPassword.invalid">
+          <i class="fa fa-refresh" aria-hidden="true" (click)="acceptResetPass()"></i> Reset</button>
+        <button type="button" class="btn btn-default" (click)="modalResetPassword.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalDelete="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Xóa người dùng</h5>
+        <button type="button" class="close pull-right" (click)="modalDelete.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="text-center text-danger">
+          <b>Bạn chắc chắn muốn xóa người dùng?</b>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="acceptDelete()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="modalDelete.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

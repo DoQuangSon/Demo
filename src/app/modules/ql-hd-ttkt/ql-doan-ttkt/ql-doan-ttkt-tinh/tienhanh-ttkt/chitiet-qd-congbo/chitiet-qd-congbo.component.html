@@ -1,0 +1,222 @@
+<h4 class="heading-page">
+  <span>Chi tiết quyết định công bố</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin quyết định</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Thông tin quyết định</span>
+        </div>
+        <div id="thongtinquyetdinh">
+          <div class="row">
+            <div class="col-md-6 col-xl-5">
+              <label class="col-form-label">Tên biên bản:</label>
+              <label class="col-form-label content">QĐ TTKT của Đoàn TTKT 8/2017</label>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <label class="col-form-label">Đoàn:</label>
+              <label class="col-form-label content">Đoàn TTKT 8/2017</label>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <label class="col-form-label">Địa điểm:</label>
+              <label class="col-form-label content">Hà Nội</label>
+            </div>
+            <div class="col-md-6 col-xl-5">
+              <label class="col-form-label">Biên bản công bố:</label>
+              <button class="btn btn-sm btn-success btn-sm">Xem</button>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <label class="col-form-label">Ngày:</label>
+              <label class="col-form-label content">20/8/2017</label>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <label class="col-form-label">Giờ:</label>
+              <label class="col-form-label content">10h30</label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div id="thanhphanthamgia">
+        <label>Thành phần tham gia</label>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên</th>
+                <th>Chức vụ</th>
+                <th>Vắng<br>mặt</th>
+                <th>Lý do vắng mặt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let thanhvien of thanhphanthamgia; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{thanhvien.ten}}</td>
+                <td>{{thanhvien.chucvu}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="thanhvien.vangmat" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{thanhvien.lydovangmat}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="donvithamgia">
+        <label>Danh sách đơn vị tham gia</label>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên đơn vị</th>
+                <th>Tham gia<br>công bố</th>
+                <th>Vắng<br>mặt</th>
+                <th>Lý do vắng mặt</th>
+                <th>Hoãn<br>TTKT</th>
+                <th>Lý do hoãn TTKT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>I</th>
+                <th>Cơ quan BHXH</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let coquanbhxh of danhsachdonvithamgia.coquanBHXH; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{coquanbhxh.tendonvi}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="coquanbhxh.thamgiacongbo" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="coquanbhxh.vangmat" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{coquanbhxh.lydovangmat}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="coquanbhxh.hoanttkt" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{coquanbhxh.lydohoanttkt}}</td>
+              </tr>
+              <tr>
+                <th>II</th>
+                <th>Cơ sở khám chữa bệnh</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let cosokhamchuabenh of danhsachdonvithamgia.cosokhamchuabenh; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{cosokhamchuabenh.tendonvi}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="cosokhamchuabenh.thamgiacongbo" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="cosokhamchuabenh.vangmat" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{cosokhamchuabenh.lydovangmat}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="cosokhamchuabenh.hoanttkt">
+                    <span class="custom-control-indicator" disabled></span>
+                  </label>
+                </td>
+                <td>{{cosokhamchuabenh.lydohoanttkt}}</td>
+              </tr>
+              <tr>
+                <th>III</th>
+                <th>Đơn vị sử dụng lao động</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let donvisudunglaodong of danhsachdonvithamgia.donvisudunglaodong; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{donvisudunglaodong.tendonvi}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="donvisudunglaodong.thamgiacongbo" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="donvisudunglaodong.vangmat" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{donvisudunglaodong.lydovangmat}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="donvisudunglaodong.hoanttkt" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{donvisudunglaodong.lydohoanttkt}}</td>
+              </tr>
+              <tr>
+                <th>IV</th>
+                <th>Đại diện thu, chi trả</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let daidienthuchitra of danhsachdonvithamgia.daidienthuchitra; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{daidienthuchitra.tendonvi}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="daidienthuchitra.thamgiacongbo" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="daidienthuchitra.vangmat" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{daidienthuchitra.lydovangmat}}</td>
+                <td>
+                  <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [checked]="daidienthuchitra.hoanttkt" disabled>
+                    <span class="custom-control-indicator"></span>
+                  </label>
+                </td>
+                <td>{{daidienthuchitra.lydohoanttkt}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

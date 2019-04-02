@@ -1,0 +1,73 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title-breadcrumb">Kế hoạch dự thảo Bảo Hiểm Xã Hội Việt Nam</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Chi tiết kế hoạch năm {{ keHoachNam }}</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <button class="btn btn-primary" (click)="goToCapNhat()" [hidden]="isHideCapNhat" *ngIf="isDuyet">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+      <button type="button" class="btn btn-success" (click)="onLuu()" *ngIf="isHideCapNhat" [hidden]="isDuyet">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="isDuyet">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <!-- <button class="btn btn-primary" (click)="goToDieuChinh()">
+        <i class="fa fa-line-chart" aria-hidden="true"></i> Điều chỉnh</button> -->
+      <button class="btn btn-default" (click)="printPDF()">
+        <i class="fa fa-print" aria-hidden="true"></i>In</button>
+      <button type="button" class="btn btn-link" (click)="troLai()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <ttkt-thong-tin-chung [chiTietKH]="kehoach"></ttkt-thong-tin-chung>
+      <fieldset>
+        <legend>Danh sách kế hoạch </legend>
+        <ttkt-list-ke-hoach-bhxh-vn-table (updateListKH) = "getDataUpdate($event)" [listKeHoach]="listKeHoach" [khDuThao]="true" [emitIsSua]="isCapNhat" [hiddeDotXuat] = "true" [hideTrangThai] = "true"></ttkt-list-ke-hoach-bhxh-vn-table>
+        
+      </fieldset>
+    </form>
+  </div>
+</div>
+<!-- Show dialog LS-->
+<ng-container *ngIf="listLichSu != undefined ">
+  <div class="modal " id="showDialogHistory">
+    <div class="modal-dialog modal-lg">
+      <ttkt-show-dialog-history [chiTietKH]="kehoach" [listLichSu]="listLichSu" [twGiao]="'true'"></ttkt-show-dialog-history>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Duyệt -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form novalidate [formGroup]="duyetKehoachForm">
+          <div class="modal-header">
+            <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+            <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+            <!-- <div class="visibled">
+              <input type="text" formControlName="id">
+            </div> -->
+          </div>
+          <div class="modal-footer">
+            <div class="pull-right">
+              <button class="btn btn-success" (click)="duyet()">
+                <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+              <button class="btn btn-default" (click)="duyetModal.hide()">
+                <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

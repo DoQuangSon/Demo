@@ -1,0 +1,13 @@
+<div #list class="ttkt-text-input" [ngClass]="{'open': isOpenList && filteredOptions.length > 0}">
+    <input class="form-control" (click)="onClickInput($event)" (keyup)="keyUp.next($event)" (blur)="onBlur($event)"
+    type="text" [formControl]="formControlInput" [placeholder]="placeholder">
+    <!-- <div class="search-list">
+        <option (click)="onClick(option)" *ngFor="let option of filteredOptions" [value]="option">
+    </div> -->
+    <ul class="ui-select-choices dropdown-menu">
+        <li (click)="onClickInside(option)"  *ngFor="let option of filteredOptions">
+            <a class="dropdown-item" href="javascript:void(0)" [innerHTML]="option.text">
+            </a>
+        </li>
+    </ul>
+</div>

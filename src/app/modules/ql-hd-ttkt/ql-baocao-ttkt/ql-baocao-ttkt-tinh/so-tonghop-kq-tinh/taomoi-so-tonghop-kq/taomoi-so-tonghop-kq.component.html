@@ -1,0 +1,292 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Tạo mới sổ tổng hợp kết quả TTKT</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-default">
+        <i class="fa fa-print" aria-hidden="true"></i> In</button>
+      <button type="button" class="btn btn-success">
+        <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+      <button type="button" class="btn btn-link" (click)="closeTaoMoiSoTongHopKQ()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="creatSoTongHopKQForm">
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-md-2 text-md-right">Tên sổ: </label>
+          <div class="col-md-6 col-xl-5">
+            <input class="form-control" type="text" formControlName="tenSo">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-md-right">Số: </label>
+              <div class="col-md-8">
+                <input class="form-control form-control-25" type="text" formControlName="soNumber">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-md-right">Ngày: </label>
+              <div class="col-md-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngay"></my-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row no-margin-bt">
+              <label class="col-form-label col-md-4 text-lg-right"></label>
+              <div class="form-check form-check-inline col-md-2 col-xl-1">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="options" value="{{quy_option}}" (change)="changeOption()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Quý</span>
+                </label>
+              </div>
+              <div class="form-check form-check-inline col-md-2 col-xl-1">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="options" value="{{thang_option}}" (change)="changeOption()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Tháng</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="options == quy_option">
+          <div class="col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-8">
+                <div class="form-group row">
+                  <label for="" class="col-form-label col-md-2 text-md-right">Quý: </label>
+                  <div class="col-md-8">
+                    <select class="custom-select" id="quy" formControlName="quy">
+                      <option value="0" selected>Chọn</option>
+                      <option *ngFor="let choice of quyOptions" [value]="choice.id">{{ choice.quy }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="options == thang_option">
+          <div class="col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-8">
+                <div class="form-group row">
+                  <label for="" class="col-form-label col-md-2 text-md-right">Tháng: </label>
+                  <div class="col-md-8">
+                    <select class="custom-select" id="thang" formControlName="thang">
+                      <option value="0" selected>Chọn</option>
+                      <option *ngFor="let choice of thangOptions" [value]="choice.id">{{ choice.thang }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <div class="offset-md-4">
+            <button type="button" class="btn btn-primary tong-hop-mau03 mb-3" (click)="showTongHopKQ()">
+              <i class="fa fa-search-plus" aria-hidden="true"></i> Tổng hợp kết quả</button>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset [ngClass]="displayKQ ? '': 'visibled'">
+        <legend>Bảng tổng hợp kết quả</legend>
+        <div class="thuc-hien-kh child-node">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>Thực hiện kế hoạch</span>
+          </div>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th rowspan="3" class="table-resize">Nội dung</th>
+                  <th colspan="2" rowspan="2">Kế hoạch giao</th>
+                  <th colspan="4">Thực hiện</th>
+                </tr>
+                <tr>
+                  <td colspan="2">Cơ quan BHXH</td>
+                  <td colspan="2">Liên ngành</td>
+                </tr>
+                <tr>
+                  <td>BHXH thực hiện</td>
+                  <td>Liên ngành</td>
+                  <td>Trong kỳ</td>
+                  <td>Lũy kế</td>
+                  <td>Trong kỳ</td>
+                  <td>Lũy kế</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">1</td>
+                  <td class="text-center">2</td>
+                  <td class="text-center">3</td>
+                  <td class="text-center">4</td>
+                  <td class="text-center">5</td>
+                  <td class="text-center">7</td>
+                  <td class="text-center">8</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="font-weight-bold">Số cuộc thanh tra, kiểm tra</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td colspan="7" class="font-weight-bold">Số đơn vị được thanh tra, kiểm tra</td>
+                </tr>
+                <tr *ngFor="let item of thucHienKHMau03; let i = index">
+                  <td>{{ item.noiDungKH }}</td>
+                  <td>{{ item.thucHienKH }}</td>
+                  <td>{{ item.lienNganhKH }}</td>
+                  <td class="text-right">{{ item.trongKyCoQuan }}</td>
+                  <td class="text-right">{{ item.luyKeCoQuan }}</td>
+                  <td class="text-right">{{ item.trongKyLienNganh }}</td>
+                  <td class="text-right">{{ item.luyKeLienNganh }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="kq-ttkt child-node">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>Kết quả Thanh tra/Kiểm tra</span>
+          </div>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th rowspan="2" class="th-size">STT
+                    <br>
+                  </th>
+                  <th rowspan="2" class="table-resize">Nội dung
+                    <br>
+                  </th>
+                  <th colspan="2">Thự hiện</th>
+                </tr>
+                <tr>
+                  <th>Trong kỳ</th>
+                  <th>Lũy kế</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">1</td>
+                  <td class="text-center">2</td>
+                  <td class="text-center">3</td>
+                  <td class="text-center">4</td>
+                </tr>
+                <tr>
+                  <th class="text-center">I</th>
+                  <th>Số kỳ trước chuyển sang</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndSoKyTruoc; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">II</th>
+                  <th>Thu BHXH, BHTN, BHYT</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndThuBHXH; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">III</th>
+                  <th>Sổ BHXH</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndSoBHXH; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">IV</th>
+                  <th>Thẻ BHYT</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndTheBHYT; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">V</th>
+                  <th>Thực hiện chính sách BHXH</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndChinhSachBHXH; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">VI</th>
+                  <th>Thực hiện chính sách BHYT</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndChinhSachBHYT; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">VII</th>
+                  <th>Thực hiện kết luận</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let item of ndThucHienKL; let i=index">
+                  <td class="text-center">{{ i+1 }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td class="text-right">{{ item.trongKy }}</td>
+                  <td class="text-right">{{ item.luyKe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

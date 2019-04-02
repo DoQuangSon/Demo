@@ -1,0 +1,171 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title-breadcrumb">DS đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary"> Theo dõi hoạt động đoàn TTKT</span>
+    </div>
+  </div>
+  <!-- <button class="btn btn-primary" [disabled]="tiendo == '100%' ?  null : 'true'" (click)="baoCaoKQTTKT()">Báo cáo kết quả đoàn TTKT</button> -->
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="button" class="btn btn-link pull-right" (click)="gotoChitietTlDoan(data.id)">
+            <i class="fa fa-share" aria-hidden="true"></i> Chi tiết Quyết định </button>
+        </div>
+      </div>
+      <fieldset>
+        <legend>Danh sách đơn vị thanh tra</legend>
+        <div class="table-responsive table-scroll-x tableDV">
+          <table class="table table-bordered table-hover d">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên đơn vị</th>
+                <th>Trạng thái</th>
+                <th>Biên bản hoãn</th>
+                <th>Biên bản làm việc</th>
+                <th>Biên bản VPHC</th>
+                <th>Quyết định xử phạt VPHC</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of tableContent, let i = index">
+              <tr>
+                <th class="text-center">{{i + 1 | convertNumberToRomanNumeral }}</th>
+                <th>{{item.tenDanhMuc}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let el of (item || {}).children, let j = index">
+                <td class="text-center">{{j + 1 }}</td>
+                <td class="text-left text-primary" (click)="detailtheodoi(el.id)">{{el.doiTuongTTKT.tenDoiTuong}}</td>
+                <td class="text-center">{{ getStatusName(el.moreInfo?.status) || 'Chưa tiến hành' }}</td>
+                <td>
+                  <button class="btn btn-success btn-sm detail" *ngIf="el.moreInfo?.bbHoanDTO" (click)="xemBienBan(el.moreInfo.bbHoanDTO, 1)">
+                    <i class="fa fa-eye" aria-hidden="true"></i> Xem</button>
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm detail" *ngIf="el.moreInfo?.bienBanLv" (click)="xemBienBan(el.moreInfo.bienBanLv, 2)">
+                    <i class="fa fa-eye" aria-hidden="true"></i> Xem</button>
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm detail" *ngIf="el.moreInfo?.listBienBanVPHC && el.moreInfo?.listBienBanVPHC.length > 0"
+                          (click)="openModalVPHC(el.id, el.moreInfo.listBienBanVPHC, el.moreInfo?.status)">
+                    <i class="fa fa-eye" aria-hidden="true"></i> Xem</button>
+                    &nbsp;
+                  <!--<button class="btn btn-primary btn-sm detail" *ngIf="el.moreInfo?.listBienBanVPHC && el.moreInfo?.listBienBanVPHC.length > 0"-->
+                        <!--(click)="printPDF_VPHC(el.id, 1)">-->
+                    <!--<i class="fa fa-print" aria-hidden="true"></i> In PDF</button>-->
+                </td>
+                <td>
+                  <button class="btn btn-success btn-sm detail" *ngIf="el.moreInfo?.listQuyetDinhXuPhatVPHC && el.moreInfo?.listQuyetDinhXuPhatVPHC.length > 0"
+                    (click)="openModalQDXP(el.id, el.moreInfo.listQuyetDinhXuPhatVPHC, el.moreInfo?.status)">
+                    <i class="fa fa-eye" aria-hidden="true"></i> Xem</button>
+                    &nbsp;
+                    <!--<button class="btn btn-primary btn-sm detail" *ngIf="el.moreInfo?.listQuyetDinhXuPhatVPHC && el.moreInfo?.listQuyetDinhXuPhatVPHC.length > 0">-->
+                        <!--<i class="fa fa-print" aria-hidden="true"></i> In PDF</button>-->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+    <div class="pull-right">
+      <!-- <button class="btn btn-primary mt-md-1" (click)="baoCaoKQTTKT(theoDoiId)" *ngIf="(!isHaveBaoCao && isCanBaoCao) || (isShowButtonBC && !isHaveBaoCao)">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Báo cáo kết quả đoàn TTKT</button>
+      <button class="btn btn-primary mt-md-1" (click)="ketLuanTTKT(theoDoiId)" *ngIf="(!isHaveKetLuan && isCanKetLuan) || (!isHaveKetLuan && isHaveBaoCao)">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Kết luận đoàn TTKT</button> -->
+      <button class="btn btn-primary mt-md-1" (click)="QDCongBo()" *ngIf="!data.tenBienBanCongBo">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Tạo quyết định công bố</button>
+      <!-- <button class="btn btn-success mt-md-1" (click)="baoCaoKQTTKT(theoDoiId)" *ngIf="isHaveBaoCao">
+        <i class="fa fa-eye" aria-hidden="true"></i> Xem báo cáo kết quả đoàn TTKT</button>
+      <button class="btn btn-success mt-md-1" (click)="ketLuanTTKT(theoDoiId)" *ngIf="isHaveKetLuan">
+        <i class="fa fa-eye" aria-hidden="true"></i> Xem kết luận đoàn TTKT</button> -->
+      <button class="btn btn-success mt-md-1" (click)="QDCongBo()" *ngIf="data.tenBienBanCongBo">
+        <i class="fa fa-eye" aria-hidden="true"></i> Xem quyết định công bố</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal biên bản hoãn + Làm việc -->
+<div bsModal #modalBienBan="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ titleModalBienBanHoanLv }}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalBienBan.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="bienBanForm">
+          <div class="form-group row" *ngIf="isBBHoan">
+            <label for="" class="col-form-label col-md-4 text-lg-right">Lý do hoãn:</label>
+            <div class="col-md-8" [ngClass]="{'disable-click': true}">
+              <input type="text" class="form-control" formControlName="lyDoHoanTTKT">
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="isBBHoan">
+            <label for="" class="col-form-label col-md-4 text-lg-right">Số biên bản: </label>
+            <div class="col-md-8" [ngClass]="{'disable-click': true}">
+              <textarea class="form-control" type="text" formControlName="soBienBan"></textarea>
+            </div>
+          </div>
+          <!-- File -->
+          <div class="form-group row">
+            <div class="col-xl-4 text-xl-right">
+              <label class="col-form-label" for="fileDinhKem">File đính kèm: </label>
+            </div>
+            <div class="col-xl-6">
+              <input class="form-control" formControlName="fileName" [ngClass]="{'disable-click': true}">
+            </div>
+            <div class="col-xs-2">
+              <button type="submit" class="btn btn-primary btn-sm mt-sm-1" *ngIf="bienBanForm.controls.fileName.value" (click)="downloadFileBBhoanLv()">
+                <i class="fa fa-download" aria-hidden="true"></i> Tải File</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-lg-right">Ngày ký: </label>
+              <div class="col-md-8" [ngClass]="{'disable-click': true}">
+                <my-date-picker [options]="myDatePickerOptions" formControlName="ngayKy" locale="vi"></my-date-picker>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-form-label col-md-4 text-lg-right">Người ký: </label>
+              <div class="col-md-8" [ngClass]="{'disable-click': true}">
+                <input type="text" class="form-control" formControlName="nguoiKy">
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="isBBLamViec">
+              <label for="" class="col-form-label col-md-4 text-lg-right">Đại diện cơ quan / đơn vị: </label>
+              <div class="col-md-8" [ngClass]="{'disable-click': true}">
+                <input type="text" class="form-control" formControlName="daiDienCqDv">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modalBienBan.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Vi Phạm Hành Chính -->
+<ttkt-modal-vphc-form [data]="bbVPHC" [isLuu]="isLuu" [status]="status" *ngIf="showModalVPHC" [tld]="tldId" [dvDcTtktID]="selected_dvDcTtktID"></ttkt-modal-vphc-form>
+<!---->
+<!-- Modal Quyết định xử phạt Vi Phạm Hành Chính -->
+<ttkt-modal-qdxp-vphc-form [data]="bbQDXP" [isLuu]="isLuu" [status]="status" *ngIf="showModalQDXP" [tldId]="tldId" [dvDcTtktID]="selected_dvDcTtktID"></ttkt-modal-qdxp-vphc-form>
+<!---->

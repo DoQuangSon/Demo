@@ -1,0 +1,87 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Sổ tổng hợp kết quả</span>
+    </div>
+    <!-- <div class="col-md-6 pull-right">
+        <button type="button" class="btn btn-primary" (click)="taoMoiSoTongHopKQ()">
+          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+      </div> -->
+      <div class="col-md-6 pull-right">
+        <button class="btn btn-primary" (click)="isCollapseDirective = !isCollapseDirective"> Xem đột xuất</button>
+      </div>
+  </div>
+</h4>
+<div class="row" [ttktCollapse]="isCollapseDirective">
+    <div class="col-sm-4 col-md-3">
+      <ttkt-input 
+      type="thang" 
+      label="Tháng"
+      sm="4-8" 
+      formControlName="fromMonth"></ttkt-input>
+    </div>
+    <div class="col-sm-4 col-md-3">
+      <ttkt-input 
+      type="nam" 
+      label="Năm"
+      sm="4-8" 
+      formControlName="fromYear"></ttkt-input>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary" type="button" (click)="xemChiTietLive()">Xem chi tiết</button>
+    </div>
+  </div>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="soTongHopKqForm">
+      <fieldset>
+        <legend>Thông tin tìm kiếm</legend>
+        <div class="row">
+          <div class="col-sm-4 col-md-3">
+            <ttkt-input type="nam" label="Năm" sm="4-8" formControlName="nam"></ttkt-input>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-default" (click)="search()">
+              <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+          </div>
+        </div>
+      </fieldset> 
+      <fieldset>
+        <legend>Danh sách sổ tổng hợp</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead> 
+                <tr>
+                    <th class="th-size">STT<br></th>
+                    <th class="table-resize">Tên sổ</th>
+                    <th>Ngày lập</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="!dsSoBaoCao || dsSoBaoCao.length < 1">
+                    <td class="text-center" colspan="4">Không có dữ liệu</td>
+                </tr>
+                <tr *ngFor="let item of dsSoBaoCao; let i = index">
+                    <td class="text-center">{{ (itemsPerPage * (currentIndex - 1)) + i + 1 }}</td>
+                    <td class="text-primary">
+                      <a (click)="chiTietSoTongHopKQ(item.id)">Sổ tổng hợp tháng {{item.thangTaoSo}} năm {{item.namTaoSo}}</a>
+                    </td>
+                    <td>{{ item.ngayTaoSo | date: 'dd/MM/yyyy' }}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-success" (click)="printMau03(item.id, item.ngayTaoSo, 2)">
+                            <i class="fa fa-file-excel-o" aria-hidden="true"></i>Xuất EXCEL</button>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="totalItems > 1" class="pull-right">
+            <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

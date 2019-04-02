@@ -1,0 +1,123 @@
+<form novalidate [formGroup]="donthuTiepCDForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Tiến hành xác minh</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ttkt-input
+      label=""
+      [formControl]= "donthuTiepCDForm.controls.coBanAnOrKetQua"
+      type="checkbox"
+      sm="4-8"
+      [data]="{
+        text: 'đã có bản án của Tòa án hoặc kết quả xử lý sau TC'
+      }"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input 
+      label="Số văn bản"
+      [formControl]= "donthuTiepCDForm.controls.soVanBan"
+      [display]="donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= " {required: 'Bạn phải nhập vào số văn bản'} "
+    ></ttkt-input>
+    <ttkt-input
+      label="Ngày văn bản"
+      [formControl]= "donthuTiepCDForm.controls.ngayVanBan"
+      [display]="donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="date"
+      sm="4-8"
+      [errorMessages]= " {required: 'Bạn phải nhập vào ngày văn bản'} "
+    ></ttkt-input>
+    <ttkt-input
+      label="Cơ quan ban hành"
+      [formControl]= "donthuTiepCDForm.controls.coQuanBanHanh"
+      [display]="donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Trích yếu nội dung"
+      [formControl]= "donthuTiepCDForm.controls.trichYeuNoiDung"
+      [display]="donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+
+
+    <ttkt-input
+      label="Số quyết định thụ lý"
+      [formControl]= "donthuTiepCDForm.controls.soQDTL"
+      [display]="!donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= " {required: 'Bạn phải nhập vào số quyết định thụ lý'} "
+    ></ttkt-input>
+    <ttkt-input
+      label="Ngày quyết định thụ lý"
+      [formControl]= "donthuTiepCDForm.controls.ngayQDTL"
+      [display]="!donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="date"
+      sm="4-8"
+      [errorMessages]= " {required: 'Bạn phải nhập vào ngày quyết định thụ lý'} "
+    ></ttkt-input>
+    <ttkt-input
+      label="Số quyết định giải quyết khiếu nại"
+      [display]="currentItem?.phanLoaiNoiDungId == 1 && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      [formControl]= "donthuTiepCDForm.controls.soQDGQKN"
+      type="text"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Ngày quyết định giải quyết khiếu nại"
+      [formControl]= "donthuTiepCDForm.controls.ngayQDGQKN"
+      [display]="currentItem?.phanLoaiNoiDungId == 1 && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="date"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Số quyết định kết luận nội dung tố cáo"
+      [formControl]= "donthuTiepCDForm.controls.soKLNDTC"
+      [display]="(currentItem?.phanLoaiNoiDungId == 2 || currentItem?.phanLoaiNoiDungId == 3) && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Ngày quyết định kết luận nội dung tố cáo"
+      [formControl]= "donthuTiepCDForm.controls.ngayKLNDTC"
+      [display]="(currentItem?.phanLoaiNoiDungId == 2 || currentItem?.phanLoaiNoiDungId == 3) && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="date"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Số công văn"
+      [formControl]= "donthuTiepCDForm?.controls.soCongVanKNPA"
+      [display]="currentItem?.phanLoaiNoiDungId == 4 && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="text"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+    <ttkt-input
+      label="Ngày công văn"
+      [formControl]= "donthuTiepCDForm.controls.ngayCongVanKNPA"
+      [display]="currentItem?.phanLoaiNoiDungId == 4 && !donthuTiepCDForm.controls.coBanAnOrKetQua.value"
+      type="date"
+      sm="4-8"
+      [errorMessages]= "validationMessages"
+    ></ttkt-input>
+  </div>
+  <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Điều chỉnh</button>
+      <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Thoát</button>
+  </div>
+</form>
+  

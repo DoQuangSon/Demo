@@ -1,0 +1,102 @@
+
+
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">CHI PHÍ KHÁM CHỮA BỆNH</span>
+    </div>
+  </div>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Chi phí khám chữa bệnh</legend>
+        <div class="pull-right mb-1">
+          <button class="btn btn-primary" (click)="showFormDetailChiPhiKhamChuaBenh('add')">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th class="text-center th-size">STT</th>
+              <th class="table-resize">Tên nội dung</th>
+              <th class="text-center th-size">Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of listChiPhiKhamChuaBenh; let i = index">
+              <td class="text-center">{{ pageSize * currentPage + i + 1 }}</td>
+              <td>{{ item.noiDung}}</td>
+              <td class="text-center">
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm edit" (click)="showFormDetailChiPhiKhamChuaBenh('update', item.id)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                  <button type="button" class="btn btn-danger btn-sm delete" (click)="showFormDetailChiPhiKhamChuaBenh('delete', item.id)">
+                    <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!listChiPhiKhamChuaBenh.length">
+              <td colspan="3" class="text-center">
+                Không có dữ liệu
+              </td>
+            </tr>
+            </tbody>
+
+          </table>
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalChiPhiKhamChuaBenh="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog addModalDia">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{formDetailChiPhiKhamChuaBenh_title}}</h5>
+        <button type="button" class="close pull-right" (click)="modalChiPhiKhamChuaBenh.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="detailChiPhiKhamChuaBenhForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(detailChiPhiKhamChuaBenhForm.controls.noiDung?.errors && (detailChiPhiKhamChuaBenhForm.controls.noiDung?.touched || detailChiPhiKhamChuaBenhForm.controls.noiDung?.dirty)) ? 'has-danger' : ''">
+                <!--<div class="form-group row">-->
+                <label for="" class="col-form-label col-md-4 text-lg-right">Nội dung:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" (blur)="validate()" formControlName="noiDung" [attr.disabled]="formDetailChiPhiKhamChuaBenh_action == 'delete' ? true:null">
+                  <p class="text-danger" *ngIf="isNoiDungError">Nội dung không được để trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="formDetailChiPhiKhamChuaBenh_action == 'add'" (click)="doAction('add')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Ghi nhận</button>
+          <button type="button" class="btn btn-primary" *ngIf="formDetailChiPhiKhamChuaBenh_action == 'update'" (click)="doAction('update')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="formDetailChiPhiKhamChuaBenh_action == 'delete'" (click)="doAction('delete')">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Xóa</button>
+          <button type="button" class="btn btn-default" (click)="modalChiPhiKhamChuaBenh.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

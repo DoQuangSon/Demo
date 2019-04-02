@@ -1,0 +1,185 @@
+@import './../../../../../../../styles/_variables.scss';
+.table-responsive {
+    thead {
+        background-color: $colorLightGray;
+        tr {
+            th,
+            td {
+                text-align: center;
+                vertical-align: middle;
+            }
+        }
+    }
+    tbody {
+        tr {
+            a {
+                cursor: pointer;
+                &:hover {
+                    color: $colorBlue;
+                    text-decoration: underline;
+                }
+            }
+        }
+        i {
+            cursor: pointer;
+            color: #6495ed;
+            &:hover {
+                color: #053996;
+            }
+        }
+    }
+}
+
+.table-mau09,
+.table-mau08,
+.table-mau13,
+.table-mau15,
+.table-mau11,
+.table-mau12,
+.table-mau14,
+.table-mau10 {
+    min-width: 1500px;
+    font-size: 13px;
+    thead {
+        tr {
+            th,
+            td {
+                text-align: center;
+                vertical-align: middle;
+                min-width: 100px;
+            }
+            th:nth-child(1) {
+                min-width: 30px;
+            }
+            th:nth-child(2) {
+                min-width: 150px;
+            }
+        }
+    }
+    tbody {
+        tr:first-child,
+        tr:last-child {
+            font-weight: bold
+        }
+    }
+}
+
+.table-mau12 {
+    thead {
+        tr {
+            td:nth-child(5),
+            td:nth-child(9),
+            td:nth-child(12),
+            td:nth-child(13) {
+                min-width: 115px;
+            }
+        }
+    }
+}
+
+.table-mau12,
+.table-mau14 {
+    thead {
+        tr {
+            td:nth-child(6),
+            td:nth-child(10),
+            td:nth-child(13),
+            td:nth-child(14) {
+                min-width: 115px;
+            }
+        }
+    }
+}
+
+.table-mau16 {
+    min-width: 2000px;
+    font-size: 13px;
+    thead {
+        tr {
+            th,
+            td {
+                text-align: center;
+                vertical-align: middle;
+                min-width: 250px;
+            }
+            th:nth-child(1) {
+                min-width: 30px;
+            }
+            th:nth-child(2) {
+                min-width: 150px;
+            }
+        }
+        tr:nth-child(2) {
+            td {
+                min-width: 110px;
+            }
+        }
+        tr:nth-child(3) {
+            td:nth-child(1),
+            td:nth-child(3) {
+                min-width: 300px;
+            }
+        }
+    }
+    tbody {
+        tr:first-child,
+        tr:last-child {
+            font-weight: bold
+        }
+    }
+}
+
+.table-mau07 {
+    min-width: 2500px;
+    font-size: 13px;
+    thead {
+        tr {
+            th,
+            td {
+                text-align: center;
+                vertical-align: middle;
+                min-width: 100px;
+            }
+            th:nth-child(1) {
+                min-width: 30px;
+            }
+            th:nth-child(2) {
+                min-width: 150px;
+            }
+        }
+    }
+    tbody {
+        tr:first-child,
+        tr:last-child {
+            font-weight: bold
+        }
+    }
+}
+
+.tong-hop-mau01 {
+    @media (max-width: 767px) {
+        margin-bottom: 15px;
+        margin-left: -15px;
+    }
+}
+
+.form-check-inline+.form-check-inline {
+    @media (min-width: 1200px) {
+        margin: 0 1rem !important;
+    }
+    @media (max-width: 767px) {
+        margin-left: 0rem !important;
+    }
+}
+
+.visibled {
+    display: none;
+}
+
+.no-margin-bt {
+    margin-bottom: 0
+}
+
+// .custom-select {
+//     margin-bottom: 15px
+// }

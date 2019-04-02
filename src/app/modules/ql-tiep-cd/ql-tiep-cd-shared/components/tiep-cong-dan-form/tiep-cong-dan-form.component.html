@@ -1,0 +1,632 @@
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form [formGroup]="tiepcdForm">
+      <div class="form-group" *ngIf="!readOnly">
+        <p class="help-block text-left" style="font-style: italic;">Các trường có
+          <span class="text-danger">*</span> là bắt buộc</p>
+      </div>
+      <fieldset>
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Người tiếp</legend>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="is_tiep_thuong_xuyen" value="true">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Tiếp Thường Xuyên</span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="is_tiep_thuong_xuyen" value="false">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Tiếp Định Kỳ Và Đột Xuất</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row" [ngClass]="(tiepcdForm.controls.soNguoiTiep?.errors && (tiepcdForm.controls.soNguoiTiep?.touched || tiepcdForm.controls.soNguoiTiep?.dirty)) ? 'has-danger' : ''">
+              <div class="col-xl-4 text-xl-right">
+                <label for="soNguoiTiep" class="col-form-label">Số người tiếp:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input [ngClass]="{'disable-click': readOnly}" minlength="8" maxlength="15" required type="number" class="form-control form-control-15"
+                  formControlName="soNguoiTiep" id="soNguoiTiep" (keyup)="soNguoiTiepChange()" (change)="soNguoiTiepChange()"
+                  placeholder="" min="0" max="{{listCanBo.length}}" ttktCheckNumberOnly>
+                <p class="help-block text-danger" *ngIf="tiepcdForm.controls.soNguoiTiep?.errors?.required &&  (tiepcdForm.controls.soNguoiTiep?.touched || tiepcdForm.controls.soNguoiTiep?.dirty)">
+                  Số người tiếp không được để trống</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <ttkt-input label="Ngày tiếp" [disabled]="readOnly" type="date" md="4-8" formControlName="ngaytiep"></ttkt-input>
+          </div>
+        </div>
+        <div formArrayName="nguoiTiep">
+          <div class="songuoi-tiep child-node" *ngFor="let item of formData.controls; let i = index">
+            <div class="ttkt-node show">
+              <span>#{{i+1}}</span>
+            </div>
+            <div [formGroupName]="i">
+              <div class="row">
+                <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="tenNguoiTiep" class="col-form-label">Họ tên:
+                        <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <ng-select [allowClear]="true" [items]="listCanBo" formControlName="tenNguoiTiep" (data)="refreshCanBo($event, i)" (removed)="removed($event)"
+                        placeholder="Chọn người tiếp" [attr.readonly]="displayDeleteForm ? false : null" [disabled]="readOnly">
+                      </ng-select>
+                      <p class="help-block text-danger" *ngIf="item.controls.tenNguoiTiep?.errors?.required && item.controls.tenNguoiTiep?.touched">
+                        Họ tên không được để trống</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="chucDanhNguoiTiep" class="col-form-label">Chức danh:
+                        <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input readonly required type="text" class="form-control" formControlName="chucDanhNguoiTiep">
+                      <p class="help-block text-danger" *ngIf="item.controls.chucDanhNguoiTiep?.errors?.required && item.controls.chucDanhNguoiTiep?.touched">
+                        Chức danh không được để trống</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Người được tiếp</legend>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row">
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8">
+                <label class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" formControlName="is_doan_dong_nguoi" selected checked value="true" (click)="unCheck()">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Đoàn Đông Người</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <div class="form-group row" [ngClass]="(tiepcdForm.controls.soNguoiDT?.errors && (tiepcdForm.controls.soNguoiDT?.touched || tiepcdForm.controls.soNguoiDT?.dirty)) ? 'has-danger' : ''">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số người:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-8">
+                <input [ngClass]="{'disable-click': readOnly}" class="form-control form-control-15" type="number" min="1" max="20"
+                  required formControlName="soNguoiDT" id="soNguoiDT" (keyup)="soNguoiDTChange()" (change)="soNguoiDTChange()" (onChange) = "doanDNChange()"
+                  ttktCheckNumberOnly>
+                <p class="help-block text-danger" *ngIf="tiepcdForm.controls.soNguoiDT?.errors?.required &&  (tiepcdForm.controls.soNguoiDT?.touched || tiepcdForm.controls.soNguoiDT?.dirty)">
+                  Số người được tiếp không được để trống</p>
+                <p class="help-block text-danger" *ngIf="tiepcdForm.controls.soNguoiDT?.errors?.min &&  (tiepcdForm.controls.soNguoiDT?.touched || tiepcdForm.controls.soNguoiDT?.dirty)">
+                  {{text}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <fieldset formArrayName="nguoiDT"
+        *ngIf="(tiepcdForm.value.soNguoiDT != '' && tiepcdForm.value.is_doan_dong_nguoi !== 'true') || (tiepcdForm.value.is_doan_dong_nguoi === 'true' && tiepcdForm.value.soNguoiDT >4)">
+          <legend>
+            <i class="fa fa-caret-right" aria-hidden="true"></i>Thông tin người được tiếp</legend>
+          <div class="songuoi-dt child-node" *ngFor="let item of tiepcdForm.controls.nguoiDT.controls; let i = index">
+            <div class="ttkt-node show">
+              <span>#{{i+1}}</span>
+            </div>
+            <div [formGroupName]="i">
+              <div class="row" class="visibled">
+                <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="hoTen" class="col-form-label">Id:</label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="id" id="id" placeholder="Id">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+               
+                <!-- <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="lichSuNguoiDT" class="col-form-label">Đã đến lần thứ: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <div class="input-group">
+                        <input [readonly]="true" formControlName="lichSuNguoiDT" id="lichSuNguoiDT" class="form-control form-control-15" type="number"
+                          min="0" ttktCheckNumberOnly>
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" (click)="PopUpKiemTraLichSu(item)" [disabled]="!hasData">Kiểm tra lịch sử</button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-6">
+                  <ttkt-input
+                    label="Họ Tên"
+                    type="text"
+                    xl="4-8"
+                    (selected)="hoTenSelected($event, i)"
+                    [formControl]="item.controls.hoTen"
+                    [data]="{
+                      search: apiFunction,
+                      valueType: 'hoVaTen'
+                    }"
+                    [errorMessages]= "{
+                      required: 'Bạn phải nhập vào họ tên'
+                    }"
+                  ></ttkt-input>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <div class="col-xl-4 text-xl-right">
+                        <label for="soCMTNguoiDT" class="col-form-label">Số CMT:</label>
+                      </div>
+                      <div class="col-xl-8">
+                        <input type="text" min="0" max="15" ttktCheckNumberOnly [ngClass]="{'disable-click': readOnly}" (onfocusout)="changeSothe(item)"
+                          class="form-control" formControlName="soCMTNguoiDT" id="soCMTNguoiDT" (change)="changeSothe(item)"
+                          placeholder="Số CMND" autocomplete="off">
+                        <!-- <p class="help-block text-danger" *ngIf="item.controls.soCMTNguoiDT?.errors?.required && item.controls.soCMTNguoiDT?.touched">
+                          Số CMT không được để trống</p> -->
+                      </div>
+                    </div>
+                  </div>
+                
+              </div>
+              <div class="row">
+                <!-- <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="soTheNguoiDT" class="col-form-label">Số thẻ: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="soTheNguoiDT" id="soTheNguoiDT"
+                        (change)="changeSothe(item)" placeholder="Số thẻ">
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label for="diaChi" class="col-form-label">Địa chỉ:
+                        <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <textarea rows="1" [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="diaChi" id="diaChi"
+                        placeholder="Địa chỉ"></textarea>
+                      <p class="help-block text-danger" *ngIf="item.controls.diaChi?.errors?.required && item.controls.diaChi?.touched">
+                        Địa chỉ không được để trống</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <div class="col-xl-4 text-xl-right">
+                        <label for="chucDanhNguoiDT" class="col-form-label">Chức danh:
+                          <!-- <span class="text-danger">*</span> -->
+                        </label>
+                      </div>
+                      <div class="col-xl-8">
+                        <input [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="chucDanhNguoiDT" id="chucDanhNguoiDT"
+                          placeholder="Chức danh">
+                        <!-- <p class="help-block text-danger" *ngIf="item.controls.chucDanhNguoiDT?.errors?.required && item.controls.chucDanhNguoiDT?.touched">
+                          Chức danh không được để trống</p> -->
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row" *ngIf="!readOnly">
+                <div class="col-md-6 col-sm-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label"></label>
+                    </div>
+                    <div class="col-xl-4">
+                      <label class="custom-control custom-checkbox">
+                        <input [ngClass]="{'disable-click': readOnly}" type="checkbox" formControlName="nguoiduocuyquyen" (change)="changeQuenHan(item, 1, i)"
+                          class="custom-control-input" />
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Người đại diện </span>
+                      </label>
+                    </div>
+                    <div class="col-xl-4">
+                      <label class="custom-control custom-checkbox">
+                        <input [ngClass]="{'disable-click': readOnly}" type="checkbox" formControlName="nguoiuyquyen" (change)="changeQuenHan(item, 2, i)"
+                          class="custom-control-input" />
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Người được ủy quyền</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset [disabled]="readOnly" [ngClass]="this.thongTinNguoiUQ.length > 0 ? '':'visibled'">
+          <legend>
+            <i class="fa fa-caret-right" aria-hidden="true"></i>Thông tin ủy quyền</legend>
+
+          <div class="thong-tin-uy-quyen">
+            <div class="nguoi-uy-quyen child-node" [ngClass]="this.thongTinNguoiUQ.length > 0 ? '':'visibled'">
+              <div class="ttkt-node show">
+                <span>
+                  <i class="fa fa-caret-right" aria-hidden="true"></i>Thông tin người ủy quyền</span>
+              </div>
+              <button class="btn btn-primary pull-right mb-1" (click)="openThemNguoiUQModal()" *ngIf="!readOnly">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm thông tin</button>
+              <div class="table-responsive table-scroll-x" [ngClass]="this.thongTinNguoiUQ.length > 0 ? '':'visibled'">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th class="th-size">STT</th>
+                      <th class="table-resize">Họ tên</th>
+                      <th>Quyền hạn</th>
+                      <th>Số CMT</th>
+                      <!-- <th>Số thẻ</th> -->
+                      <th>Số điện thoại</th>
+                      <th>Địa chỉ</th>
+                      <th *ngIf="!readOnly" class="th-size">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of thongTinNguoiUQ; let i = index">
+                      <td [ngClass]="{'flag': !item.vangMat}">{{ i + 1 }}</td>
+                      <td [ngClass]="{'flag': !item.vangMat}">{{ item.hoTen }}</td>
+                      <td *ngIf="item.nguoiduocuyquyen === true" [ngClass]="{'flag': !item.vangMat}">Đại diện</td>
+                      <td *ngIf="item.nguoiuyquyen === true" [ngClass]="{'flag': !item.vangMat}">Được ủy quyền</td>
+                      <td *ngIf="!item.nguoiuyquyen && !item.nguoiduocuyquyen" [ngClass]="{'flag': !item.vangMat}"></td>
+                      <td [ngClass]="{'flag': !item.vangMat}">{{ item.soCMTNguoiDT }}</td>
+                      <!-- <td [ngClass]="{'flag': !item.vangMat}">{{ item.soTheNguoiDT }}</td> -->
+                      <td [ngClass]="{'flag': !item.vangMat}">{{ item.sdtNguoiUQ }}</td>
+                      <td [ngClass]="{'flag': !item.vangMat}">
+                        <textarea autosize disabled="disabled" class="form-control p-0">{{ item.diaChi }}</textarea>
+                      </td>
+                      <td *ngIf="!readOnly" [ngClass]="{'flag': !item.vangMat}">
+                        <div *ngIf="item.vangMat">
+                          <button type="button" class="btn btn-primary btn-sm edit" (click)="editNguoiUQ(item)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                          <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteNguoiUQ(item)">
+                            <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                          <!-- <button type="button" class="btn btn-default btn-sm delete" (click)="PopUpKiemTraLichSu()">
+                            <i class="fa fa-history" aria-hidden="true"></i> Xem lịch sử</button> -->
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="giay-uy-quyen child-node">
+              <div class="ttkt-node show">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" formControlName="hasThongTinUyQuyen" id="hasThongTinUyQuyen" class="custom-control-input" (click)="showGiayUyQuyen()"
+                  />
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Thông tin giấy ủy quyền</span>
+                </label>
+              </div>
+              <div *ngIf="tiepcdForm.value.hasThongTinUyQuyen">
+                <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                      <div class="col-xl-4 text-xl-right">
+                        <label for="" class="col-form-label">Số giấy:</label>
+                      </div>
+                      <div class="col-xl-8">
+                        <input [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="sogiay" placeholder="Số giấy">
+                        <p class="help-block text-danger">{{ this.formService.nospaceValidator(tiepcdForm.get('sogiay')) }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6">
+                    <ttkt-input type="date" label="Ngày lập" formControlName="ngayLap" locale="vi"></ttkt-input>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-12">
+                    <div class="form-group row" [ngClass]="(tiepcdForm.controls.caNhanTCUQ?.errors && (tiepcdForm.controls.caNhanTCUQ?.touched || tiepcdForm.controls.caNhanTCUQ?.dirty)) ? 'has-danger' : ''">
+                      <div class="col-xl-2 text-xl-right">
+                        <label for="" class="col-form-label">Cá nhân/Tổ chức xác nhận:
+                          <span class="text-danger">*</span>
+                        </label>
+                      </div>
+                      <div class="col-xl-10">
+                        <input [ngClass]="{'disable-click': readOnly}" type="text" class="form-control" formControlName="caNhanTCUQ" placeholder="Cá nhân/Tổ chức xác nhận">
+                        <p class="help-block text-danger" *ngIf="tiepcdForm.controls.caNhanTCUQ?.errors?.required &&  (tiepcdForm.controls.caNhanTCUQ?.touched || tiepcdForm.controls.caNhanTCUQ?.dirty)">
+                          Cá nhân/Tổ chức xác nhận không được để trống</p>
+                          <p class="help-block text-danger">{{ this.formService.nospaceValidator(tiepcdForm.get('caNhanTCUQ')) }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <ttkt-input
+                      type="date"
+                      xl="4-6"
+                      label="Có hiệu lực từ ngày"
+                      [formControl]="tiepcdForm.controls.ngayCoHieuLuc"
+                    ></ttkt-input>
+                  </div>
+                  <div class="col-md-6">
+                    <ttkt-input
+                      type="date"
+                      xl="4-8"
+                      label="Đến ngày"
+                      [formControl]="tiepcdForm.controls.ngayHetHieuLuc"
+                    ></ttkt-input>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-12">
+                    <div class="form-group row">
+                      <div class="col-xl-2 text-xl-right">
+                        <label for="" class="col-form-label">Nội dung ủy quyền:</label>
+                      </div>
+                      <div class="col-xl-10">
+                        <textarea class="form-control" formControlName="noidungUyquyen" rows="3" [ngClass]="{'disable-click': readOnly}"></textarea>
+                        <p class="help-block text-danger">{{ this.formService.nospaceValidator(tiepcdForm.get('noidungUyquyen')) }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </fieldset>
+      <!--dang lam o day-->
+      <fieldset [ngClass]="noidungLydo.length > 0 ? '' : 'visibled'">
+        <legend>
+          <i class="fa fa-caret-right" aria-hidden="true"></i>Lý do từ chối</legend>
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="list-lydo" *ngFor="let item of listLydo; let i = index">
+              <input type="checkbox" [checked]='item.isSelected' [ngClass]="{'disable-click': readOnly}" /> {{ item.noiDungLyDo }}
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!--dang lam o day-->
+
+      <div *ngIf="!readOnly" class="form-group text-right">
+        <button class="btn btn-success" (click)="openTienHanhTiepCD()">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i> Tiếp dân</button>
+        <button class="btn btn-default" (click)="PopUpTuChoi()">
+          <i class="fa fa-user-times" aria-hidden="true"></i> Từ chối</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- popup thongtinNguoiUQ -->
+<div bsModal #themNguoiUQModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ titleHanhDong }} thông tin người ủy quyền</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="themNguoiUQModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="nguoiUQForm" class="mt-3">
+          <div class="alert alert-danger" role="alert" [ngClass]="!isSubmit ? 'visibled': ''">
+            Các trường
+            <strong>
+              <span class="text-danger">*</span>
+            </strong> là bắt buộc
+          </div>
+          <div class="form-group row" style="display:none">
+            <label for="hoTen" class="col-form-label col-md-4 text-lg-right">Họ tên:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <input [ngClass]="{'disable-click': readOnly}" formControlName="index" id="index" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="(nguoiUQForm.controls.hoTen?.errors && (nguoiUQForm.controls.hoTen?.touched || nguoiUQForm.controls.hoTen?.dirty)) ? 'has-danger' : ''">
+            <label for="hoTen" class="col-form-label col-md-4 text-lg-right">Họ tên:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <input [ngClass]="{'disable-click': readOnly}" formControlName="hoTen" id="hoTen" class="form-control" [readonly]="selectedOption === modalOptions.delete"
+              />
+              <p class="help-block text-danger" *ngIf="nguoiUQForm.controls.hoTen?.errors?.required &&  (nguoiUQForm.controls.hoTen?.touched || nguoiUQForm.controls.hoTen?.dirty)">
+                Họ tên không được để trống</p>
+                <p class="help-block text-danger">{{ this.formService.nospaceValidator(nguoiUQForm.get('hoTen')) }}</p>
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label for="quyenHan" class="col-form-label col-md-4 text-lg-right">Quyền hạn:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <select formControlName="quyenHan" id="quyenHan" class="custom-select" [attr.disabled]=" selectedOption === modalOptions.delete ? true: null">
+                <option *ngFor="let item of quyenHan" [ngValue]="item.id">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+          </div> -->
+          <div class="form-group row">
+            <label for="soCMTNguoiUQ" class="col-form-label col-md-4 text-lg-right">Số CMT: </label>
+            <div class="col-md-8">
+              <input type="text" minlength="0" maxlength="15" ttktCheckNumberOnly [ngClass]="{'disable-click': readOnly}" formControlName="soCMTNguoiUQ"
+                id="soCMTNguoiUQ" class="form-control" [readonly]="selectedOption === modalOptions.delete" />
+            </div>
+          </div>
+          <!-- <div class="form-group row">
+            <label for="soTheNguoiUQ" class="col-form-label col-md-4 text-lg-right">Số thẻ: </label>
+            <div class="col-md-8">
+              <input [ngClass]="{'disable-click': readOnly}" formControlName="soTheNguoiUQ" id="soTheNguoiUQ" class="form-control" [readonly]="selectedOption === modalOptions.delete"
+              />
+            </div>
+          </div> -->
+          <div class="form-group row" [ngClass]="(nguoiUQForm.controls.sdtNguoiUQ?.errors && (nguoiUQForm.controls.sdtNguoiUQ?.touched || nguoiUQForm.controls.sdtNguoiUQ?.dirty)) ? 'has-danger' : ''">
+            <label for="sdtNguoiUQ" class="col-form-label col-md-4 text-lg-right">Số điện thoại:
+            </label>
+            <div class="col-md-8">
+              <input [ngClass]="{'disable-click': readOnly}" formControlName="sdtNguoiUQ" min="0" maxlength="15" id="sdtNguoiUQ" class="form-control"
+                type="text" [readonly]="selectedOption === modalOptions.delete" ttktCheckPhoneNumber />
+              <!-- <p class="help-block text-danger" *ngIf="nguoiUQForm.controls.sdtNguoiUQ?.errors?.required &&  (nguoiUQForm.controls.sdtNguoiUQ?.touched || nguoiUQForm.controls.sdtNguoiUQ?.dirty)">
+                Số điện thoại không được để trống</p> -->
+            </div>
+          </div>
+          <div class="form-group row" [ngClass]="(nguoiUQForm.controls.diaChi?.errors && (nguoiUQForm.controls.diaChi?.touched || nguoiUQForm.controls.diaChi?.dirty)) ? 'has-danger' : ''">
+            <label for="diaChi" class="col-form-label col-md-4 text-lg-right">Địa chỉ:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-8">
+              <textarea formControlName="diaChi" id="diaChi" class="form-control" [readonly]="selectedOption === modalOptions.delete"></textarea>
+              <p class="help-block text-danger" *ngIf="nguoiUQForm.controls.diaChi?.errors?.required &&  (nguoiUQForm.controls.diaChi?.touched || nguoiUQForm.controls.diaChi?.dirty)">
+                Địa chỉ không được để trống</p>
+                <p class="help-block text-danger">{{ this.formService.nospaceValidator(nguoiUQForm.get('diaChi')) }}</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="addNguoiUQ()" *ngIf="selectedOption === modalOptions.add">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Thêm</button>
+        <button class="btn btn-primary" (click)="updateNguoiUQ()" *ngIf="selectedOption === modalOptions.edit">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+        <button class="btn btn-danger" (click)="confirmDeleteNguoiUQ()" *ngIf="selectedOption === modalOptions.delete">
+          <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+        <button class="btn btn-default" (click)="themNguoiUQModal.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup kiemtralichsu -->
+<div bsModal #kiemTraLichSuModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <form class="px-3"> -->
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row">
+                <label for="" class="col-md-5 col-form-label">Tên công dân: </label>
+                <div class="col-md-7">
+                  <span class="tencongdan">{{selectedNguoiDuocTiep.hoTen}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group row">
+                <label for="" class="col-md-5 col-form-label">Số CMT/Số thẻ: </label>
+                <div class="col-md-7">
+                  <span class="socmt">{{selectedNguoiDuocTiep.soCMT}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- </form> -->
+        <hr>
+        <div class="group">
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Ngày đến</th>
+                  <th>Nơi đến</th>
+                  <th class="table-resize">Nội dung</th>
+                  <th class="th-size">Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="kiemTraLichSu.length == 0">
+                  <td class="text-center" colspan="7">Không có dữ liệu</td>
+                </tr>
+                <tr *ngFor="let item of kiemTraLichSu; let i = index">
+                  <td>{{ item.ngayDen | date :"dd/MM/yyyy" }}</td>
+                  <td>{{ item.noiDen }}</td>
+                  <td>{{ item.noiDung }}</td>
+                  <td>{{ item.trangThai }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="close()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Xong</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup tuchoi -->
+<div bsModal #tuChoiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="lydoTuchoiForm">
+          <div *ngIf="listLydo.length > 0">
+            <div class="item mt-4 px-3" *ngFor="let item of listLydo">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" formControlName="lydo{{item.id}}" [value]="item.id">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">{{ item.noiDungLyDo }}</span>
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onChoose()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <button class="btn btn-default" (click)="close()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<h4 class="heading-page">
+  <span class="page-title">Cấu hình ngày nghỉ</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <div id="themmoi" class="text-right">
+          <button class="btn btn-primary mb-1" (click)="addNgayNghi()">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên ngày nghỉ</th>
+                <th class="table-resize">Mô tả</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th class="th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of danhSachNgayNghi; let index = index">
+                <td>{{currentPage * pageSize + index + 1}}</td>
+                <td>{{item.tenNgayNghi}}</td>
+                <td>{{item.moTa}}</td>
+                <td>{{item.ngayBatDau | date: 'dd/MM/yyyy'}}</td>
+                <td>{{item.ngayKetThuc | date: 'dd/MM/yyyy'}}</td>
+                <td>
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="editNgayNghi(item.id)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm delete" (click)="deleteNgayNghi(item.id)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalNgayNghi="bs-modal" id="modalNgayNghi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalNgayNghi()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formNgayNghi">
+        <div class="row">
+          <div class="col-sm-4 text-sm-right">
+            <label class="col-form-label">Tên ngày nghỉ
+              <span class="required">*</span>:</label>
+          </div>
+          <div class="col-sm-8">
+            <textarea autosize rows="1" formControlName="ten_InForm" *ngIf="typeModal != 'delete' ? true:''" (keyup)="checkErrFormNgayNghi({checkten_InForm: true})"></textarea>
+            <span class="errMessage" *ngIf="formNgayNghi.controls.ten_InForm.errors?.required &&
+            (errTenNgayNghi || formNgayNghi.controls.ten_InForm.touched || formNgayNghi.controls.ten_InForm.dirty)">Không được để trống</span>
+            <input type="text" class="form-control" formControlName="ten_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 text-sm-right">
+            <label class="col-form-label">Mô tả:</label>
+          </div>
+          <div class="col-sm-8">
+            <textarea autosize rows="1" formControlName="mota_InForm" *ngIf="typeModal != 'delete' ? true:''"></textarea>
+            <!-- <span class="errMessage" *ngIf="errTuNgay">Không được để trống</span> -->
+            <input type="text" class="form-control" formControlName="mota_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 text-sm-right">
+            <label class="col-form-label">Từ ngày
+              <span class="required">*</span>:</label>
+          </div>
+          <div class="col-sm-6">
+            <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="tungay_InForm" *ngIf="typeModal != 'delete' ? true:''"
+              (keyup)="checkErrFormNgayNghi({checktungay_InForm: true})"></my-date-picker>
+            <span class="errMessage" *ngIf="formNgayNghi.controls.tungay_InForm.errors?.required &&
+            (errTuNgay || formNgayNghi.controls.tungay_InForm.touched || formNgayNghi.controls.tungay_InForm.dirty)">Không được để trống</span>
+            <span class=" errMessage " *ngIf="errNgay">Ngày kết thúc phải sau ngày bắt đầu</span>
+            <input type="text" class="form-control" formControlName="tungay_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 text-sm-right">
+            <label class="col-form-label">Đến ngày
+              <span class="required">*</span>:</label>
+          </div>
+          <div class="col-sm-6">
+            <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="denngay_InForm" *ngIf="typeModal != 'delete' ? true:''"
+              (keyup)="checkErrFormNgayNghi({checkdenngay_InForm: true})"></my-date-picker>
+            <span class=" errMessage " *ngIf="formNgayNghi.controls.denngay_InForm.errors?.required &&
+            (errDenNgay || formNgayNghi.controls.denngay_InForm.touched || formNgayNghi.controls.denngay_InForm.dirty)">Không được để trống</span>
+            <span class=" errMessage " *ngIf="errNgay">Ngày kết thúc phải sau ngày bắt đầu</span>
+            <!-- <span class="errMessage " *ngIf="errSoSanhNgay ">Lỗi từ ngày đến ngày</span> -->
+            <input type="text" class="form-control" formControlName="denngay_InForm" *ngIf="typeModal == 'delete' ? true:''" readonly>
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button [ngClass]="colorButtonSave " (click)="saveNgayNghi() ">
+          <i [ngClass]="iconButtonSave " aria-hidden="true "></i> {{nameButtonSave}}</button>
+        <button class="btn btn-default " (click)="closeModalNgayNghi() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

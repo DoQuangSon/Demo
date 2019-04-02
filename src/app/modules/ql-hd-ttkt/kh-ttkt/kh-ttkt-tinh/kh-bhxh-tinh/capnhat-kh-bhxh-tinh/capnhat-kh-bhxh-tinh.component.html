@@ -1,0 +1,306 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-9">
+      <span class="page-title-breadcrumb">Kế hoạch BHXH Tỉnh/TP</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Cập nhật kế hoạch năm {{ keHoachNam }}</span>
+    </div>
+    <div class="col-md-3 pull-right">
+      <button class="btn btn-primary" *ngIf="!luu" (click)="luuKH()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <!-- <button class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button> -->
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="capNhatkeHoachBHXHTinhForm">
+      <div [ttktCollapse]>
+        <fieldset class="thongtinchung" disabled="true">
+          <legend>Thông tin chung</legend>
+          <div class="row pr-xl-4">
+            <div class="col-md-5">
+              <div class="form-group row">
+                <div class="col-xl-6 text-xl-right">
+                  <label class="col-form-label">Kế hoạch năm: </label>
+                </div>
+                <div class="col-xl-6">
+                  <select class="custom-select" formControlName="khNam">
+                    <option value="" selected>Chọn</option>
+                    <option *ngFor="let choice of optionNam; let i = index" [value]="choice">{{ choice }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group row">
+                <div class="col-xl-6 text-xl-right">
+                  <label class="col-form-label">Ngày lập: </label>
+                </div>
+                <div class="col-xl-6">
+                  <my-date-picker ngClass="disable-click" [options]="myDatePickerOptions" locale="vi" formControlName="ngayLap"></my-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row pr-xl-4">
+            <div class="col-md-5">
+              <div class="form-group row">
+                <div class="col-xl-6 text-xl-right">
+                  <label class="col-form-label">Tên kế hoạch: </label>
+                </div>
+                <div class="col-xl-6">
+                  <input class="form-control" type="text" formControlName="tenKh">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group row">
+                <div class="col-xl-6 text-xl-right">
+                  <label class="col-form-label">Kế hoạch số: </label>
+                </div>
+                <div class="col-xl-6">
+                  <input class="form-control" type="text" formControlName="soKH">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </fieldset>
+      </div>
+    </form>
+    <form novalidate>
+      <fieldset>
+        <legend>Kế hoạch dự kiến của Tỉnh</legend>
+        <div id="kehoach-dukien">
+          <div class="row title">
+            <div class="col-sm-6 col-xl-8">
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+              <label class="col-form-label">Tiến độ {{tienDo}}%</label>
+            </div>
+          </div>
+          <div class="table-responsive table-scroll-x">
+            <table class="table table-bordered mb-1">
+              <thead>
+                <tr>
+                  <th rowspan="2" class="th-size">STT</th>
+                  <th rowspan="2" class="th-size">Trạng thái</th>
+                  <th rowspan="2" class="tabel-resize">Tên đơn vị</th>
+                  <th rowspan="2">Mã thu</th>
+                  <th rowspan="2">Mã đơn vị
+                    <br>SDLĐ</th>
+                  <th rowspan="2">Địa chỉ</th>
+                  <th rowspan="2">Quý
+                    <br>(kế hoạch)</th>
+                  <th rowspan="2">Loại hình
+                    <br>TTKT</th>
+                  <th colspan="2">Quý (thực tế)</th>
+                  <th rowspan="2">Đột
+                    <br> xuất</th>
+                  <th rowspan="2">Lý do
+                    <br>cập nhật</th>
+                  <th rowspan="2" class="th-size">Thao
+                    <br> tác</th>
+                </tr>
+                <tr>
+                  <th class="th-size">Từ ngày</th>
+                  <th class="th-size">Đến ngày</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let item of tableContent; let i = index">
+                <tr>
+                  <th class="text-center">
+                    <span *ngIf="i==0">I</span>
+                    <span *ngIf="i==1">II</span>
+                    <span *ngIf="i==2">III</span>
+                    <span *ngIf="i==3">IV</span>
+                  </th>
+                  <th></th>
+                  <th>{{ item.tenDanhMuc }}</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr *ngFor="let kh of item.children; let j = index">
+                  <td class="text-center">{{j + 1}}</td>
+                  <td *ngIf="!kh.isHoan">Chưa TTKT</td>
+                  <td class="text-center" *ngIf="kh.isHoan">
+                    <p class="text-danger">
+                      <b>Hoãn TTKT</b>
+                    </p>
+                    <button class="btn btn-success btn-sm" (click)="xemLyDoHoan(kh)" *ngIf="kh.isHoan">
+                      <i class="fa fa-eye" aria-hidden="true"></i> Xem lý do</button>
+                  </td>
+                  <td class="text-left">{{ kh.tenDoiTuong ? kh.tenDoiTuong : ''}}</td>
+                  <td class="text-right">{{ kh.maThu ? kh.maThu : ''}}</td>
+                  <td class="text-right">{{ kh.maSuDungLaoDong ? kh.maSuDungLaoDong : ''}}</td>
+                  <td class="text-right">{{ kh.diaChi ? kh.diaChi : ''}}</td>
+                  <td class="text-right">{{ kh.quyTrongKeHoach ? getQuy(kh.quyTrongKeHoach).name : ''}}</td>
+                  <td class="text-right">{{ kh.loaiHinhTTKT ? getLoaiHinh(kh.loaiHinhTTKT).name : ''}}</td>
+                  <td class="text-center">{{ kh.tinhDuKienLiveDTO?.thucTeTuNgay ? (kh.tinhDuKienLiveDTO?.thucTeTuNgay | date: 'dd/MM/yyyy') : ''
+                    }}
+                  </td>
+                  <td class="text-center">{{ kh.tinhDuKienLiveDTO?.thucTeDenNgay ? (kh.tinhDuKienLiveDTO?.thucTeDenNgay | date: 'dd/MM/yyyy') : ''
+                    }}
+                  </td>
+                  <td>
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" disabled>
+                      <span class="custom-control-indicator"></span>
+                    </label>
+                  </td>
+                  <td></td>
+                  <td>
+                    <div>
+                      <button type="button" class="btn btn-primary btn-sm edit" (click)="editDonVi('edit',i,j)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-right mb-2">
+            <a class="router" routerLink="/ql-hd-ttkt/kh-ttkt/tinh/kh-bhxh-tinh/ds-donvi-ql-tinh/tp">Danh sách đơn vị quản lý</a>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+<div bsModal #modalDonVi="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{ titleModalDV }}</h5>
+        <button type="button" class="close pull-right" (click)="modalDonVi.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="donViForm">
+          <div class="row container" *ngIf="typeModalDV=='edit'">
+            <div class="col-md-6">
+              <div class="form-group row" [ngClass]="(donViForm.controls.loaiHinhTTKT?.errors && (donViForm.controls.loaiHinhTTKT?.touched || donViForm.controls.loaiHinhTTKT?.dirty)) ? 'has-danger' : ''">
+                <div class="col-xl-6 text-xl-right">
+                  <label for="" class="col-form-label">Loại hình TTKT:
+                    <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-6">
+                  <select class="custom-select" id="quy" formControlName="loaiHinhTTKT">
+                    <option value="" selected>Chọn loại hình</option>
+                    <option *ngFor="let choice of loaiHinhTTKTs" [value]="choice.id">{{ choice.name }}</option>
+                  </select>
+                  <p class="help-block text-danger mb-1" *ngIf="donViForm.controls.loaiHinhTTKT?.errors?.required &&  (donViForm.controls.loaiHinhTTKT?.touched || donViForm.controls.loaiHinhTTKT?.dirty)">
+                    Loại hình TTKT không được để trống</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row" [ngClass]="(donViForm.controls.quy?.errors && (donViForm.controls.quy?.touched || donViForm.controls.quy?.dirty)) ? 'has-danger' : ''">
+                <div class="col-xl-6 text-xl-right">
+                  <label for="" class="col-form-label">Quý:
+                    <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <div class="col-xl-6">
+                  <select class="custom-select" id="quy" formControlName="quy">
+                    <option value="" selected>Chọn quý</option>
+                    <option *ngFor="let choice of danhSachQuy" [value]="choice.id">{{ choice.name }}</option>
+                  </select>
+                  <p class="help-block text-danger mb-1" *ngIf="donViForm.controls.quy?.errors?.required &&  (donViForm.controls.quy?.touched || donViForm.controls.quy?.dirty)">
+                    Quý không được để trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row container" *ngIf="typeModalDV=='edit'">
+            <div class="col-xl-3 text-xl-right">
+              <label for="" class="col-form-label">Lý do cập nhật:
+                <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="col-xl-9">
+              <input type="text" class="form-control" formControlName="lydo" />
+              <p class="help-block text-danger mb-1" *ngIf="donViForm.controls.lydo?.errors?.required &&  (donViForm.controls.lydo?.touched || donViForm.controls.lydo?.dirty)">
+                Lý do không được để trống</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="saveDonVi()">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Đồng ý</button>
+        <button type="button" class="btn btn-default" (click)="modalDonVi.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+        <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+        <div class="pull-right">
+          <button class="btn btn-success" (click)="onSubmitDuyet()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+          <button class="btn btn-default" (click)="duyetModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Hoãn TTKT -->
+<div bsModal #modalHoan="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" [formGroup]="formHoanTTKT">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Hoãn Thanh Tra Kiểm Tra</h5>
+        <button type="button" class="close pull-right" (click)="modalHoan.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="col-form-label" for="ngayTao">Ngày hoãn:
+              <span class="text-danger">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <my-date-picker [ngClass]="{'disable-click': isXemLyDoHoan}" [options]="myDatePickerOptions" locale="vi" formControlName="ngayHoanTTKT"></my-date-picker>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-xl-4 text-xl-right">Lý do:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-xl-8">
+            <textarea autosize class="form-control" rows="2" formControlName="lyDoHoanTTKT" [readOnly]="isXemLyDoHoan"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modalHoan.hide()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

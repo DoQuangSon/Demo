@@ -1,0 +1,139 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Thêm mới đơn vị TTKT</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalThemDonVi.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate [formGroup]="formThemDonVi" *ngIf="formThemDonVi && tldoanForm">
+      <!-- Tìm kiếm -->
+      <div>
+        <ttkt-input
+          [readOnly]="true"
+          type="text"
+          sm="4-6"
+          label="Địa bàn"
+          [formControl]="formThemDonVi.controls.phamVi"
+        ></ttkt-input>
+        
+        <ttkt-input
+          type="select"
+          [display]="typeAccount == 'tw' && tldoanForm.value.phamViId"
+          sm="4-6"
+          label="Quận/Huyện"
+          [formControl]="formThemDonVi.controls.quanHuyen"
+          [data]="{
+            options: listQuanHuyen,
+            valueType: 'tenTinhHuyen'
+          }"
+        ></ttkt-input>
+        <ttkt-input
+          sm="4-8"
+          type="select"
+          label="Nội dung thanh tra"
+          [display]="tldoanForm.value.chonNoiDung=='thanhTra'"
+          formControlName="noiDungTT"
+          [data]="{
+            options: listNDTTDvi,
+            multiple: true,
+            placeholder: 'Chọn nội dung thanh tra'
+          }"
+        ></ttkt-input>
+        <ttkt-input
+          sm="4-8"
+          type="select"
+          label="Nội dung kiểm tra"
+          [display]="tldoanForm.value.chonNoiDung=='kiemTra'"
+          formControlName="noiDungKT"
+          [data]="{
+            options: listNDKTDvi,
+            multiple: true,
+            placeholder: 'Chọn nội dung kiểm tra'
+          }"
+        ></ttkt-input>
+        <ttkt-input
+          [readOnly]="disableSearch"
+          type="select-basic"
+          (change)='changeLoaiHinh()'
+          sm="4-6"
+          label="Loại hình đơn vị"
+          [formControl]="formThemDonVi.controls.loaiHinh"
+          [data]="{
+            options: listLoaiHinhDonVi,
+            valueType: 'tenDanhMuc'
+          }"
+        ></ttkt-input>
+        
+        <ttkt-input
+        [readOnly]="disableSearch"
+          type="text"
+          label="Tìm kiếm đơn vị"
+          sm="4-6"
+          [formControl]="formThemDonVi.controls.searchName"
+        ></ttkt-input>
+        <ttkt-input
+        [readOnly]="disableSearch"
+          type="text"
+          label="Mã Đơn vị"
+          sm="4-6"
+          [formControl]="formThemDonVi.controls.maDonVi"
+        ></ttkt-input>
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="col-md-2">
+            <button class="btn btn-default" (click)="searchDvDoiTuong()" [disabled]="disableSearch">
+              <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive table-scroll-x">
+        <label for="" class="col-form-label col-md-4 text-lg-right">Chọn đơn vị:
+          <span style="color: red"> *</span>: </label>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th class="th-size">STT</th>
+              <th class="table-resize">Tên đơn vị</th>
+              <th>Mã đơn vị</th>
+              <th>Chọn</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngIf="listDviDoiTuong?.length == 0">
+                  <td colspan="4" class="text-center">Không có dữ liệu</td>
+                </tr>
+            <tr *ngFor='let item of listDviDoiTuong, let i = index'>
+              <ng-container *ngIf="!isTrongKeHoach">
+                <td class="text-center">{{pagging.currentPage*pagging.itemsPerPage + i + 1}}</td>
+              </ng-container>
+              <ng-container *ngIf="isTrongKeHoach">
+                <td class="text-center">{{i+1}}</td>
+              </ng-container>
+              <td>{{item.tenDoiTuong}}</td>
+              <td>{{item.maSuDungLaoDong}}</td>
+              <td class="text-center">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" (change)="checkItem(item)" [checked]='item.active'>
+                  <span class="custom-control-indicator"></span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- pagination -->
+        <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+          <pagination [maxSize]="5" [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [formControl]="pageControl">
+          </pagination>
+        </nav>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveListDvi()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+    <button type="button" class="btn btn-default" (click)="modalThemDonVi.hide()">
+      <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+@import './../../../../../../../styles/_variables.scss';
+button {
+    cursor: pointer;
+}
+
+#thongtinquyetdinh {
+    .row {
+        margin-bottom: 1rem;
+    }
+    .content {
+        font-weight: bold;
+    }
+}
+
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        fieldset {
+            margin-bottom: 3rem;
+        }
+    }
+}
+
+#thanhphanthamgia,
+#donvithamgia {
+    margin-bottom: 3rem;
+    label {
+        font-weight: bold;
+        margin: 0;
+    }
+    table {
+        thead {
+            background-color: $colorLightGray;
+            tr {
+                th {
+                    text-align: center;
+                    vertical-align: middle;
+                }
+            }
+        }
+        tbody {
+            td {
+                .custom-control-input:checked~.custom-control-indicator {
+                    color: #fff;
+                    background-color: #0275d8;
+                }
+            }
+        }
+    }
+}
+
+#thanhphanthamgia {
+    table {
+        tbody {
+            tr {
+                td {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+#donvithamgia {
+    table {
+        tbody {
+            tr {
+                td:nth-child(n+3) {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

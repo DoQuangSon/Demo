@@ -1,0 +1,63 @@
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <ng-container>
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin điều chỉnh</legend>
+        <div class="row">
+          <!-- Left-->
+          <div class="col-12 col-md-6">
+
+            <div class="form-group">
+              <label>Số quyết định điều chỉnh: </label>
+              {{chiTietKH ? chiTietKH.soQuyetDinhDieuChinh : ''}}
+            </div>
+
+            <div class="form-group">
+              <label>Người gửi:</label>
+              {{chiTietKH ? chiTietKH.tenNguoiTao:''}}
+            </div>
+
+            <div class="form-group">
+              <label>Lý do điều chỉnh:</label>
+              {{chiTietKH ? chiTietKH.lyDoDieuChinh:''}}
+            </div>
+
+            <div class="form-group" *ngIf="taiKhoanTinh && isKeHoachBHXHVN">
+              <label>Trạng thái điều chỉnh: </label>
+              <span>{{trangThai}}</span>
+            </div>
+          </div>
+          <!-- right-->
+          <div class="col-12 col-md-6">
+
+            <div class="form-group">
+              <label>Người kí:</label>
+              {{chiTietKH ? chiTietKH.nguoiKyQDTaoKeHoach:''}}
+              <!-- <span> {{chiTietKH.}}</span> -->
+            </div>
+            <div class="form-group">
+              <label>Ngày xin điều chỉnh:</label>
+              <span>{{(chiTietKH.chiTietKhTinh && chiTietKH.chiTietKhTinh.ngayXinDieuChinh)? (chiTietKH.chiTietKhTinh.ngayXinDieuChinh
+                | date:"dd/MM/yyyy") : (chiTietKH.ngayDieuChinh)? (chiTietKH.ngayDieuChinh | date:"dd/MM/yyyy") :''}}</span>
+            </div>
+
+            <div class="form-group">
+              <span class="col-form-label">File quyết định:
+                <b class="ten-fileUpload">{{ tenFile }}</b>
+              </span>
+              <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFile()">
+                <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+            </div>
+            <div class="form-group" *ngIf="coDieuChinhTu">
+              <label>Điều chỉnh từ: </label>
+              <!--{{ accountType }}-->
+              {{ dieuChinhTu }}
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    </ng-container>
+  </div>
+</div>

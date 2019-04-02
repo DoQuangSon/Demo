@@ -1,0 +1,67 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .table-responsive {
+            thead {
+                background-color: $colorLightGray;
+                th {
+                    text-align: center;
+                    vertical-align: middle
+                }
+            }
+            tbody {
+                td {
+                    text-align: center;
+                }
+                td:nth-child(2) {
+                    text-align: left;
+                }
+                tr {
+                    .router {
+                        cursor: pointer;
+                    }
+                    .router:hover {
+                        color: $colorBlue;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#tenquyetdinh {
+    color: $colorBlue;
+    text-decoration: underline;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.details {
+    cursor: pointer;
+    color: black;
+    i {
+        color: #7d7d7d;
+    }
+    &:hover {
+        span,
+        i {
+            color: black
+        }
+    }
+}
+
+.content-label {
+    font-weight: bold
+}
+
+.color-tiendo {
+    color: red;
+    font-weight: bold
+}
+
+table.d {
+    table-layout: fixed;
+    width: 100%;    
+}

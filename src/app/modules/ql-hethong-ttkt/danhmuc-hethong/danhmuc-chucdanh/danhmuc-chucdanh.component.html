@@ -1,0 +1,126 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-12">
+      <span class="page-title">Danh mục chức danh</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate [formGroup]="danhMucChucDanhForm">
+      <fieldset>
+        <legend>Danh mục chức danh</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh mục chức danh</span>
+        </div>
+        <!-- <div class="row">
+          <div class="col-xl-4">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label" for="chucDanh">Tên chức danh: </label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control form-control-25" type="text" formControlName="chucDanh" #chucDanh (keyup.enter)="search(chucDanh.value)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-2">
+            <div class="form-group row">
+              <div class="pull-right">
+                <button type="button" class="btn btn-default text-lg-right" (click)="search(danhMucChucDanhForm.value.chucDanh)">
+                  <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary mb-1" (click)="action('add')">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th>Chức danh</th>
+                <th class="text-center th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cd of listDanhMucChucDanh; let i = index">
+                <td class="text-center">{{ pageSize * number + i + 1 }}</td>
+                <td>{{ cd.chucDanh }}</td>
+                <td class="text-center">
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="action('edit', cd.id)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm delete" (click)="action('delete', cd.id)">
+                      <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!listDanhMucChucDanh.length">
+                <td colspan="3" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalDanhmucChucdanh="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog addModalDia">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_model}}</h5>
+        <button type="button" class="close pull-right" (click)="modalDanhmucChucdanh.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="modalAddDanhmucChucdanhForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(modalAddDanhmucChucdanhForm.controls.chucDanh?.errors && (modalAddDanhmucChucdanhForm.controls.chucDanh?.touched || modalAddDanhmucChucdanhForm.controls.chucDanh?.dirty)) ? 'has-danger' : ''">
+                <label for="" class="col-form-label col-md-4 text-lg-right">Tên chức danh:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" (blur)="onBlur()" #chucDanhDialog formControlName="chucDanh"
+                    [attr.disabled]="statusOption == 'delete' ? true:null">
+                  <p class="text-danger" *ngIf="blur && chucDanhDialog.value.trim() == ''">Tên chức danh không được để
+                    trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitAction('add')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Ghi nhận</button>
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitAction('edit')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOption == 'delete'" (click)="onSubmitAction('delete')">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Xóa</button>
+          <button type="button" class="btn btn-default" (click)="modalDanhmucChucdanh.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+@import './../../../../../../../styles/_variables.scss';
+.table-responsive {
+    tbody {
+        td {
+            text-align: center;
+        }
+        td:nth-child(2),
+        td:nth-child(3) {
+            text-align: left;
+        }
+        .router {
+            cursor: pointer;
+        }
+        .router:hover {
+            color: $colorBlue;
+            text-decoration: underline;
+        }
+    }
+}

@@ -1,0 +1,274 @@
+<div bsModal #modalVPHC="bs-modal" id="modalVPHC" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true" hidden>
+  <div class="modal-dialog modal-lg modal-vphc">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Biên bản vi phạm hành chính</h5>
+        <button type="button" class="close pull-right" (click)="closePopUp()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="cnt-page ttkt-page">
+          <div class="ttkt-form-default">
+            <form [formGroup]="VPHCForm" [ngClass]="{'disable-click': isLuu}">
+              <div formArrayName="VPHCTinhMoi">
+                <div class="child-node" *ngFor="let item of formData.controls; let i = index">
+                  <div class="ttkt-node show">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i>
+                    <span>Biên Bản {{ i+1 }}</span>
+                    <button class="btn btn-danger pull-right" (click)="xoaVPHCTinh(i)" *ngIf="!isDaKetThuc && !isLuu">
+                      <i class="fa fa-trash-o fa-lg mr-0" aria-hidden="true"></i> Xóa</button>
+                    <button (click)="printPDF_VPHC(item, 1)" [hidden]="isHidden()" type="button" class="btn btn-default pull-right none-disable">
+                      <i class="fa fa-print" aria-hidden="true"></i>In biên bản</button>
+                  </div>
+                  <div [formGroupName]="i">
+                    <fieldset>
+                      <legend>Nội dung</legend>
+                      <div class="col-md-10">
+                        <ttkt-input type="text" label="Tên văn bản" xl="4-8" formControlName="tenBienBanQuyetDinh"></ttkt-input>
+                        <ttkt-input type="date" label="Thời điểm lập biên bản" xl="4-8" formControlName="ngayLap"></ttkt-input>
+                        <ttkt-input type="text" label="Địa điểm" xl="4-8" formControlName="diaDiem"></ttkt-input>
+                        <ttkt-input type="text" label="Căn cứ" xl="4-8" formControlName="canCu"></ttkt-input>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Danh sách đoàn
+                        <span class="text-danger"> *</span>
+                      </legend>
+                      <div class="col-md-10">
+                        <ttkt-input ttktchecknumberonly type="number" label="Số người" xl="4-8" (change)="onChangeSoNguoi(item)"
+                          formControlName="soNguoi"></ttkt-input>
+                      </div>
+                      <div formArrayName="danhSachDoanVien" class="col-md-10" *ngIf="item.value.soNguoi >0 && (numberDsDoanMax + 1 > item.value.soNguoi)">
+                        <div *ngFor="let doanVien of item.controls.danhSachDoanVien.controls; let j = index">
+                          <div class="ttkt-node show">
+                            <span>#{{j+1}}</span>
+                          </div>
+                          <div [formGroupName]="j">
+                            <ttkt-input (change)="onchangeTenCanBo(item,j,$event)" type="select-basic" label="Họ tên"
+                              xl="4-8" formControlName="idCanBo" [data]="{
+                              options: listCanBo,
+                              firstOption: 'Chọn tên',
+                              idType: 'id',
+                              valueType: 'hoVaTen'
+                            }"></ttkt-input>
+                            <ttkt-input [ngClass]="{'disable-click': isDisable}" type="text" label="Chức vụ đoàn" xl="4-8"
+                              formControlName="chucVuDoan" readOnly="true"></ttkt-input>
+                            <ttkt-input [ngClass]="{'disable-click': isDisable}" type="text" label="Chức vụ công tác"
+                              xl="4-8" formControlName="chucVuCongTac" readOnly="true"></ttkt-input>
+                            <ttkt-input [ngClass]="{'disable-click': isDisable}" type="text" label="Cơ quan" xl="4-8"
+                              formControlName="coQuan" readOnly="true"></ttkt-input>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Người chứng kiến
+                        <span class="text-danger"> *</span>
+                      </legend>
+                      <div class="pull-right mb-1">
+                        <button class="btn btn-primary" (click)="themNguoiChungKien(item)" *ngIf="isThemNguoiChungKien === false">
+                          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+                      </div>
+                      <div class="col-md-12">
+                      </div>
+                      <form [formGroup]="nguoiChungKienForm">
+                        <div *ngIf="isThemNguoiChungKien === true">
+                          <div class="col-md-10">
+                            <ttkt-input type="text" label="Họ và tên" xl="4-8" [formControl]="nguoiChungKienForm.controls.hoVaTen"></ttkt-input>
+                            <ttkt-input type="text" label="Nghề nghiệp" xl="4-8" [formControl]="nguoiChungKienForm.controls.ngheNghiep"></ttkt-input>
+                            <ttkt-input type="text" label="Nơi ở hiện tại" xl="4-8" [formControl]="nguoiChungKienForm.controls.diaChi"></ttkt-input>
+                            <ttkt-input type="text" label="Cơ quan" xl="4-8" [formControl]="nguoiChungKienForm.controls.coQuan"></ttkt-input>
+                          </div>
+                          <div class="pull-right mb-1">
+                            <button class="btn btn-primary" (click)="saveNguoiChungKien(item)">
+                              <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+                            <button type="button" class="btn btn-default" (click)="closeFormNguoiChungKien()">
+                              <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+                          </div>
+                        </div>
+                      </form>
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>STT</th>
+                            <th>Họ và tên</th>
+                            <th>Nghề nghiệp</th>
+                            <th>Nơi ở hiện tại</th>
+                            <th>Cơ quan</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let NguoiChungKien of item.controls.danhSachNguoiChungKien.value, let i = index">
+                            <td class="text-center">{{ i+1}}</td>
+                            <td>{{ NguoiChungKien.hoVaTen }}</td>
+                            <td>{{ NguoiChungKien.ngheNghiep }}</td>
+                            <td>{{ NguoiChungKien.diaChi }}</td>
+                            <td>{{ NguoiChungKien.coQuan }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Cá nhân tổ chức vi phạm
+                        <span class="text-danger"> *</span>
+                      </legend>
+                      <div class="col-md-12">
+                        <ttkt-input type="radio" xl="4-8" label="" (change)="onChangeCaNhanAndToChuc(item,item.controls.isCaNhanToChuc)"
+                          [formControl]="item.controls.isCaNhanToChuc" [data]="{
+                              options: [{ 
+                                text: 'Cá nhân',
+                                value: true
+                              }, 
+                              {
+                                text: 'Tổ chức',
+                                value: false
+                              }]
+                            }"></ttkt-input>
+                      </div>
+                      <div class="pull-right mb-1" *ngIf="item.value.isCaNhanToChuc == true && isThemCaNhanToChucViPham === false">
+                        <button class="btn btn-primary" (click)="themCaNhanToChuc(item)">
+                          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+                      </div>
+                      <div class="col-md-12">
+                      </div>
+                      <div *ngIf="item.value.isCaNhanToChuc == true && isThemCaNhanToChucViPham === true">
+                        <div class="col-md-10">
+                          <form [formGroup]="caNhanViPhamForm">
+                            <ttkt-input type="text" label="Họ và tên" xl="4-8" [formControl]="caNhanViPhamForm.controls.hoVaTen"></ttkt-input>
+                            <ttkt-input type="select-basic" label="Giới tính" xl="4-8" [formControl]="caNhanViPhamForm.controls.gioiTinh"
+                              [data]="{
+                              options: listGioiTinh,
+                              firstOption: 'Chọn giới tính',
+                              idType: 'value',
+                              valueType: 'gioiTinh'
+                            }"></ttkt-input>
+                            <ttkt-input type="date" label="Ngày tháng năm sinh" xl="4-8" [formControl]="caNhanViPhamForm.controls.ngaySinh"></ttkt-input>
+                            <ttkt-input type="text" label="Quốc tịch" xl="4-8" [formControl]="caNhanViPhamForm.controls.quocTich"></ttkt-input>
+                            <ttkt-input type="text" label="Nghề nghiệp" xl="4-8" [formControl]="caNhanViPhamForm.controls.ngheNghiep"></ttkt-input>
+                            <ttkt-input type="text" label="Nơi ở hiện tại" xl="4-8" [formControl]="caNhanViPhamForm.controls.diaChi"></ttkt-input>
+                            <ttkt-input type="number" label="Số CMT" xl="4-8" [formControl]="caNhanViPhamForm.controls.soCMT"></ttkt-input>
+                            <ttkt-input type="date" label="Ngày cấp" xl="4-8" [formControl]="caNhanViPhamForm.controls.ngayCap"></ttkt-input>
+                            <ttkt-input type="text" label="Nơi cấp" xl="4-8" [formControl]="caNhanViPhamForm.controls.noiCap"></ttkt-input>
+                          </form>
+                        </div>
+                        <div class="pull-right mb-1">
+                          <button class="btn btn-primary" (click)="saveCaNhanViPham(item)">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+                          <button type="button" class="btn btn-default" (click)="closeFormCaNhanViPham()">
+                            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+                        </div>
+                      </div>
+                      <table class="table table-bordered table-hover" *ngIf="item.value.isCaNhanToChuc == true">
+                        <thead>
+                          <tr>
+                            <th>STT</th>
+                            <th>Họ và tên</th>
+                            <th>Giới Tính</th>
+                            <th>Ngày tháng năm sinh</th>
+                            <th>Quốc tịch</th>
+                            <th>Nghề nghiệp</th>
+                            <th>Nơi ở hiện tại</th>
+                            <th>Số CMT</th>
+                            <th>Ngày cấp</th>
+                            <th>Nơi cấp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let CaNhan of item.controls.danhSachCanhanTochucViPham.value, let i = index">
+                            <td class="text-center">{{ i+1}}</td>
+                            <td>{{ CaNhan.hoVaTen }}</td>
+                            <td>{{ CaNhan.gioiTinh }}</td>
+                            <td>{{ CaNhan.ngaySinh| date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ CaNhan.quocTich }}</td>
+                            <td>{{ CaNhan.ngheNghiep }}</td>
+                            <td>{{ CaNhan.diaChi }}</td>
+                            <td>{{ CaNhan.soCMT }}</td>
+                            <td>{{ CaNhan.ngayCap | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ CaNhan.noiCap }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div *ngIf="item.value.isCaNhanToChuc == false">
+                        <div class="col-md-10">
+                          <ttkt-input type="text" [ngClass]="{'disable-click': isDisable}" label="Mã đơn vị" xl="4-8"
+                            formControlName="maDonViViPham"></ttkt-input>
+                          <ttkt-input type="text" [ngClass]="{'disable-click': isDisable}" label="Tên đơn vị" xl="4-8"
+                            formControlName="tenDonViViPham"></ttkt-input>
+                          <ttkt-input type="text" label="Địa chỉ" xl="4-8" formControlName="diaChi"></ttkt-input>
+                          <ttkt-input type="number" label="Số điện thoại" xl="4-8" formControlName="soDienThoai"></ttkt-input>
+                        </div>
+                        <div class="col-md-10">
+                          <legend>Giấy đăng ký kinh doanh/quyết định thành lập</legend>
+                          <ttkt-input type="text" label="Số đăng ký" xl="4-8" formControlName="soDangKy"></ttkt-input>
+                          <ttkt-input type="date" label="Ngày đăng ký" xl="4-8" formControlName="ngayDangKy"></ttkt-input>
+                          <ttkt-input type="number" ttktchecknumberonly label="Cấp lần thứ" xl="4-8" formControlName="capLanThu"></ttkt-input>
+                          <ttkt-input type="text" label="Cơ quan cấp/ban hành" xl="4-8" formControlName="coQuanCap"></ttkt-input>
+                          <legend>Người đại diện theo pháp luật</legend>
+                          <ttkt-input type="text" [ngClass]="{'disable-click': isDisableTenNguoiDD}" label="Họ và tên"
+                            xl="4-8" formControlName="tenNguoiDaiDien"></ttkt-input>
+                          <ttkt-input type="select-basic" label="Giới tính" xl="4-8" formControlName="gioiTinhNguoiDaiDien"
+                            [data]="{
+                              options: listGioiTinh,
+                              firstOption: 'Chọn giới tính',
+                              idType: 'value',
+                              valueType: 'gioiTinh'
+                            }"></ttkt-input>
+                          <ttkt-input type="date" label="Ngày tháng năm sinh" xl="4-8" formControlName="ngaySinh"></ttkt-input>
+                          <ttkt-input type="number" ttktchecknumberonly label="Số CMT" xl="4-8" formControlName="soCmt"></ttkt-input>
+                          <ttkt-input type="text" label="Chức vụ" xl="4-8" formControlName="chucVuNguoiDaiDien"></ttkt-input>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Thông tin xử phạt</legend>
+                      <div class="col-md-10">
+                        <ttkt-input type="select-basic" (change)="onchangeTenHanhvi(item,$event)" label="Hành vi vi phạm"
+                          xl="4-8" formControlName="hanhViViPham" [data]="{
+                                          options: optionHanhViViPhams,
+                                          firstOption: 'Chọn hành vi',
+                                          valueType: 'tenHanhVi'
+                                        }"></ttkt-input>
+                      </div>
+                      <div class="col-md-10">
+                        <ttkt-input ttktchecknumberonly type="number" label="Số tiền" xl="4-8" formControlName="soTien"></ttkt-input>
+                      </div>
+                      <div class="col-md-10">
+                        <ttkt-input [ngClass]="{'disable-click': isDisable}" type="text" label="Văn bản quy định" xl="4-8"
+                          formControlName="vanBanQuyDinh"></ttkt-input>
+                      </div>
+                      <div class="col-md-10">
+                        <ttkt-input type="text" label="Ý kiến trình bày của cá nhân vi phạm/ đại diện tổ chức vi phạm"
+                          xl="4-8" placeholder="" formControlName="yKienCaNhanViPham"></ttkt-input>
+                        <ttkt-input type="text" label="Ý kiến trình bày của người chứng kiến" xl="4-8" placeholder=""
+                          formControlName="yKienNguoiChungKien"></ttkt-input>
+                        <ttkt-input type="text" label="Các biện pháp ngăn chặn" xl="4-8" formControlName="bienPhapNganChan"></ttkt-input>
+                        <ttkt-input type="number" ttktchecknumberonly label="Thời hạn giải trình" xl="4-8"
+                          formControlName="thoiHanGiaiTrinh"></ttkt-input>
+                        <ttkt-input type="date" label="Thời hạn kết thúc" xl="4-8" formControlName="thoiHanKetThuc"></ttkt-input>
+                        <ttkt-input type="text" ttktchecknumberonly label="Số bản" xl="4-8" formControlName="soBan"></ttkt-input>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+              <div class="thuc-hien-kh child-node">
+                <div class="ttkt-node show" *ngIf="!isDaKetThuc && !isLuu">
+                  <button class="btn btn-primary" (click)="themVPHCTinh()">
+                    <i class="fa fa-plus-circle fa-lg mr-0" aria-hidden="true"></i> Thêm mới</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="saveBienBanViPham()" *ngIf="!isDaKetThuc && !isLuu">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+        <button type="button" class="btn btn-default" (click)="closePopUp()">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

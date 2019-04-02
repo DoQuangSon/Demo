@@ -1,0 +1,146 @@
+<h4 class="heading-page">
+  <span class="page-title">Cơ cấu tổ chức</span>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <div id="cocauphongban" class="row">
+      <div id="danhsachcoquanBHXH" class="col-xl-3">
+        <form novalidate>
+          <fieldset>
+            <legend>Danh sách cơ quan BHXH Việt Nam
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </legend>
+            <div class="ttkt-node">
+              <span>Danh sách cơ quan BHXH Việt Nam</span>
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </div>
+            <div id="bhxh_vn" role="tablist" aria-multiselectable="true">
+              <div>BHXH Việt Nam
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+              </div>
+              <div id="bhxh_tinh">
+                <div data-toggle="collapse" data-parent="#accordion" href="#bhxh_hanoi" aria-expanded="true" aria-controls="bhxh_hanoi">
+                  <span class="bhxh_tinh">
+                    <i class="fa fa-book" aria-hidden="true"></i> BHXH Tp.Hà Nội
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div id="bhxh_hanoi" class="collapse" role="tabpanel">
+                  <div *ngFor="let coquanBHXH of BHXH_VN.HA_NOI; let index = index">
+                    <span class="bhxh_huyen" (click)="chiTietCoQuan(index, 'HA_NOI')">
+                      <i class="fa fa-sign-in" aria-hidden="true"></i> {{coquanBHXH.TEN}}</span>
+                  </div>
+                </div>
+                <div data-toggle="collapse" data-parent="#accordion" href="#bhxh_hochiminh" aria-expanded="true" aria-controls="bhxh_hochiminh">
+                  <span class="bhxh_tinh">
+                    <i class="fa fa-book" aria-hidden="true"></i> BHXH Tp.Hồ Chí Minh
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div id="bhxh_hochiminh" class="collapse" role="tabpanel">
+                  <div *ngFor="let coquanBHXH of BHXH_VN.HO_CHI_MINH; let index = index">
+                    <span class="bhxh_huyen" (click)="chiTietCoQuan(index, 'HO_CHI_MINH')">
+                      <i class="fa fa-sign-in" aria-hidden="true"></i> {{coquanBHXH.TEN}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div id="cocauphongban" class="col-xl-9" *ngIf="display_COCAUPHONGBAN">
+        <form novalidate>
+          <fieldset>
+            <legend>Cơ cấu phòng ban - bộ phận
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </legend>
+            <div class="ttkt-node">
+              <span>Cơ cấu phòng ban - bộ phận</span>
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+            </div>
+            <div id="thongtinchung">
+              <p>Tên cơ quan bảo hiểm:
+                <b>{{tenCoQuanBH}}</b>
+              </p>
+              <p>Mã cơ quan bảo hiểm:
+                <b>{{maCoQuanBH}}</b>
+              </p>
+            </div>
+            <div id="themphongban" class="text-right">
+              <button class="btn btn-primary" (click)="addPhongBan()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+            <div class="table-responsive table-scroll-x">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="th-size">STT</th>
+                    <th>Mã</th>
+                    <th class="table-resize">Tên phòng ban/Bộ phận</th>
+                    <th class="th-size">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let phongban of danhSachPhongBan; let index = index">
+                    <td>{{index + 1}}</td>
+                    <td>{{phongban.maphong}}</td>
+                    <td>{{phongban.tenphong}}</td>
+                    <td>
+                      <i class="fa fa-pencil fa-lg" aria-hidden="true" (click)="editPhongBan(index)"></i>
+                      <i class="fa fa-trash fa-lg" aria-hidden="true" (click)="deletePhongBan(index)"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalPhongBan="bs-modal" id="modalPhongBan" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">
+          <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalPhongBan()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="formPhongBan">
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Mã phòng ban
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <input type="number" min="0" class="form-control" formControlName="maphong_InForm" [readonly]="typeModal == 'delete'">
+            <span class="errMessage" *ngIf="errMaPhongBan">Mã phòng ban không được để trống</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 text-xl-right">
+            <label class="label-col-form">Tên phòng ban
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="col-xl-8">
+            <textarea autosize type="text" rows="1" class="form-control" formControlName="tenphong_InForm" [readonly]="typeModal == 'delete'"></textarea>
+            <span class="errMessage" *ngIf="errTenPhongBan">Tên phòng ban không được để trống</span>
+          </div>
+        </div>
+      </div>
+      <div class=" modal-footer ">
+        <button [ngClass]="colorButtonSave" (click)="savePhongBan() ">
+          <i [ngClass]="iconButtonSave" aria-hidden="true "></i> {{nameButtonSave}}</button>
+        <button class="btn btn-default" (click)="closeModalPhongBan() ">
+          <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>

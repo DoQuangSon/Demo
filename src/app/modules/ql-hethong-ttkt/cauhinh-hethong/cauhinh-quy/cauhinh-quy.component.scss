@@ -1,0 +1,43 @@
+@import '../../../../../styles/_variables.scss';
+.table-responsive {
+  table {
+    thead {
+      background-color: $colorLightGray;
+      th {
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+    tbody {
+      td {
+        text-align: center;
+        i {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+#modalQuy {
+  .modal-body {
+    .row {
+      margin-bottom: 1rem;
+      .col-xl-8 {
+        span {
+          display: block;
+        }
+      }
+    }
+  }
+  .modal-footer {
+    // i {
+    //   margin-right: 0.5rem;
+    // }
+  }
+}
+
+.errMessage,
+.required {
+  color: #ff0000;
+}

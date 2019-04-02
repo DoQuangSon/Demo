@@ -1,0 +1,43 @@
+@import './../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+  .ttkt-form-default {
+      input {
+        @media (max-width: 575px) {
+          margin-bottom: 15px;
+        }
+      }
+      .table-responsive {
+        thead {
+          background-color: $colorLightGray;
+          tr {
+            th {
+              text-align: center;
+              vertical-align: middle;
+            }
+          }
+        }
+        tbody {
+        tr {
+          a {
+            cursor: pointer;
+            &:hover {
+              color: $colorBlue;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.trangthai_0 {
+  color: #4332ff;
+  font-weight: bold;
+  cursor: pointer
+}
+
+.trangthai_1 {
+  // color: #4332ff;
+  font-weight: bold;
+}

@@ -1,0 +1,4 @@
+<select class="custom-select" [formControl]="formControlInput">
+    <option [value]="data.firstOptionValue" *ngIf="data.firstOption">{{ data.firstOption }}</option>
+    <option *ngFor="let choice of data.options" [value]="choice[data.idType]">{{ choice[data.valueType] }}</option>
+</select>

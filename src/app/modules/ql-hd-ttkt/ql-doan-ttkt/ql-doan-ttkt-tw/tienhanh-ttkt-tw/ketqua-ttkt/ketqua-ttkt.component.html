@@ -1,0 +1,492 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title-breadcrumb">DS đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title-breadcrumb">Theo dõi hoạt động đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">{{title}}</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <!-- <button class="btn btn-success mt-sm-1">
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel</button> -->
+      <button class="btn btn-default mt-sm-1">
+        <i class="fa fa-print" aria-hidden="true"></i> In</button>
+      <button class="btn btn-primary mt-sm-1" (click)="onSubmit()" *ngIf="!isHaveBaoCaoKL">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button class="btn btn-primary mt-sm-1" (click)="onEdit()" *ngIf="isHaveBaoCaoKL">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Cập nhật</button>
+      <button type="button" class="btn btn-link mt-sm-1" (click)="onBack()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form [formGroup]='ketQuaTTKTForm'>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Thông tin chung</span>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div *ngIf="isBaoCao">
+              <ttkt-input
+              xl="4-6"
+              label="Tên báo cáo "
+              formControlName="tenBaoCao"
+              [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+              type="text"
+              >
+              </ttkt-input>
+            </div>
+            <div *ngIf="!isBaoCao">
+              <ttkt-input
+              xl="4-6"
+              label="Tên kết luận "
+              formControlName="tenBaoCao"
+              type="text"
+              [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+            >
+            </ttkt-input>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <!-- <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label"  *ngIf = "isBaoCao">Số:</label>
+                <label class="col-form-label"  *ngIf = "!isBaoCao">Số kết luận:</label>
+              </div>
+              <div class="col-xl-8" [ngClass]="{'disable-click': isHaveBaoCaoKL}">
+                <input class="form-control" type="text" formControlName="soBaoCao">
+              </div> -->
+              <div *ngIf="isBaoCao">
+                <ttkt-input
+                  xl="4-6"
+                  label="Số "
+                  formControlName = "soBaoCao"
+                  type="text"
+                  [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+                >
+                </ttkt-input>
+              </div>
+              <div *ngIf="!isBaoCao">
+                <ttkt-input
+                  xl="4-6"
+                  label="Số kết luận "
+                  formControlName = "soBaoCao"
+                  type="text"
+                  [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+                ></ttkt-input>
+              </div>            
+          </div>
+            <div class="col-md-6">
+              <ttkt-input
+                label = "Từ ngày"
+                type="date"
+                xl="4-6"
+                formControlName= "tuNgay"
+                [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+              >
+              </ttkt-input>
+            </div>
+            <div class="col-md-6">
+              <ttkt-input
+                label="Đến ngày"
+                type="date"
+                xl="4-6"
+                formControlName ="denNgay"
+                [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+              >
+              </ttkt-input>
+            </div>
+          <div class="col-md-6">
+            <!-- <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Ghi chú:</label>
+              </div>
+              <div class="col-xl-8" [ngClass]="{'disable-click': isHaveBaoCaoKL}">
+                <input type="" class="form-control" formControlName="ghiChu">
+              </div>
+            </div> -->
+            <ttkt-input
+              label ="Ghi chú"
+              formControlName = "ghiChu"
+              xl="4-6"
+              type="text"
+              [ngClass]="{'disable-click': isHaveBaoCaoKL}"
+            >
+
+            </ttkt-input>
+            </div>
+          <div class="col-md-6 disable-click">
+            <!-- <div class="form-group">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Tên đoàn:</label>
+              </div>
+              <div class="col-xl-8">
+                <input type="" class="form-control" formControlName="tenDoan" readonly>
+              </div>
+            </div> -->
+            <ttkt-input
+              label="Tên đoàn"
+              formControlName = "tenDoan"
+              xl="4-6"
+              type="text"
+            >
+            </ttkt-input>
+          </div>
+        </div>
+      </fieldset>
+      <!-- 1 -->
+      <fieldset>
+        <legend>Số biên bản làm việc: {{listBBLamViec.length}}/{{listDonViDcTTKT.length}}</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số biên bản làm việc: {{listBBLamViec.length}}/{{listDonViDcTTKT.length}}</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th>Đại diện đoàn</th>
+                <th>Đại diện cơ quan/đơn vị</th>
+                <th>Ngày lập</th>
+                <th>File biên bản làm việc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listBBLamViec; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-left">{{item.nguoiKy}}</td>
+                <td class="text-left">{{item.daiDienCqDv}}</td>
+                <td class="text-center">{{item.ngayKy | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-left">
+                  <div *ngIf="item.fileBienBanLamViec">
+                    <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFileBBLamViec(item.fileBienBanLamViec[0])">
+                      <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                    <span>{{item.fileBienBanLamViec[0].fileName}}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+      <!-- 2 -->
+      <fieldset>
+        <legend>Số biên bản VPHC: {{listBBVPHC.length}}/{{listDonViDcTTKT.length}}</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số biên bản VPHC: {{listBBVPHC.length}}/{{listDonViDcTTKT.length}}</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên biên bản</th>
+                <th>Người lập</th>
+                <th>Ngày lập</th>
+                <!-- <th>Lí do lập</th> -->
+                <th>Hành vi vi phạm</th>
+                <th>Số tiền</th>
+                <!-- <th>File Đính Kèm</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listBBVPHC; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-left">{{item.tenBienBanQuyetDinh}}</td>
+                <td class="text-left">{{item.nguoiLap}}</td>
+                <td class="text-center">{{item.ngayLap | date: 'dd/MM/yyyy'}}</td>
+                <!-- <td class="text-left">{{item.lyDoLap}}</td> -->
+                <td class="text-left">{{item.hanhViViPham}}</td>
+                <td class="text-right">{{item.soTien}}</td>
+                <!-- <td>
+                  <div *ngIf="item.fileDinhKem">
+                    <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFileVPHC(item?.fileDinhKem)">
+                      <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                    <span>{{item?.fileDinhKem?.fileName}}</span>
+                  </div>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+      <!-- 3 -->
+      <fieldset>
+        <legend>Số quyết định xử phạt VPHC: {{listQDXuPhatHC.length}}/{{listDonViDcTTKT.length}}</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số quyết định xử phạt VPHC: {{listQDXuPhatHC.length}}/{{listDonViDcTTKT.length}}</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <!-- <th class="table-resize">Tên biên bản</th> -->
+                <th>Người lập</th>
+                <th>Người ra quyết định</th>
+                <!-- <th>Ngày lập</th> -->
+                <!-- <th>Lí do lập</th> -->
+                <th>Hành vi vi phạm</th>
+                <th>Số tiền</th>
+                <!-- <th>File Đính Kèm</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listQDXuPhatHC; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <!-- <td class="text-left">{{item.tenBienBanQuyetDinh}}</td> -->
+                <td class="text-left">{{item.nguoiLap}}</td>
+                <td class="text-left">{{item.nguoiRaQuyetDinh}}</td>
+                <!-- <td class="text-center">{{item.ngayLap | date: 'dd/MM/yyyy'}}</td> -->
+                <!-- <td class="text-left">{{item.lyDoLap}}</td> -->
+                <td class="text-left">{{item.hanhViViPham}}</td>
+                <td class="text-right">{{item.soTien}}</td>
+                <!-- <td>
+                  <div *ngIf="item.fileDinhKem">
+                    <button type="submit" class="btn btn-primary btn-sm detail" (click)="downLoadFileVPHC(item?.fileDinhKem)">
+                      <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                    <span>{{item?.fileDinhKem?.fileName}}</span>
+                  </div>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+      <!-- Table chi tiết nội dung TTKT -->
+      <fieldset>
+        <legend>Chi tiết nội dung TTKT</legend>
+        <ul id="tabsJustified" class="nav nav-tabs pt-2">
+          <li class="nav-item">
+            <a href="" data-target="#noiDungTT" data-toggle="tab" class="nav-link small text-uppercase active">Nội dung TT</a>
+          </li>
+          <li class="nav-item">
+            <a href="" data-target="#noiDungKT" data-toggle="tab" class="nav-link small text-uppercase">Nội dung KT</a>
+          </li>
+          <li class="nav-item">
+            <a href="" data-target="#noiDungKCB" data-toggle="tab" class="nav-link small text-uppercase">Nội dung KT chi phí KCB</a>
+          </li>
+        </ul>
+        <div id="tabsJustifiedContent" class="tab-content">
+          <div id="noiDungTT" class="tab-pane fade show active">
+            <div class="table-responsive table-scroll-x pt-3">
+              <!-- Bảng nội dung Thanh tra -->
+              <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="th-size">STT</th>
+                        <th rowspan="2" class="table-resize">Nội dung vi phạm</th>
+                        <th colspan="3">Số vi phạm</th>
+                        <th colspan="3">Chấp hành của đơn vị</th>
+                        <th colspan="3">Số chênh lệch</th>
+                      </tr>
+                      <tr>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                      </tr>
+                </thead>
+                <tbody *ngFor="let item of tableContentTT, let i = index">
+                  <tr>
+                      <th>{{i + 1 | convertNumberToRomanNumeral}}</th>
+                      <th>{{item.tenNoiDung}}</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  <tr *ngFor="let element of item.children, let j = index">
+                      <td class="text-center">{{j + 1}}</td>
+                      <td class="text-left">{{element.tenChiTietNoiDung}}</td>
+                      <td class="text-right">{{element.soLuotNguoiViPham}}</td>
+                      <td class="text-right">{{element.soTienViPham}}</td>
+                      <td class="text-right">{{element.soSoViPham}}</td>
+                      <td class="text-right">{{element.soLuotNguoiChapHanh}}</td>
+                      <td class="text-right">{{element.soTienChapHanh}}</td>
+                      <td class="text-right">{{element.soSoChapHanh}}</td>
+                      <td class="text-right">{{element.soLuotNguoiChenhLech
+                        < 0 ? 0 : element.soLuotNguoiChenhLech}}</td>
+                          <td class="text-right">{{element.soTienChenhLech
+                            < 0 ? 0 : element.soTienChenhLech}}</td>
+                            <td class="text-right">{{element.soSoChenhLech
+                              < 0 ? 0 : element.soSoChenhLech}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="tableContentTT.length">
+                  <tr>
+                      <th colspan="2" class="text-center">Tổng</th>
+                      <th class="text-right">{{sumDataTT.soLuotNguoiViPham}}</th>
+                      <th class="text-right">{{sumDataTT.soTienViPham}}</th>
+                      <th class="text-right">{{sumDataTT.soSoViPham}}</th>
+                      <th class="text-right">{{sumDataTT.soLuotNguoiChapHanh}}</th>
+                      <th class="text-right">{{sumDataTT.soTienChapHanh}}</th>
+                      <th class="text-right">{{sumDataTT.soSoChapHanh}}</th>
+                      <th class="text-right">{{sumDataTT.soLuotNguoiChenhLech
+                        < 0 ? 0 : sumDataTT.soLuotNguoiChenhLech}}</th>
+                          <th class="text-right">{{sumDataTT.soTienChenhLech
+                            < 0 ? 0 : sumDataTT.soTienChenhLech}}</th>
+                            <th class="text-right">{{sumDataTT.soSoChenhLech
+                              < 0 ? 0 : sumDataTT.soSoChenhLech}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="noiDungKT" class="tab-pane fade">
+            <div class="table-responsive table-scroll-x pt-3">
+              <!-- Bảng nội dung Kiểm tra -->
+              <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="th-size">STT</th>
+                        <th rowspan="2" class="table-resize">Nội dung vi phạm</th>
+                        <th colspan="3">Số vi phạm</th>
+                        <th colspan="3">Chấp hành của đơn vị</th>
+                        <th colspan="3">Số chênh lệch</th>
+                      </tr>
+                      <tr>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                        <th>Số người (lượt)</th>
+                        <th>Số tiền</th>
+                        <th>Số sổ (thẻ)</th>
+                      </tr>
+                </thead>
+                <tbody *ngFor="let item of tableContentKT, let i = index">
+                  <tr>
+                      <th>{{i + 1 | convertNumberToRomanNumeral}}</th>
+                      <th>{{item.tenNoiDung}}</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  <tr *ngFor="let element of item.children, let j = index">
+                      <td class="text-center">{{j + 1}}</td>
+                      <td class="text-left">{{element.tenChiTietNoiDung}}</td>
+                      <td class="text-right">{{element.soLuotNguoiViPham}}</td>
+                      <td class="text-right">{{element.soTienViPham}}</td>
+                      <td class="text-right">{{element.soSoViPham}}</td>
+                      <td class="text-right">{{element.soLuotNguoiChapHanh}}</td>
+                      <td class="text-right">{{element.soTienChapHanh}}</td>
+                      <td class="text-right">{{element.soSoChapHanh}}</td>
+                      <td class="text-right">{{element.soLuotNguoiChenhLech
+                        < 0 ? 0 : element.soLuotNguoiChenhLech}}</td>
+                          <td class="text-right">{{element.soTienChenhLech
+                            < 0 ? 0 : element.soTienChenhLech}}</td>
+                            <td class="text-right">{{element.soSoChenhLech
+                              < 0 ? 0 : element.soSoChenhLech}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="tableContentKT.length">
+                  <tr>
+                      <th colspan="2" class="text-center">Tổng</th>
+                      <th class="text-right">{{sumDataKT.soLuotNguoiViPham}}</th>
+                      <th class="text-right">{{sumDataKT.soTienViPham}}</th>
+                      <th class="text-right">{{sumDataKT.soSoViPham}}</th>
+                      <th class="text-right">{{sumDataKT.soLuotNguoiChapHanh}}</th>
+                      <th class="text-right">{{sumDataKT.soTienChapHanh}}</th>
+                      <th class="text-right">{{sumDataKT.soSoChapHanh}}</th>
+                      <th class="text-right">{{sumDataKT.soLuotNguoiChenhLech
+                        < 0 ? 0 : sumDataKT.soLuotNguoiChenhLech}}</th>
+                          <th class="text-right">{{sumDataKT.soTienChenhLech
+                            < 0 ? 0 : sumDataKT.soTienChenhLech}}</th>
+                            <th class="text-right">{{sumDataKT.soSoChenhLech
+                              < 0 ? 0 : sumDataKT.soSoChenhLech}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="noiDungKCB" class="tab-pane fade">
+            <div class="table-responsive table-scroll-x pt-3">
+              <!-- Bảng nội dung KT KCB -->
+              <table class="table table-bordered table-hover table-KTKCB">
+                <thead>
+                  <tr>
+                    <th class="th-size">STT</th>
+                    <th class="table-resize">Nội dung vi phạm</th>
+                    <th>Xuất toán
+                      <br> (Từ chối thanh toán)</th>
+                    <th>Chưa chấp
+                      <br> nhận thanh toán</th>
+                    <th>Từ chối thanh toán bổ
+                      <br> sung vượt trần vượt quỹ</th>
+                    <th>Giao rà xoát </th>
+                    <th>Khác</th>
+                    <th>Chấp hành
+                      <br> của đơn vị</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let item of tableContentCsKcb, let i = index">
+                  <tr>
+                    <th>{{i + 1 | convertNumberToRomanNumeral}}</th>
+                    <th>{{item.tenNoiDung}}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr *ngFor="let element of item.children, let j = index">
+                    <td>{{j + 1}}</td>
+                    <td>{{element.tenChiTietNoiDung}}</td>
+                    <td class="text-right">{{element.cskcbXuatToan}}</td>
+                    <td class="text-right">{{element.cskcbChuaChapNhanTT}}</td>
+                    <td class="text-right">{{element.cskcbTcBsVuotTranVq}}</td>
+                    <td class="text-right">{{element.cskcbGiaoVaXoat}}</td>
+                    <td class="text-right">{{element.cskcbKhac}}</td>
+                    <td class="text-right">{{element.cskcbChapNhanCuaDv}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="tableContentCsKcb.length">
+                  <tr>
+                    <th></th>
+                    <th>Tổng</th>
+                    <th class="text-right">{{sumDataKcb.cskcbXuatToan}}</th>
+                    <th class="text-right">{{sumDataKcb.cskcbChuaChapNhanTT}}</th>
+                    <th class="text-right">{{sumDataKcb.cskcbTcBsVuotTranVq}}</th>
+                    <th class="text-right">{{sumDataKcb.cskcbGiaoVaXoat}}</th>
+                    <th class="text-right">{{sumDataKcb.cskcbKhac}}</th>
+                    <th class="text-right">{{sumDataKcb.cskcbChapNhanCuaDv}}</th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

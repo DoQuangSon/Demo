@@ -1,0 +1,96 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Chi tiết báo cáo tổng hợp kết quả TTKT cấp Tỉnh</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="closeChiTietBCTongHopTinh()">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+      <button type="button" class="btn btn-link" (click)="closeChiTietBCTongHopTinh()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="form-group mb-0 ml-4">
+          <label for="" class="col-form-label">Tên báo cáo: </label>
+          <label for="" class="col-form-label content-label">{{ data.tenBaoCao }} </label>
+        </div>
+        <div class="form-group mb-0 ml-4">
+          <label for="" class="col-form-label">Số: </label>
+          <label for="" class="col-form-label content-label">{{ data.soNumber }} </label>
+        </div>
+        <div class="form-group mb-0 ml-4">
+          <label for="" class="col-form-label">Ngày lập: </label>
+          <label for="" class="col-form-label content-label">{{ data.ngayLap }} </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Bảng tổng hợp kết quả</legend>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Nội dung
+                  <br>
+                </th>
+                <th>Mã tiêu thức</th>
+                <th>Số thực hiện</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">1</td>
+                <td class="text-center">2</td>
+                <td class="text-center">3</td>
+                <td class="text-center">4</td>
+                <td class="text-center">5</td>
+              </tr>
+              <tr>
+                <th class="text-center">I</th>
+                <th colspan="4">THỰC HIỆN THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of thucHienTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+              <tr>
+                <th class="text-center">II</th>
+                <th colspan="4">KẾT QUẢ THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of ketQuaTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+              <tr>
+                <th class="text-center">III</th>
+                <th colspan="4">THỰC HIỆN KẾT LUẬN THANH TRA, KIỂM TRA</th>
+              </tr>
+              <tr *ngFor="let item of ketLuanTTKT; let i=index">
+                <td class="text-center">{{ i+1 }}</td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.maTieuThuc }}</td>
+                <td>{{ item.soThucHien }}</td>
+                <td>{{ item.ghiChu }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

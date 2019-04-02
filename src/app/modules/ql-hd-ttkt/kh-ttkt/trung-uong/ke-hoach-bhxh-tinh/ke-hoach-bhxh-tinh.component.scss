@@ -1,0 +1,113 @@
+@import './../../../../../../styles/_variables.scss';
+.inExcel {
+    right: 0;
+}
+
+.boderize_1 {
+    color: #10b900;
+    font-weight: bold;
+}
+
+.boderize_2 {
+    color: #4332ff;
+    font-weight: bold;
+}
+
+.boderize_3 {
+    color: rgba(220, 53, 53, 0.98);
+    font-weight: bold;
+}
+
+.boderize_4,
+.boderize_5 {
+    color: black;
+    font-weight: bold;
+}
+
+.router {
+    cursor: pointer;
+    color: $colorBlue;
+    text-decoration: underline;
+    &:hover {
+        color: red;
+        text-decoration: underline;
+    }
+}
+
+.table-responsive {
+    thead {
+        background-color: $colorLightGray;
+        tr {
+            th {
+                text-align: center;
+                vertical-align: middle
+            }
+        }
+    }
+    tbody {
+        tr {
+            a {
+                cursor: pointer;
+                &:hover {
+                    color: $colorBlue;
+                    text-decoration: underline;
+                }
+                &.text-primary {
+                    text-decoration: underline;
+                }
+            }
+            td {
+                vertical-align: middle
+            }
+        }
+        .custom-control-input:checked~.custom-control-indicator {
+            background-color: #0c4e84;
+        }
+    }
+}
+
+.content-label {
+    font-weight: bold
+}
+
+.status-tiendo {
+    color: red;
+    font-weight: bold
+}
+
+.table-kehoach {
+    table {
+        min-width: 1300px;
+        thead {
+            tr {
+                th:nth-child(4),
+                th:nth-child(5) {
+                    min-width: 100px;
+                }
+                th:nth-child(6) {
+                    min-width: 200px;
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    label {
+                        padding-left: 1rem;
+                        margin-right: 0rem;
+                    }
+                }
+                td:nth-child(7),
+                td:last-child {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-lg.modal-chiTietKeHoach {
+        min-width: 1000px
+    }
+}

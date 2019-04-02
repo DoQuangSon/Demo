@@ -1,0 +1,195 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Kế hoạch BHXH VN</span>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <!-- <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#dsKeHoachBHXHVN" role="tab">Danh sách kế hoạch BHXH VN</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#dsKHDieuChinh" role="tab">Kế hoạch xin điều chỉnh đã gửi Trung ương</a>
+      </li>
+    </ul> -->
+    <div class="tab-content">
+      <!-- <div class="ui-tabs-panel" id="dsKeHoachBHXHVN" role="tabpanel">
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên kế hoạch</th>
+                <th>Ngày được giao kế hoạch</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dskehoach?.length == 0">
+                <td colspan="3" class="text-center">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let kh of dskehoach; let i = index">
+                <td class="text-center">
+                  {{i + 1}}
+                </td>
+                <td class="text-primary">
+                  <span class="router" (click)="detailKehoach(kh.id)">{{kh.tenKeHoach ? kh.tenKeHoach : ''}}</span>
+                </td>
+                <td>{{ (kh.chiTietKhTinh.ngayDuocGiaoKeHoach ? kh.chiTietKhTinh.ngayDuocGiaoKeHoach : '')| date: 'dd/MM/yyyy'
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation" *ngIf="pager.pages && pager?.pages.length">
+            <ul class="pagination justify-content-end mb-1">
+
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang đầu">
+                <a class="page-link" aria-label="First" (click)="setPage(0)">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang trước">
+                <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                  <span aria-hidden="true">&#60;</span>
+                </a>
+              </li>
+              <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+                <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top"
+                title="Trang sau">
+                <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                  <span aria-hidden="true">&#62;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top"
+                title="Trang cuối">
+                <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div> -->
+      <!-- Tìm kiếm theo năm-->
+      <div class="cnt-page ttkt-page">
+        <div class="ttkt-form-default">
+          <form novalidate>
+            <fieldset>
+              <legend>Tìm kiếm </legend>
+              <div class="row">
+                <!-- Left-->
+                <div class="col-12 col-md-6">
+                  <!-- năm-->
+                  <div class="form-group">
+                    <label for="selectYear">Năm: </label>
+                      <select name=""  class="custom-select" [formControl]="selectYear" (change)="changeYear()">
+                        <option  [selected]= "true"  [value]="ALLYEAR">Chọn</option>
+                        <option *ngFor="let item of listYear" [value]="item">{{ item }}</option>
+                      </select>
+                  </div>
+                </div>
+                <!-- right-->
+                <div class="col-12 col-md-6">
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div class="tab-pane  active" id="dsKHDieuChinh" role="tabpanel">
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th rowspan="2">STT</th>
+                    <th rowspan="2">Năm</th>
+                    <th rowspan="2">Tên kế hoạch</th>
+                    <th rowspan="2">Thanh tra chuyên
+                      <br>ngành đóng</th>
+                    <th rowspan="2">Thanh tra, kiểm tra
+                      <br>liên ngành</th>
+                    <th colspan="4">Kiểm tra</th>
+                    <th rowspan="2">Tổng số</th>
+                    <th rowspan="2">Ngày gửi</th>
+                    <th rowspan="2">Số lần điều chỉnh</th>
+                  </tr>
+                  <tr>
+                    <th>Nội bộ cơ
+                      <br> quan BHXH</th>
+                    <th>Đơn vị
+                      <br> SDLĐ</th>
+                    <th>Cơ sở khám
+                      <br> chữa bệnh</th>
+                    <th>Đại lý thu,
+                      <br> đại diện chi trả</th>
+                  </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dskhdieuchinh?.length == 0">
+                <td colspan="13" class="text-center">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let kh of dskhdieuchinh; let i = index">
+                <td class="text-center">
+                  {{i + 1}}
+                </td>
+                <td>{{ kh ? kh.keHoachYear : '' }}</td>
+                <td class="text-primary">
+                  <span class="router" (click)="detailKehoach(kh.id)">{{ kh.tenKeHoach ? kh.tenKeHoach : ''}}</span>
+                </td>
+                <!-- <td>{{ (kh.chiTietKhTinh.ngayXinDieuChinh ? kh.chiTietKhTinh.ngayXinDieuChinh : '') | date: 'dd/MM/yyyy' }}</td> -->
+                <td class="text-right">{{kh.chiTietKhTinh.thanhTraDvSDLD}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.lienNganhThanhTra + kh.chiTietKhTinh.lienNganhKiemTra}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.kiemTraBHXH}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.kiemTraDvSDLD}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.kiemTraCsKCB}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.kiemTraDaiLyThuChi}}</td>
+                <td class="text-right">{{kh.chiTietKhTinh.tongSo}}</td>
+                <td class="text-right">{{kh.ngayGuiTW|date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center">
+                  <div>{{kh.currentDieuChinh}} lần</div>
+                </td>
+                <!-- <td>{{ (getStatus(kh.status) ? getStatus(kh.status) : '').name }}</td> -->
+              </tr>
+            </tbody>
+          </table>
+          <!-- <nav aria-label="Page navigation" *ngIf="pager.pages && pager?.pages.length">
+            <ul class="pagination justify-content-end mb-1">
+
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang đầu">
+                <a class="page-link" aria-label="First" (click)="setPage(0)">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}" data-toggle="tooltip" data-placement="top" title="Trang trước">
+                <a class="page-link" aria-label="Previous" (click)="setPage(pager.currentPage - 1)">
+                  <span aria-hidden="true">&#60;</span>
+                </a>
+              </li>
+              <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page - 1}">
+                <a class="page-link" (click)="setPage(page-1)">{{page}}</a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top"
+                title="Trang sau">
+                <a class="page-link" aria-label="Next" (click)="setPage(pager.currentPage + 1)">
+                  <span aria-hidden="true">&#62;</span>
+                </a>
+              </li>
+              <li class="page-item" [ngClass]="{disabled:pager.currentPage + 1 === pager.totalPages}" data-toggle="tooltip" data-placement="top"
+                title="Trang cuối">
+                <a class="page-link" aria-label="Last" (click)="setPage(pager.totalPages - 1)">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav> -->
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,53 @@
+<div class="modal-content">
+  <!-- Modal Header -->
+  <div class="modal-header">
+    <h4 class="modal-title">Thêm phân loại tiêu thức
+    </h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body">
+    <div class="table-responsive table-scroll-x">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th class="text-center th-size">STT</th>
+            <th>Mã tiêu thức</th>
+            <th class="table-resize">Tên tiêu thức</th>
+            <th class="text-center">Chọn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!dataTieuThuc.length">
+            <td colspan="3" class="text-center">
+              Không có dữ liệu
+            </td>
+          </tr>
+          <tr *ngFor="let item of dataTieuThuc; let i = index">
+            <td class="text-center">{{pageSize * currentPage +i + 1}}</td>
+            <td class="text-center">{{convertToRomanNumber(pageSize * currentPage + i + 1)}}</td>
+            <td class="text-primary" (click)="showChiTietTieuThuc(item.id)">{{ item.tenPhanLoai }}</td>
+            <td class="text-center">
+              <div>
+                <button type="button" class="btn btn-primary" (click)="clickOk(item.tenPhanLoai)">Thêm</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--padding-->
+      <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+        <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+      </nav>
+    </div>
+
+  </div>
+
+  <!-- Modal footer -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+  </div>
+</div>

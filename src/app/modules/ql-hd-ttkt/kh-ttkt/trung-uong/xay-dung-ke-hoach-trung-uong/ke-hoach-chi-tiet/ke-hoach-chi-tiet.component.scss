@@ -1,0 +1,11 @@
+@import './../../../../../../../styles/_variables.scss';
+textarea:disabled {
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.visibled {
+    display: none;
+}

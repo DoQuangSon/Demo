@@ -1,0 +1,102 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title">Chi tiết Sổ theo dõi tiếp công dân</span>
+    </div>
+    <div class="col-md-4 pull-right">
+      <button type="button" class="btn btn-link" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <fieldset>
+      <div class="table-responsive table-scroll-x">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th rowspan="3" class="th-size">STT</th>
+              <th rowspan="3">Ngày tiếp</th>
+              <th rowspan="3">Họ tên công dân,địa chỉ</th>
+              <th rowspan="3" class="table-resize">Số người</th>
+              <th rowspan="3" class="table-resize">Đoàn đông người</th>
+              <th colspan="2" rowspan="1">Số vụ việc</th>
+              <th colspan="5" rowspan="1">Phân loại vụ việc</th>
+              <th rowspan="3" >Tóm tắt nội dung trình bày</th>
+              <th rowspan="3" >Công dân ký tên</th>
+              <th rowspan="3" >Tóm tắt nội dung cán bộ trả lời</th>
+              <th colspan="4" rowspan="1">Kết quả tiếp công dân</th>
+              <th rowspan="3" >Chữ ký của viên chức tiếp CD</th>
+              <th rowspan="3" >Chữ ký của Thủ trưởng đơn vị tiếp CD đột xuất, định kỳ theo quy định</th>
+              <th rowspan="3" >Ghi chú</th>
+              <th rowspan="3" >Chữ ký nhận đơn và tài liệu kèm theo của Văn thư cơ quan</th>
+            </tr>
+            <tr>
+              <th colspan="1" rowspan="2">Cũ</th>
+              <th colspan="1" rowspan="2">Mới phát sinh</th>
+              <th colspan="1" rowspan="2">Khiếu nại</th>
+              <th colspan="2" rowspan="1">Tố cáo</th>
+              <th colspan="1" rowspan="2">Kiến nghị phản ánh</th>
+              <th colspan="1" rowspan="2">Tổng</th>
+              <th colspan="1" rowspan="2">Chưa được giải quyết</th>
+              <th colspan="3" rowspan="1">Đã được giải quyết</th>
+            </tr>
+            <tr>
+              <th colspan="1" rowspan="1">TCCB</th>
+              <th colspan="1" rowspan="1">TCĐT</th>
+              <th colspan="1" rowspan="1">Đã có công văn trả lời hoặc đã được thụ lý nhưng chưa có Quyết định GQKN hoặc KL NDTC</th>
+              <th colspan="1" rowspan="1">Đã có QĐ GQKN (Lần 1, 2) hoặc KL NDTC</th>
+              <th colspan="1" rowspan="1">Đã có Bản án của Toà án hoặc kết quả xử lý sau TC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="listData.length == 0">
+              <td class="text-center" colspan="27">Không có dữ liệu</td>
+            </tr>
+            <tr *ngFor="let item of listData; let i = index">
+              <td class="text-center">{{i + 1}}</td>
+              <td>{{item.ngayTiep | date: 'dd/MM/yyyy'}}</td>
+              <td>{{item.hoTenCd}}</td>
+              <td>{{item.soNguoi}}</td>
+              <td *ngIf= "item.doanDongNguoi">X</td>
+              <td *ngIf= "!item.doanDongNguoi"></td>
+              <td *ngIf= "!item.moiPhatSinh"> X </td>
+              <td *ngIf= "item.moiPhatSinh"></td>
+              <td *ngIf= "item.moiPhatSinh">X</td>
+              <td *ngIf= "!item.moiPhatSinh"></td>
+              <td>{{ getCheck(item.phanLoaiNdId, 1) }}</td>
+              <td>{{ getCheck(item.phanLoaiNdId, 2) }}</td>
+              <td>{{ getCheck(item.phanLoaiNdId, 3) }}</td>
+              <td>{{ getCheck(item.phanLoaiNdId, 4) }}</td>
+              <td>{{item.tong}}</td>
+              <td>{{item.ndCdTrinhBay}}</td>
+              <td></td>
+              <td>{{item.ndCbTraLoi}}</td>
+              <!-- DON_THU_STATUS_CHUA_XU_LY -->
+              <td>{{ getCheck(item.kqTiepCd, 0) }}</td> 
+              <!-- DON_THU_STATUS_DA_THU_LY_CHUA_CO_QD -->
+              <td>{{ getCheck(item.kqTiepCd, 3) }}</td>
+              <!-- DON_THU_STATUS_DA_THU_LY_DA_CO_QD -->
+              <td>{{ getCheck(item.kqTiepCd, 4) }}</td>
+              <!-- DON_THU_STATUS_CO_KQ_TOA_AN -->
+              <td>{{ getCheck(item.kqTiepCd, 5) }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              
+            </tr>
+          </tbody>
+
+        </table>
+          <!-- <div class="float-right">
+              <button type="button" class="btn btn-success" (click)="printMau28(1)">
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i> In PDF</button>&nbsp;
+              <button type="button" class="btn btn-primary" (click)="printMau28(2)">
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i> In EXCEL</button>
+          </div> -->
+      </div>
+    </fieldset>
+  </div>
+</div>

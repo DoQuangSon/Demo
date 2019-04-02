@@ -1,0 +1,49 @@
+@import './../../../../../../../styles/_variables.scss';
+textarea:disabled {
+    padding: 0;
+    max-width: 100%;
+    border: none;
+    background-color: transparent;
+}
+
+table {
+    min-width: 1200px;
+    tbody {
+        tr {
+            th,
+            td {
+                vertical-align: middle;
+                p {
+                    margin-bottom: 0px;
+                }
+            }
+            td:last-child {
+                text-align: center;
+            }
+        }
+    }
+}
+
+textarea:disabled {
+    outline: none;
+    border: none;
+    width: 100%
+}
+
+.visibled {
+    display: none;
+}
+
+.redirectChitiet {
+    cursor: pointer;
+    color: $colorBlue;
+}
+
+.redirectChitiet:hover {
+    color: $colorTextDanger;
+    text-decoration: underline;
+}
+
+.black{
+    font-weight: bold;
+}

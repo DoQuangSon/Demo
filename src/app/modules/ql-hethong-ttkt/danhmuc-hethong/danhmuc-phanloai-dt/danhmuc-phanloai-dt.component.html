@@ -1,0 +1,107 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Danh mục phân loại đối tượng</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button type="button" class="btn btn-primary" (click)="action('add')">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default giaiquyet-dt">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh mục phân loại đối tượng</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh mục phân loại đối tượng</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center th-size">STT</th>
+                <th class="table-resize">Tên đối tượng</th>
+                <th class="text-center th-size">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tl of listDanhMucCanCu; let i = index">
+                <td class="text-center">{{ pageSize * number + i + 1 }}</td>
+                <td>{{ tl.tenDanhMuc }}</td>
+                <td class="text-center">
+                  <div>
+                    <button type="button" class="btn btn-primary btn-sm edit" (click)="action('edit', tl.id)">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> Sửa</button>
+                    <button *ngIf="tl.actived" type="button" class="btn btn-danger btn-sm delete" (click)="action('deactive', tl.id)">
+                      <i class="fa fa-ban" aria-hidden="true"></i> Deactive</button>
+                    <button *ngIf="!tl.actived" type="button" class="btn btn-success btn-sm delete" (click)="action('active', tl.id)">
+                      <i class="fa fa-check" aria-hidden="true"></i> Active</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!listDanhMucCanCu.length">
+                <td colspan="3" class="text-center">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div bsModal #modalDanhmucDonvi="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog addModalDia">
+    <div class="modal-content addModalContent">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title_model}}</h5>
+        <button type="button" class="close pull-right" (click)="modalDanhmucDonvi.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form novalidate [formGroup]="modalActionDMCanCuForm">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group row" [ngClass]="(modalActionDMCanCuForm.controls.tenDanhMuc?.errors && (modalActionDMCanCuForm.controls.tenDanhMuc?.touched || modalActionDMCanCuForm.controls.tenDanhMuc?.dirty)) ? 'has-danger' : ''">
+                <label for="" class="col-form-label col-md-4 text-lg-right">Tên đối tượng:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="col-md-8">
+                  <input class="form-control" (blur)="onBlur()" #tenDanhMucDialog type="text" formControlName="tenDanhMuc" [attr.disabled]="statusOption == 'delete' ? true:null">
+                  <p class="text-danger" *ngIf="blur && tenDanhMucDialog.value.trim() == ''">Tên đối tượng không được để trống</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'add'" (click)="onSubmitAction('add')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Ghi nhận</button>
+          <button type="button" class="btn btn-primary" *ngIf="statusOption == 'edit'" (click)="onSubmitAction('edit')">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button type="button" class="btn btn-danger" *ngIf="statusOption == 'deactive'" (click)="onSubmitAction('deactive')">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Deactive</button>
+          <button type="button" class="btn btn-check" *ngIf="statusOption == 'active'" (click)="onSubmitAction('active')">
+            <i class="fa fa-trash delete" aria-hidden="true"></i> Active</button>
+          <button type="button" class="btn btn-default" (click)="modalDanhmucDonvi.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

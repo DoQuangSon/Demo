@@ -1,0 +1,75 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        .router {
+            cursor: pointer;
+            color: $colorBlue;
+            text-decoration: underline;
+        }
+        .router:hover {
+            color: red;
+            text-decoration: underline;
+        }
+    }
+}
+
+.sendTao {
+    margin-top: 150px;
+}
+
+iframe {
+    width: 100%;
+    height: 1200px;
+}
+
+.printDoc {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+}
+
+.printDocDia {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+.table-responsive {
+    overflow-x: hidden;
+    .table {
+        thead {
+            background-color: $colorLightGray;
+            th {
+                text-align: center;
+                vertical-align: middle
+            }
+        }
+        tbody {
+            th:first-child {
+                text-align: center;
+            }
+            th,
+            td {
+                p {
+                    margin-bottom: 0px
+                }
+            }
+            td:first-child {
+                text-align: center;
+            }
+            td:nth-child(3) {
+                text-align: left;
+            }
+            td:nth-child(4) {
+                text-align: left;
+            }
+        }
+    }
+}
+
+.m_left{
+    margin-left: 20px;
+    margin-top: 5px;
+}

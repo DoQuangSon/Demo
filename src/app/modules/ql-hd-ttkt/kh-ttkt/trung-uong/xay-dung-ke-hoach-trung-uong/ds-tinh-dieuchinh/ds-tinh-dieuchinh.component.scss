@@ -1,0 +1,33 @@
+@import './../../../../../../../styles/_variables.scss';
+.cnt-page.ttkt-page {
+    .ttkt-form-default {
+        input {
+            @media (max-width: 575px) {
+                margin-bottom: 15px;
+            }
+        }
+        .table-responsive {
+            table {
+                min-width: 1100px;
+                tbody {
+                    tr {
+                        a {
+                            cursor: pointer;
+                            &:hover {
+                                color: $colorBlue;
+                                text-decoration: underline;
+                            }
+                        }
+                        td:last-child {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.visibled {
+    display: none
+}

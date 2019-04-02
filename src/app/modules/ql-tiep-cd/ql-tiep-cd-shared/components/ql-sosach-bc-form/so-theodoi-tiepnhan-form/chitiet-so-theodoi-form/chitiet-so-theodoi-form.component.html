@@ -1,0 +1,100 @@
+<h4 class="heading-page">
+    <div class="row">
+      <div class="col-md-8">
+        <span class="page-title">Chi tiết Sổ theo dõi tiếp nhận, giải quyết đơn thư</span>
+      </div>
+      <div class="col-md-4 pull-right">
+        <button type="button" class="btn btn-link" (click)="onClose()">
+          <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+      </div>
+    </div>
+  </h4>
+  <div class="cnt-page ttkt-page">
+    <div class="ttkt-form-default">
+      <fieldset>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th rowspan="2" class="th-size">STT</th>
+                <th rowspan="2">Số CV đến</th>
+                <th rowspan="2">Ngày nhận</th>
+                <th rowspan="2" class="table-resize">Họ tên, địa chỉ công dân</th>
+                <th rowspan="2" class="table-resize">Nội dung đơn</th>
+                <th colspan="5" rowspan="1">Phân loại đơn</th>
+                <th rowspan="2">Giải quyết</th>
+                <th rowspan="2">Trích yếu</th>
+              </tr>
+              <tr>
+                <th>Theo nội dung</th>
+                <th>Theo số lượng người đứng tên</th>
+                <th>Theo điều kiện xử lý</th>
+                <th>Theo thẩm quyền</th>
+                <th>Theo trình tự giải quyết</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="thongTinSoDTOList && thongTinSoDTOList.length == 0">
+                <td class="text-center" colspan="12">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of thongTinSoDTOList; let i = index">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{item.soCvDen}}</td>
+                <td>{{item.ngayNhan | date:"dd/MM/yyyy"}}</td>
+                <td>
+                  <p>{{item.hoTenCd}}</p>
+                  <p>{{item.diaChi}}</p>
+                </td>
+                <td>{{item.noiDungDon}}</td>
+                <td>{{item.theoNoiDung}}</td>
+                <td>{{item.soNguoi}}</td>
+                <td>{{item.theoDieuKienXuLy}}</td>
+                <td>{{item.theoThamQuyen}}</td>
+                <td>{{item.theoTrinhTuGiaiQuyet}}</td>
+                <td>{{item.giaiQuyet}}</td>
+                <td>{{item.cot28}}</td>
+              </tr>
+            </tbody>
+            <tr>
+              <td colspan="4">Đơn kỳ trước chuyển sang: {{kyTruocChuyenSang}}</td>
+              <td colspan="4"></td>
+              <td colspan="4">Tổng số đơn đã giải quyết: {{tongSoDonDaGiaiQuyet}}</td>
+            </tr>
+            <tr>
+              <td colspan="4">Tổng số đơn tiếp nhận trong kỳ: {{tiepNhanTrongKy}}
+              </td>
+              <td colspan="4"></td>
+              <td colspan="1">Trong đó</td>
+              <td colspan="3">{{khieuNaiDaGQ}} đơn khiếu nại</td>
+            </tr>
+  
+            <tr>
+              <td colspan="1">Trong đó</td>
+              <td  colspan="4">{{khieuNaiTrongKy}} đơn khiếu nại</td>
+              <td colspan="4"></td>
+              <td colspan="3">{{toCaoDaGQ}} đơn tố cáo ( {{tcCbDaGQ}} đơn TCCB, {{tcDtDaGQ}} đơn TCĐT)</td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="4">{{toCaoTrongKy}} đơn tố cáo ({{tcCbTrongKy}} đơn TCCB, {{tcDtTrongKy}} đơn TCĐT)</td>
+              <td colspan="4"></td>
+              <td colspan="3">{{kienNghiDaGQ}} đơn KNPA</td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="4">{{kienNghiTrongKy}} đơn KNPA</td>
+              <td colspan="3"></td>
+              <td colspan="4" class="text-left">Tồn: {{(kyTruocChuyenSang + tiepNhanTrongKy) - tongSoDonDaGiaiQuyet }} </td>
+  
+            </tr>
+          </table>
+            <div class="float-right">
+                <!--<button type="button" class="btn btn-success" (click)="printMau28(1)">-->
+                    <!--<i class="fa fa-file-excel-o" aria-hidden="true"></i> In PDF</button>&nbsp;-->
+                <button type="button" class="btn btn-primary" (click)="printMau28(2)">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>Xuất EXCEL</button>
+            </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>

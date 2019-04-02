@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Lịch sử tiếp công dân</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="table-responsive table-scroll-x">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th></th>
+          <th>Họ tên</th>
+          <th>Địa chỉ</th>
+          <th>Phân loại</th>
+          <th>Nội dung công dân trình bày</th>
+          <th>Ngày tạo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="dslichsu.length == 0">
+          <td class="text-center" colspan="7">Không có dữ liệu</td>
+        </tr>
+        <tr *ngFor="let item of dslichsu; let i = index">
+          <td class="text-center">{{pagging.itemsPerPage  * (pagging.currentPage - 1) + i + 1}}</td>
+          <td>
+              <label class="custom-control custom-checkbox">
+                  <input (click)="onClickCheck(item, $event)" type="checkbox" value="1" class="custom-control-input" />
+                  <span class="custom-control-indicator"></span>
+                </label>
+          </td>
+          <td>{{item.hoTenCongDan}}</td>
+          <td>{{item.diaChiCongDan}}</td>
+          <td class="text-center">{{ item.tenPhanLoaiNoiDung}}</td>
+          <td>{{ item.noiDung}}</td>
+          <td class="text-center">{{ item.createDateTime | date:"dd/MM/yyyy"}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- pagination -->
+    <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+      <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+      </pagination>
+    </nav>
+  </div>
+</div>

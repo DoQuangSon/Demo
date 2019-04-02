@@ -1,0 +1,38 @@
+<!-- gui Modal -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title pull-left">Gửi quyết định</h5>
+      <button type="button" class="close pull-right" (click)="modalGui.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="guiModalForm">
+        <div class="form-group row">
+          <label for="" class="col-form-label col-md-3 text-lg-right">Gửi:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-9">
+            <select class="custom-select" id="" formControlName="inputSend" [attr.disabled]="true">
+              <option value="" selected>Chọn tỉnh</option>
+              <option *ngFor="let tinh of dsTinh" [value]="tinh.dmTinhHuyenId || tinh.id">{{ tinh.tenTinhHuyen }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-form-label col-md-3 text-lg-right">Lời nhắn:
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-9">
+            <textarea class="form-control form-rounded" formControlName="loiNhan" rows="3"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="onSubmitGuiModal()">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+      <button type="button" class="btn btn-default" (click)="modalGui.hide()">
+        <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+    </div>
+  </div>

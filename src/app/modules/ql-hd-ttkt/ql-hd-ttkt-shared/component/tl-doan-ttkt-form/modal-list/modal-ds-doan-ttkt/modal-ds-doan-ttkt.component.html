@@ -1,0 +1,51 @@
+<!-- modalThanhVien -->
+<div class="modal-content" [ngClass]="{'disable-form': isDelete}">
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      <i [ngClass]="iconModalHeader"></i> {{titleModal}}</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalThanhVien.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [formGroup]="formThanhVien">
+    
+    <ttkt-input
+      type="text"
+      label="Họ tên"
+      sm="4-8"
+      [formControl]="formThanhVien.controls.hoVaTen"
+    ></ttkt-input>
+    <ttkt-input
+      type="select"
+      label='Chức vụ đoàn'
+      sm="4-8"
+      [formControl]="formThanhVien.controls.chucVuDoan"
+      [data]="{options: chucDanhDoan, idType: 'text'}"
+    ></ttkt-input>
+
+      <ttkt-input
+          sm="4-8"
+          label="Chức vụ công tác"
+          [formControl]="formThanhVien.controls.chucVuCongTac"
+          type="text"
+          [data]="{options: chucDanh}"
+      ></ttkt-input>
+
+    <ttkt-input
+      sm="4-8"
+      label="Đơn vị"
+      [formControl]="formThanhVien.controls.dmCTriPHopId"
+      type="select"
+      [data]="{
+        options: listDviDsDoanTTKT,
+        placeholder: 'Chọn đơn vị'
+      }"
+    ></ttkt-input>
+  </div>
+  <div class=" modal-footer ">
+    <button [ngClass]="colorButtonSave" (click)="saveThanhVien()">
+      <i [ngClass]="iconButtonSave" aria-hidden="true "></i> {{nameButtonSave}}</button>
+    <button class="btn btn-default" (click)="modalThanhVien.hide() ">
+      <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+  </div>
+</div>

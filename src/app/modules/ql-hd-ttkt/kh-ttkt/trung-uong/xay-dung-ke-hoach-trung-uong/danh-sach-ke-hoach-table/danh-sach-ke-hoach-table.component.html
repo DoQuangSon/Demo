@@ -1,0 +1,341 @@
+<div class="table-responsive table-scroll-x">
+  <table class="table table-bordered table-hover" [formGroup]="formGroup">
+    <thead>
+      <tr>
+        <th rowspan="2" class="th-size">STT
+          <br>
+        </th>
+        <th rowspan="2">BHXH Tỉnh/TP</th>
+        <th rowspan="2">Thanh tra chuyên
+          <br>ngành đóng</th>
+        <th rowspan="2">Thanh tra, kiểm tra
+          <br>liên ngành</th>
+        <th colspan="4">Kiểm tra</th>
+        <th rowspan="2">Tổng số</th>
+        <th rowspan="2" *ngIf="!tinh">Ngày gửi</th>
+        <th rowspan="2" *ngIf="!pending && !tienHanhGiao">Số lần điều chỉnh</th>
+        <th rowspan="2" *ngIf="editGhichu">Ghi chú</th>
+        <th *ngIf="pending==true" rowspan="2" class="th-size">Thao tác</th>
+        <th rowspan="2" *ngIf="editGhichu" class="th-size">Thao tác
+          <br>
+        </th>
+        <th rowspan="2" *ngIf="coDieuChinh" class="th-size">Thao tác
+          <br>
+        </th>
+      </tr>
+      <tr>
+        <th>Nội bộ cơ
+          <br> quan BHXH</th>
+        <th>Đơn vị
+          <br> SDLĐ</th>
+        <th>Cơ sở khám
+          <br> chữa bệnh</th>
+        <th>Đại lý thu,
+          <br> đại diện chi trả</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="listKeHoach">
+      <tr *ngFor="let formItem of listKeHoachFormArray.controls; let i = index" [formGroup]="formItem">
+        <td class="text-center">{{ i + 1 }}</td>
+        <td class="text-left">
+          <p class="redirectChitiet" (click)="redirectChitiet(formItem.value.id ? formItem.value.id : '')">{{formItem.value.tenTinhHuyen
+            ? formItem.value.tenTinhHuyen : ''}}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.thanhTraDvSDLD : ''}}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? ( formItem.value.chiTietKhTinh.lienNganhThanhTra +
+            formItem.value.chiTietKhTinh.lienNganhKiemTra ) : '' }}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.kiemTraBHXH : ''}}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.kiemTraDvSDLD : '' }}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.kiemTraCsKCB : '' }}</p>
+        </td>
+        <td class="text-right">
+          <p>{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.kiemTraDaiLyThuChi : '' }}</p>
+        </td>
+        <td class="text-right">{{ formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.tongSo : '' }}</td>
+        <ng-container *ngIf="!tinh">
+          <td>
+            <p>{{ (formItem.value.chiTietKhTinh ? formItem.value.chiTietKhTinh.ngayGuiTW : '') | date: "dd/MM/yyyy"
+              }}
+            </p>
+          </td>
+        </ng-container>
+        <ng-container *ngIf="!pending && !tienHanhGiao">
+          <td class="text-center">{{ formItem.value.currentDieuChinh }} lần</td>
+          <td *ngIf="!pending && !tinh && !isDaGiao && editGhichu" class="text-center">
+            <textarea autosize disabled="disabled">{{ formItem.value.ghiChuOfTW ? formItem.value.ghiChuOfTW.ghiChuOfTW : '' }}</textarea>
+          </td>
+        </ng-container>
+        <td *ngIf="pending==true" class="text-center">
+          <div>
+            <button type="button" class="btn btn-success btn-sm edit" (click)="duyetKH(formItem.value.id, formItem.value.keHoachYear)">
+              <i class="fa fa fa-check" aria-hidden="true"></i> Duyệt</button>
+            <button type="button" class="btn btn-default btn-sm delete" (click)="tuChoiKH(formItem.value.id, formItem.value.keHoachYear)">
+              <i class="fa fa-ban" aria-hidden="true"></i> Từ chối</button>
+          </div>
+        </td>
+        <ng-container *ngIf="editGhichu">
+          <td class="text-center">
+            <div>
+              <button type="button" class="btn btn-primary btn-sm edit" (click)="openModalEditGhiChu(formItem.value.dmTinhHuyenId, formItem.value.keHoachYear)">
+                <i class="fa fa-pencil" aria-hidden="true"></i> Ghi chú</button>
+            </div>
+          </td>
+        </ng-container>
+        <td *ngIf="coDieuChinh" class="text-center">
+          <div>
+            <button type="button" class="btn btn-primary btn-sm edit" (click)="openModalDieuChinh(formItem.value.id)"
+              *ngIf="formItem.value.id">
+              <i class="fa fa-pencil" aria-hidden="true"></i> Cập nhật</button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="listKeHoachFormArray.controls.length && displayTongSo">
+        <td colspan="2" class="text-center black">Tổng số</td>
+        <td class="text-right black">{{ tongSoTTDVSDLD }}</td>
+        <td class="text-right black">{{ tongSoLNTT + tongSoLNKT }}</td>
+        <td class="text-right black">{{ tongSoCQBHXH }}</td>
+        <td class="text-right black">{{ tongSoDDTCT }}</td>
+        <td class="text-right black">{{ tongSoDVSDLD }}</td>
+        <td class="text-right black">{{ tongSoCSKCB }}</td>
+        <td class="text-right black">{{ tongSo }}</td>
+        <td *ngIf="!tinh"></td>
+        <td *ngIf="!pending && !tienHanhGiao"></td>
+        <td *ngIf="editGhichu"></td>
+        <td *ngIf="editGhichu"></td>
+        <td *ngIf="coDieuChinh"></td>
+      </tr>
+      <tr *ngIf="!listKeHoachFormArray.controls.length">
+        <td [attr.colspan]="sumColumn" class="text-center">
+          Không có dữ liệu
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- dieuchinh modal -->
+<div bsModal #dieuChinhModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="dieuChinhKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Điều chỉnh kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="dieuChinhModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">BHXH Tỉnh/TP:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="text" formControlName="bhxhTinhTp" readonly>
+              <!-- <select class="custom-select" id="selectState" formControlName="bhxhTinhTp" [attr.disabled]=true>
+                <option value="0" selected>Chọn tỉnh</option>
+                <option *ngFor="let choice of listTinhThanh" [value]="choice.id">{{ choice.tenTinhHuyen }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Thanh tra chuyên ngành:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="thanhTraChuyenNganh" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{
+                formService.getErrorMsg(dieuChinhKehoachForm.get('thanhTraChuyenNganh')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.thanhTraChuyenNganh?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Nội bộ cơ quan BHXH:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="noiBoCoQuan" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{ formService.getErrorMsg(dieuChinhKehoachForm.get('noiBoCoQuan')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.noiBoCoQuan?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Đơn vị SDLĐ:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="donViSdld" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{ formService.getErrorMsg(dieuChinhKehoachForm.get('donViSdld')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.donViSdld?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Cơ sở khám chữa bệnh:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="coSoKhamChuaBenh" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{
+                formService.getErrorMsg(dieuChinhKehoachForm.get('coSoKhamChuaBenh')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.coSoKhamChuaBenh?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Đại lý thu, đại diện chi trả:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="daiLyThu" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{ formService.getErrorMsg(dieuChinhKehoachForm.get('daiLyThu')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.daiLyThu?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Liên ngành Thanh Tra:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="lienNganhTT" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{ formService.getErrorMsg(dieuChinhKehoachForm.get('lienNganhTT')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.lienNganhTT?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Liên ngành Kiểm Tra:
+              <span class="text-danger">*</span>
+            </label>
+            <div class="col-xl-6">
+              <input class="form-control" type="number" formControlName="lienNganhKT" (change)="changeTongSo(dieuChinhKehoachForm.value)">
+              <p class="help-block text-danger">{{ formService.getErrorMsg(dieuChinhKehoachForm.get('lienNganhKT')) }}</p>
+              <p class="help-block text-danger" *ngIf="dieuChinhKehoachForm.controls.lienNganhKT?.errors?.pattern">Không
+                nhập số âm</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-form-label col-xl-6 text-lg-right">Tổng số:
+            </label>
+            <div class="col-xl-6">
+              <p class="form-control">
+                <b>{{ tongSoDialog}}</b>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onSubmitDieuChinh()" [disabled]="dieuChinhKehoachForm.invalid">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button class="btn btn-default" (click)="onCancelDieuChinh()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- duyet modal -->
+<div bsModal #duyetModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="duyetKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Duyệt kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="duyetModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Bạn có chắc chắn muốn duyệt kế hoạch?</h6>
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="duyet()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+          <button class="btn btn-default" (click)="duyetModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- tu choi modal -->
+<div bsModal #tuChoiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="tuChoiKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Từ chối kế hoạch</h5>
+          <button type="button" class="close pull-right" (click)="tuChoiModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="visibled">
+            <input type="text" formControlName="id">
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <ttkt-input autosize type="textarea" md="4-8" label="Lý do từ chối" rows="5" formControlName="lyDoTuChoi"></ttkt-input>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" (click)="tuChoi()">
+            <i class="fa fa-ban" aria-hidden="true"></i> Đồng ý</button>
+          <button class="btn btn-default" (click)="tuChoiModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div bsModal #editGhichuModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <form novalidate [formGroup]="suaGhiChuKehoachForm">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left">Cập nhật ghi chú</h5>
+          <button type="button" class="close pull-right" (click)="editGhichuModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-form-label col-md-2">Ghi chú:</label>
+            <textarea autosize class="form-control col-md-9" autosize rows="5" formControlName="ghiChuOfTW"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="onEditGhichu()" [disabled]="!suaGhiChuKehoachForm.valid">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật</button>
+          <button class="btn btn-default" (click)="editGhichuModal.hide()">
+            <img src="assets/images/icon_dong.svg" class="img-close">Thoát</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

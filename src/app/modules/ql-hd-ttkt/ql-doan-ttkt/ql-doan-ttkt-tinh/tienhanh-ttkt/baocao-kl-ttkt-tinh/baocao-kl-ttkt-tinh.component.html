@@ -1,0 +1,278 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span>{{title}}</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+      <button class="btn btn-success">
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Xuất Excel</button>
+      <button class="btn btn-default">
+        <i class="fa fa-print" aria-hidden="true"></i> In</button>
+      <button type="button" class="btn btn-link" (click)="onClose()">
+        <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form [formGroup]='KetQuaTTKTForm'>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Thông tin chung</span>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Tên báo cáo:</label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" type="text" formControlName="tenBaoCao">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Số:</label>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" type="text" formControlName="soBaoCao">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Từ ngày:</label>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="tuNgay"></my-date-picker>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Đến ngày:</label>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="denNgay"></my-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label class="col-form-label">Tên đoàn:</label>
+              </div>
+              <div class="col-xl-8">
+                <input type="" class="form-control" formControlName="tenDoan" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <!-- 1 -->
+      <fieldset>
+        <legend>Số biên bản làm việc: 3/10</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số biên bản làm việc: 3/10</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th>Biên bản số</th>
+                <th>Đơn vị</th>
+                <th>Ngày lập</th>
+                <th>Người lập</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--<tr *ngFor="let item of dsDonvi; let i = index">-->
+                <!--<td>{{ item.id}}</td>-->
+                <!--<td class="text-left text-primary">-->
+                  <!--<span class="router" (click)="detailtheodoi(item.id)">{{item.name}}</span>-->
+                <!--</td>-->
+                <!--<td>{{item.canbottkt}}</td>-->
+                <!--<td class="text-left">{{ item.trangthai }}</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbhoan != ''">-->
+                    <!--{{item.bbhoan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> Xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbketluan != ''">-->
+                    <!--{{item.bbketluan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+              <!--</tr>-->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+      <!-- 2 -->
+      <fieldset>
+        <legend>Số biên bản VPHC: 3/10</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số biên bản VPHC: 3/10</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th>Biên bản số</th>
+                <th>Đơn vị</th>
+                <th>Ngày lập</th>
+                <th>Người lập</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--<tr *ngFor="let item of dsDonvi; let i = index">-->
+                <!--<td>{{ item.id}}</td>-->
+                <!--<td class="text-left text-primary">-->
+                  <!--<span class="router" (click)="detailtheodoi(item.id)">{{item.name}}</span>-->
+                <!--</td>-->
+                <!--<td>{{item.canbottkt}}</td>-->
+                <!--<td class="text-left">{{ item.trangthai }}</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbhoan != ''">-->
+                    <!--{{item.bbhoan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> Xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbketluan != ''">-->
+                    <!--{{item.bbketluan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+              <!--</tr>-->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+      <!-- 3 -->
+      <fieldset>
+        <legend>Số quyết định xử phạt VPHC: 3/10</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Số quyết định xử phạt VPHC: 3/10</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th>Biên bản số</th>
+                <th>Đơn vị</th>
+                <th>Ngày lập</th>
+                <th>Người lập</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--<tr *ngFor="let item of dsDonvi; let i = index">-->
+                <!--<td>{{ item.id}}</td>-->
+                <!--<td class="text-left text-primary">-->
+                  <!--<span class="router" (click)="detailtheodoi(item.id)">{{item.name}}</span>-->
+                <!--</td>-->
+                <!--<td>{{item.canbottkt}}</td>-->
+                <!--<td class="text-left">{{ item.trangthai }}</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbhoan != ''">-->
+                    <!--{{item.bbhoan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> Xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbketluan != ''">-->
+                    <!--{{item.bbketluan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+              <!--</tr>-->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+      <!-- 4 -->
+      <fieldset>
+        <legend>Nội dung TTKT</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Nội dung TTKT</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Nội dung vi phạm</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--<tr *ngFor="let item of dsDonvi; let i = index">-->
+                <!--<td>{{ item.id}}</td>-->
+                <!--<td class="text-left text-primary">-->
+                  <!--<span class="router" (click)="detailtheodoi(item.id)">{{item.name}}</span>-->
+                <!--</td>-->
+                <!--<td>{{item.canbottkt}}</td>-->
+                <!--<td class="text-left">{{ item.trangthai }}</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbhoan != ''">-->
+                    <!--{{item.bbhoan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> Xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+                <!--<td>-->
+                  <!--<div *ngIf="item.bbketluan != ''">-->
+                    <!--{{item.bbketluan}}-->
+                    <!--<button type="button" class="btn btn-success btn-sm">-->
+                      <!--<i class="fa fa-eye" aria-hidden="true"></i> xem</button>-->
+                  <!--</div>-->
+                <!--</td>-->
+              <!--</tr>-->
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

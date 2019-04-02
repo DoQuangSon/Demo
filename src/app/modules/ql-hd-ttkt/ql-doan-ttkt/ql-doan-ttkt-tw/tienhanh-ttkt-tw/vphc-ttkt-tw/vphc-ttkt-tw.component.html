@@ -1,0 +1,94 @@
+<h4 class="heading-page">
+  <span>{{title}}</span>
+  <button type="button" class="btn btn-link" (click)="onCloseVPHC()">
+    <i class="fa fa-angle-double-left fa-lg" aria-hidden="true"></i> Trở lại</button>
+</h4>
+
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="VPHCTwForm">
+      <!-- <div class="thuc-hien-kh child-node">
+        <div class="ttkt-node show">
+          <button class="btn btn-primary" (click)="themVPHCTw()">
+            <i class="fa fa-plus-circle fa-lg mr-0" aria-hidden="true"></i> Thêm mới {{ formChung.tenTitle }}</button>
+        </div>
+      </div> -->
+      <div formArrayName="VPHCTwMoi">
+        <div class="child-node" *ngFor="let item of formData.controls; let i = index">
+          <div class="ttkt-node show">
+            <i class="fa fa-caret-right" aria-hidden="true"></i>
+            <span>{{ formChung.tenTitle }} {{ i+1 }}</span>
+            <button class="btn btn-danger pull-right" (click)="xoaVPHCTw(i)">
+              <i class="fa fa-trash-o fa-lg mr-0" aria-hidden="true"></i> Xóa</button>
+          </div>
+          <div [formGroupName]="i">
+            <div class="noiDung">
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label" for="tenBienBan">{{ formChung.ten }}</label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input class="form-control" type="text" formControlName="tenBienBan" id="tenBienBan" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label" for="ngayLap">Ngày lập: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="ngayLap"></my-date-picker>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label" for="lyDoLap">Lý do lập: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <textarea class="form-control" type="text" formControlName="lyDoLap" id="lyDoLap"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label" for="nguoiLap">Người lập: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input class="form-control" type="text" formControlName="nguoiLap" id="nguoiLap" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6">
+                  <div class="form-group row">
+                    <div class="col-xl-4 text-xl-right">
+                      <label class="col-form-label" for="fileDinhKem">File đính kèm: </label>
+                    </div>
+                    <div class="col-xl-8">
+                      <input type="file" formControlName="fileDinhKem" id="fileDinhKem" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="thuc-hien-kh child-node">
+        <div class="ttkt-node show">
+          <button class="btn btn-primary" (click)="themVPHCTw()">
+            <i class="fa fa-plus-circle fa-lg mr-0" aria-hidden="true"></i> Thêm mới {{ formChung.tenTitle }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h4 class="modal-title">Xem lịch sử</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+      <div class="lan-chinh-sua"  *ngFor="let item of listLichSu; let i = index">
+        <hr>
+            <h3 style="text-align: center">Lần chỉnh sửa thứ {{listLichSu.length - i}}</h3>
+            <ttkt-thong-tin-chung-tinh [chiTietKH]="chiTietKH"></ttkt-thong-tin-chung-tinh>
+            <ng-container *ngIf="(this.item.soQuyetDinhDieuChinh !== undefined && this.item.soQuyetDinhDieuChinh !== null)
+            || (this.item.lyDoDieuChinh !== undefined && this.item.lyDoDieuChinh !== null)
+            || (this.item.ngayXinDieuChinh !== undefined && this.item.ngayXinDieuChinh !== null)">
+              <ttkt-thong-tin-dieu-chinh [chiTietKH]="item"></ttkt-thong-tin-dieu-chinh>
+            </ng-container>
+              <ttkt-kh-bhxh-tinh-table [listKehoach]="item.tinhDuKiens"></ttkt-kh-bhxh-tinh-table>
+            <hr>
+      </div>
+    </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+    </div>
+  </div>

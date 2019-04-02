@@ -1,0 +1,47 @@
+@import './../../../../../../../styles/_variables.scss';
+
+.heading-page .pull-right {
+  text-align: right
+}
+
+.heading-page button {
+  position: relative;
+  top: 0;
+  right: 0;
+  @media (max-width: 767px) {
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+  }
+}
+
+.cnt-page.ttkt-page {
+  .ttkt-form-default {
+    .table-responsive {
+      thead {
+        background-color: $colorLightGray;
+        th {
+          text-align: center;
+        }
+      }
+      tbody {
+        td {
+          text-align: center;
+        }
+        td:nth-child(2) {
+          text-align: left;
+        }
+        tr {
+          .router {
+            cursor: pointer;
+          }
+          .router:hover {
+            color: $colorBlue;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+

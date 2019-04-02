@@ -1,0 +1,98 @@
+@import './../../../../../../../styles/_variables.scss';
+.tableTV {
+    tbody {
+        tr {
+            td:first-child,
+            td:last-child {
+                text-align: center
+            }
+        }
+    }
+}
+
+.tableDV {
+    tbody {
+        tr {
+            th {
+                text-align: center;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+            td:first-child,
+            td:last-child {
+                text-align: center
+            }
+        }
+    }
+}
+
+.modal-xoa {
+    textarea {
+        width: 100%;
+    }
+    input {
+        background-color: white;
+    }
+}
+
+// select {
+//     width: 100%;
+// }
+textarea {
+    width: 100%;
+}
+
+.custom-control-input:checked~.custom-control-indicator {
+    color: #fff;
+    background-color: $colorBlue;
+}
+
+.required,
+.errMessage {
+    color: #ff0000;
+}
+
+.chekbox-content {
+    padding-top: calc(0.5rem - 1px * 2);
+    padding-bottom: calc(0.5rem - 1px * 2);
+    margin-bottom: 0;
+}
+
+.margin-top {
+    margin-top: -1rem;
+}
+
+.btn.btn-uploadfile {
+    @media (max-width: 1200px) {
+        margin-top: 12px;
+    }
+}
+
+.table-uploadfile {
+    thead {
+        background-color: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        tr {
+            th {
+                text-align: center;
+                vertical-align: middle;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                text-align: center;
+            }
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .custom-xl-2 {
+        right: 15px;
+    }
+}

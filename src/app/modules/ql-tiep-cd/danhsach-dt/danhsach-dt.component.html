@@ -1,0 +1,120 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Danh sách các đơn thư</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <!-- <button class="btn btn-default" (click)="isCollapseDirective = !isCollapseDirective">
+        <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button> -->
+      <!-- <button type="button" class="btn btn-primary">Danh sách đơn chờ xử lý</button> -->
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="dsDonThuForm">
+      <div>
+        <fieldset class="fieldset-search">
+          <legend>Thông tin tìm kiếm</legend>
+          <div id="thongtintimkiem">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <div class="col-xl-5 text-xl-right">
+                    <label class="col-form-label">Từ ngày: </label>
+                  </div>
+                  <div class="col-xl-7">
+                    <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="tungay"></my-date-picker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group row">
+                    <div class="col-xl-5 text-xl-right">
+                      <label class="col-form-label">Số CV đến: </label>
+                    </div>
+                    <div class="col-xl-7">
+                      <input formControlName="soCVDen" id="soCVDen" type="text" class="form-control" placeholder="">
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                      <div class="col-xl-5 text-xl-right">
+                        <label class="col-form-label">Đến ngày: </label>
+                      </div>
+                      <div class="col-xl-7">
+                        <my-date-picker [options]="myDatePickerOptions" locale="vi" formControlName="denngay"></my-date-picker>
+                      </div>
+                    </div>
+                  </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <div class="col-xl-5 text-xl-right">
+                    <label class="col-form-label">Nội dung: </label>
+                  </div>
+                  <div class="col-xl-7">
+                    <ng-select [allowClear]="true" [items]="listNoiDung" formControlName="phanLoaiNoiDungId" (data)="refreshNoiDung($event)"
+                      (removed)="removed($event)" placeholder="Tất cả">
+                    </ng-select>
+                    <!-- <select class="form-control" formControlName="loaihinh">
+                        <option *ngFor="let item of listNoiDung" [value]="item.id">{{item.tenNoiDung}}</option>
+                      </select> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-default" (click)="search()">
+              <i class="fa fa-search" aria-hidden="true"></i> Tìm kiếm</button>
+          </div>
+        </fieldset>
+      </div>
+      <fieldset>
+        <legend>Danh sách chi tiết</legend>
+        <div class="row">
+          <div class="col-md-7"></div>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th>Số công văn đến</th>
+                <th class="table-resize">Nội dung</th>
+                <th class="column-size">Ngày tiếp nhận</th>
+                <th class="column-size">Trạng thái</th>
+                <th class="column-size">Ngày kết thúc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="dsDonthu.length == 0">
+                <td class="text-center" colspan="6">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of dsDonthu; let i = index">
+                <td class="text-center">{{pagging.currentPage*pagging.itemsPerPage +i + 1 }}</td>
+                <td>
+                  <a class="text-primary" (click)="gotoChitietCongvan(item.id)">{{ item.soCV }}</a>
+                </td>
+                <td>{{ item.noiDung }}</td>
+                <td class="text-center">{{ item.from | date:"dd/MM/yyyy" }}</td>
+                <td>{{ item.status | dtstatus }}</td>
+                <td class="text-center">{{ item.to | date:"dd/MM/yyyy" }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+              <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+              </pagination>
+            </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

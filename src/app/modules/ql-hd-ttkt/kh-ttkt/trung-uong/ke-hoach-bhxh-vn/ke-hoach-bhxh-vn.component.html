@@ -1,0 +1,84 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-6">
+      <span class="page-title">Kế hoạch Bảo Hiểm Xã Hội Việt Nam</span>
+    </div>
+    <div class="col-md-6 pull-right">
+      <button class="btn btn-primary" (click)="goToTaoKeHoach()">
+        <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate>
+      <fieldset>
+        <legend>Danh sách kế hoạch</legend>
+        <div class="ttkt-node">
+          <i class="fa fa-caret-right" aria-hidden="true"></i>
+          <span>Danh sách kế hoạch</span>
+        </div>
+        <div class="table-responsive table-scroll-x">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT
+                  <br>
+                </th>
+                <th class="table-resize">Tên kế hoạch
+                  <br>
+                </th>
+                <th>Thời gian tạo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="listKeHoachBHXHVN?.length == 0">
+                <td colspan="4">Không có dữ liệu</td>
+              </tr>
+              <tr *ngFor="let item of listKeHoachBHXHVN; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-primary text-left">
+                  <a (click)="goToKeHoachChiTiet(item.id)">{{ item.tenKeHoach }}</a>
+                </td>
+                <td class="text-center">{{ (item.ngayQuyetDinhTaoKeHoach ? item.ngayQuyetDinhTaoKeHoach : '') | date: 'dd/MM/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- pagination -->
+          <nav aria-label="Page navigation example" *ngIf="pagging.totalItems > 1" class="pull-right">
+            <pagination [totalItems]="pagging.totalItems" [itemsPerPage]="pagging.itemsPerPage" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+          </nav>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="isDieuChinhDetailModalShown" [config]="{ show: true }" (onHidden)="onDieuChinhDetailModalHidden()" bsModal #dieuChinhDetailModal="bs-modal"
+  class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left heading-page" style="border-bottom: none">Số lần điều chỉnh</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="dieuChinhDetail()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="px-3">
+          <div *ngFor="let item of dieuChinhDetailItem; let i = index">
+            <div class="mb-2 row">
+              Lần {{ i + 1}}: {{ item.thoiGian }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="dieuChinhDetail()">
+          <img src="assets/images/icon_dong.svg" class="img-close"> Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

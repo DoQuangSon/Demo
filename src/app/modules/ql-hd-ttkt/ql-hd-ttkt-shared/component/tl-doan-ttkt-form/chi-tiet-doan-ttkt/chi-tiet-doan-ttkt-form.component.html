@@ -1,0 +1,546 @@
+<h4 class="heading-page">
+  <div class="row">
+    <div class="col-md-8">
+      <span class="page-title-breadcrumb">Thành lập đoàn TTKT</span>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <span class="page-title text-primary">Chi tiết quyết định thành lập đoàn TTKT</span>
+    </div>
+    <div class="col-md-4 pull-right" *ngIf="!isQuyetDinh && isNewestDieuChinh">
+      <div class="pull-right" *ngIf="isTldKetThuc != true">
+        <button type="button" class="btn btn-primary" (click)="onGui()" *ngIf="duyet && !isDaGuiTinh && typeAccount == 'TW'">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i> Gửi</button>
+        <button type="button" class="btn btn-success" (click)="onDuyet()" *ngIf="!duyet">
+          <i class="fa fa-check-square-o" aria-hidden="true"></i> Duyệt</button>
+        <button *ngIf="!isHideEdit" type="button" class="btn btn-primary" (click)="dieuChinhQD(true)">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <span *ngIf="!duyet">Sửa</span>
+          <span *ngIf="duyet">Điều chỉnh</span>
+        </button>
+        <button type="button" class="btn btn-default">
+          <i class="fa fa-print" aria-hidden="true"></i> In công văn</button>
+      </div>
+    </div>
+  </div>
+</h4>
+<div class="cnt-page ttkt-page">
+  <div class="ttkt-form-default">
+    <form novalidate [formGroup]="tldoanForm">
+      <fieldset *ngIf="(soLanDieuChinh || []).length > 1">
+        <legend>Thông tin điều chỉnh</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số lần điều chỉnh:</label>
+              </div>
+              <div class="col-xl-6">
+                <select class="custom-select form-control" (change)="changeLanDieuChinh()" formControlName="lanDieuChinh">
+                  <option *ngFor="let item of soLanDieuChinh" [value]="item.thanhLapDoanId">{{item.soLanDieuChinh}}{{(item.timeDieuChinh
+                    && item.timeDieuChinh != '') ? ' - ' : ''}}{{item.timeDieuChinh
+                    | date: 'dd/MM/yyyy'}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số quyết định:</label>
+              </div>
+              <div class="col-xl-8" [ngClass]="{'disable-click': true}">
+                <input type="text" class="form-control" formControlName="soQDdieuChinh">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Lý do điều chỉnh:</label>
+              </div>
+              <div class="col-xl-8" [ngClass]="{'disable-click': true}">
+                <textarea rows="2" class="form-control" formControlName="lyDoDieuChinh"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">File quyết định điều chỉnh:</label>
+              </div>
+              <div class="col-xl-6">
+                <input class="form-control" formControlName="fileQdDieuChinh" [ngClass]="{'disable-click': true}">
+              </div>
+              <div class="col-xl-2 custom-xl-2">
+                <button type="submit" class="btn btn-primary btn-sm mt-sm-1" (click)="downLoadFile('dieuChinh', 0)"
+                  *ngIf="tldoanForm.controls.fileQdDieuChinh.value">
+                  <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Thông tin chung</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8 chekbox-content">
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="dotXuat" value="true">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Trong kế hoạch</span>
+                </label>
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="dotXuat" value="false">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Đột xuất</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Địa bàn: </label>
+              </div>
+              <div class="col-xl-6">
+                <select class="custom-select form-control" formControlName="phamVi" [ngClass]="{'disable-click': true}">
+                  <option value="">{{locationType}}</option>
+                  <!--<option *ngFor="let tinh of dsTinh" [value]="typeAccount == 'TW' || isQuyetDinh ? tinh.dmTinhHuyenId : tinh.id">{{ tinh.tenTinhHuyen }}</option>-->
+                  <option *ngFor="let tinh of dsTinh" [value]="tinh.id">{{ tinh.tenTinhHuyen }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Tên quyết định:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8" [ngClass]="{'disable-click': true}">
+                <input class="form-control" type="text" formControlName="tenQd" [ngClass]="{'disable-click': true}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Số quyết định:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-6">
+                <input class="form-control" type="text" formControlName="soQd" [ngClass]="{'disable-click': true}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Ngày quyết định:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-6">
+                <my-date-picker [disabled]="true" [options]="myDatePickerOptions" locale="vi" formControlName="ngay"></my-date-picker>
+                <p class="help-block text-danger" *ngIf="tldoanForm.controls.ngay?.errors?.required &&  (tldoanForm.controls.ngay?.touched || tldoanForm.controls.ngay?.dirty)">
+                  Bạn phải nhập vào ngày</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">File quyết định: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-6">
+                <input class="form-control" formControlName="quyetDinhThanhLap" [ngClass]="{'disable-click': true}">
+              </div>
+              <div class="col-xl-2 custom-xl-2" *ngIf="fileQdThanhLap.length > 0">
+                <button type="submit" class="btn btn-primary btn-sm mt-sm-1" (click)="downLoadFile('thanhLap', 0)"
+                  *ngIf="fileQdThanhLap[0]">
+                  <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Ngày bắt đầu: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [disabled]="true" [options]="myDatePickerOptions" formControlName="ngayBatDau" locale="vi"></my-date-picker>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Ngày kết thúc: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [disabled]="true" [options]="myDatePickerOptions" formControlName="ngayKetThuc" locale="vi"></my-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Cơ quan ban hành:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" type="text" formControlName="coQuan" [ngClass]="{'disable-click': true}">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Thời hạn thực hiện:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control form-control-25" type="text" formControlName="thoiHan" [ngClass]="{'disable-click': true}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Căn cứ:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <select class="custom-select form-control" formControlName="canCu" [ngClass]="{'disable-click': true}">
+                  <option value="" selected>Chọn căn cứ</option>
+                  <option *ngFor="let cc of cacCanCu" [value]="cc.id">{{ cc.tenCanCu }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Người ký quyết định:</label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <input class="form-control" type="text" formControlName="nguoiKyQd" [ngClass]="{'disable-click': true}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Ngày công bố: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <my-date-picker [disabled]="true" [options]="myDatePickerOptions" formControlName="ngayCongBo" locale="vi"></my-date-picker>
+              </div>
+            </div>
+          </div>
+          <!---->
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Chức danh:
+                  <span class="text-danger">*</span>
+                </label>
+              </div>
+              <div class="col-xl-6">
+                <select class="custom-select form-control" disabled>
+                  <option selected>{{tenChucDanh}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Đơn vị chủ trì: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8">
+                <select class="custom-select form-control" formControlName="donViChuTri" [ngClass]="{'disable-click': true}">
+                  <option value="" selected>Chọn đơn vị chủ trì</option>
+                  <option *ngFor="let donVi of cacDonViChuTri" [value]="donVi.id">{{ donVi.tenDonViChuTriPhoiHop }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Nội dung: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8 chekbox-content">
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="chonNoiDung" value="thanhTra">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Thanh tra</span>
+                </label>
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="chonNoiDung" value="kiemTra">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Kiểm tra</span>
+                </label>
+              </div>
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8" *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">
+                <ng-select [multiple]="true" [items]="cacNoiDungTT" [disabled]="true" [active]="noiDungTTDaChon" (data)="refreshValueDVPH($event)"
+                  placeholder="Chọn nội dung thanh tra" class="ng-select" formControlName="noiDungTTTT">
+                </ng-select>
+              </div>
+              <div class="col-xl-8" *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'">
+                <ng-select [multiple]="true" [items]="cacNoiDungKT" [disabled]="true" [active]="noiDungKTDaChon" (data)="refreshValueDVPH($event)"
+                  placeholder="Chọn nội dung kiểm tra" class="ng-select" formControlName="noiDungTTKT">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Liên ngành: </label>
+                <span class="text-danger">*</span>
+              </div>
+              <div class="col-xl-8 chekbox-content">
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="chonDvPhoiHop" value="lienNganh">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Có</span>
+                </label>
+                <label class="custom-control custom-radio" [ngClass]="{'disable-click': true}">
+                  <input type="radio" class="custom-control-input" formControlName="chonDvPhoiHop" value="khongLienNganh">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Không</span>
+                </label>
+              </div>
+              <div class="col-xl-4"></div>
+              <div class="col-xl-8" *ngIf="tldoanForm.value.chonDvPhoiHop=='lienNganh'">
+                <ng-select [multiple]="true" [items]="cacDonViPhoiHop" [disabled]="true" [active]="donViPhoiHopDaChon"
+                  (data)="refreshValueDVPH($event)" placeholder="Chọn đơn vị phối hợp" class="ng-select"
+                  formControlName="donViPhoiHop">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row margin-top">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-6">
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="dieuChinh==false && luu==false">
+          <div class="col-xl-12" [style.margin-top.px]="10">
+            <div class="form-group row">
+              <div class="col-xl-2 text-xl-right">Tài liệu liên quan:</div>
+              <div class="col-xl-8">
+                <div class="table-responsive table-scroll-x table-uploadfile">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th class="th-size">STT</th>
+                        <th class="table-resize">Tên tài liệu</th>
+                        <th class="th-size">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of taiLieuLienQuan; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td class="text-left">{{item.fileName}}</td>
+                        <td>
+                          <div>
+                            <button type="button" class="btn btn-primary btn-sm edit" (click)="downLoadFile('lienQuan', i)">
+                              <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="dieuChinh || luu">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <div class="col-xl-4 text-xl-right">
+                <label for="" class="col-form-label">Tài liệu liên quan: </label>
+              </div>
+              <div class="col-xl-7" *ngIf="(luu==false && dieuChinh==true) && !isQuyetDinh">
+                <label for="uploadTaiLieuLienQuan" class="btn btn-default btn-sm">
+                  <i class="fa fa-upload" aria-hidden="true"></i> Chọn file</label>
+                <input id="uploadTaiLieuLienQuan" hidden type="file" name="file" #fileLienQuan (change)="upFileLienQuan()">
+                <b class="ten-fileUpload">{{ tenFileTaiLieuLienQuan }}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="dieuChinh || luu">
+          <div class="col-xl-12 form-group">
+            <div class="form-group row">
+              <div class="col-xl-2"></div>
+              <div class="col-xl-8">
+                <div class="table-responsive table-scroll-x table-uploadfile">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th class="th-size">STT</th>
+                        <th class="table-resize">Tên tài liệu</th>
+                        <th class="th-size">Trạng thái</th>
+                        <th class="th-size">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of taiLieuLienQuan; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td class="text-left">{{item.fileName}}</td>
+                        <td>
+                          <span *ngIf="item.status">OK</span>
+                          <span *ngIf="!item.status">ERROR</span>
+                        </td>
+                        <td>
+                          <div>
+                            <button type="button" class="btn btn-primary btn-sm edit" (click)="downLoadFile('lienQuan', i)">
+                              <i class="fa fa-download" aria-hidden="true"></i> Tải file</button>
+                            <button type="button" class="btn btn-danger btn-sm delete" *ngIf="duyet==false && dieuChinh==true"
+                              (click)="deleteFile(i)">
+                              <i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- danh sách đoàn TTKT -->
+      <fieldset *ngIf="!quyetDinhTTKT" [ngClass]="{'disable-click': isSaved}">
+        <legend>Danh sách đoàn TTKT</legend>
+        <div class="pull-right mb-1" *ngIf="dieuChinh">
+          <button class="btn btn-primary" (click)="addThanhVien()">
+            <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+        </div>
+        <div class="table-responsive table-scroll-x tableTV">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Họ tên</th>
+                <th>Chức vụ đoàn</th>
+                <th>Chức vụ công tác</th>
+                <th>Đơn vị</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dsThanhVien; let index = index">
+                <td>{{index + 1}}</td>
+                <td>{{item.hoVaTen}}</td>
+                <td>{{item.chucVuDoan}}</td>
+                <td>{{item.chucVuCongTac}}</td>
+                <td class="text-left">{{item.tenDonViChuTriPhoiHop }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+      <!-- danh sách đơn vị được thanh tra kiểm tra -->
+      <!-- freaking table -->
+      <fieldset *ngIf="tldoanForm.value.chonNoiDung=='thanhTra' || tldoanForm.value.chonNoiDung=='kiemTra'" [ngClass]="{'disable-click': isSaved}">
+        <legend *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">Thanh tra</legend>
+        <legend *ngIf="tldoanForm.value.chonNoiDung=='kiemTra'">Kiểm tra</legend>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row mb-1">
+              <label *ngIf="tldoanForm.value.loaiHinh=='thanhTra' || tldoanForm.value.chonNoiDung=='thanhTra'" class="col-md-12 mb-0 mt-1">
+                Danh sách đơn vị được Thanh tra
+              </label>
+              <label *ngIf="tldoanForm.value.loaiHinh=='kiemTra' || tldoanForm.value.chonNoiDung=='kiemTra'" class="col-md-12 mb-0 mt-1">
+                Danh sách đơn vị được Kiểm tra
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right mb-1" *ngIf="dieuChinh">
+              <button class="btn btn-primary" (click)="addDonVi()">
+                <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i> Thêm mới</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive table-scroll-x tableDV" *ngIf="(tldoanForm.value.loaiHinh=='kiemTra' || tldoanForm.value.chonNoiDung=='kiemTra') ||
+        (tldoanForm.value.loaiHinh=='thanhTra' || tldoanForm.value.chonNoiDung=='thanhTra')">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="th-size">STT</th>
+                <th class="table-resize">Tên đơn vị</th>
+                <th>Mã đơn vị SDLĐ</th>
+                <th>Mã cơ sở khám chữa bệnh</th>
+                <th *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">Nội dung thanh tra</th>
+                <th class="table-resize" *ngIf="tldoanForm.value.chonNoiDung!='thanhTra'">Nội dung kiểm tra</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of tableContent, let i = index">
+              <!-- co quan BHXH -->
+              <tr>
+                <th>{{ i + 1 | convertNumberToRomanNumeral }}</th>
+                <th>{{ item.tenDanhMuc }}</th>
+                <th></th>
+                <th></th>
+                <th *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'"></th>
+                <th *ngIf="tldoanForm.value.chonNoiDung!='thanhTra'"></th>
+              </tr>
+              <tr *ngFor="let cq of (item||{}).children || []; let j = index">
+                <td>{{ j+1 }}</td>
+                <td>{{ cq.tenDoiTuong }}</td>
+                <td class="text-center">{{ cq.maSuDungLaoDong }}</td>
+                <td class="text-center">{{ cq.maCoSoKhamChuaBenh }}</td>
+                <!--<td>{{(showKB=='null') ? "" : showKB}}</td>-->
+                <td *ngIf="tldoanForm.value.chonNoiDung=='thanhTra'">{{ cq.noiDungTTName }}</td>
+                <td *ngIf="tldoanForm.value.chonNoiDung!='thanhTra'" class="text-left">{{ cq.noiDungKTName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
